@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-015 (release 0.3.6) and review RC-039 | [7823687] |
-| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-016 (release 0.3.7) and review RC-040 | pending |
+| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-016 (release 0.3.7) and review RC-040 | [6696dce] |
 
 ---
 
@@ -146,3 +146,4 @@ updated whenever an artifact instance is created or reviewed.
 [RC-017]: ./reviews/rc-017-e2e-security-review.md
 [0db0fdf]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/0db0fdf20b59f7d841637fa63b6414e6571d9b59
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
+[6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939

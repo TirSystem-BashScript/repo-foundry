@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [6696dce] |
 
 ---
 
@@ -72,3 +72,4 @@ The change is a patch release: the only change to the script is its version numb
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-015]: ./mil-015-release-0-3-6.md
+[6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939
