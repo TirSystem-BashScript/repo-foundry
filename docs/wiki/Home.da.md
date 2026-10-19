@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 054f37c6e99b -->
+<!-- translation of Home.md, source sha256 d2282870a736 -->
 
 > Dette er en oversættelse af [`Home`](Home). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -25,6 +25,7 @@ Det er et Bash-script. Det viser først en plan og opretter intet, før du angiv
 | [Adgangstokens](AccessTokens.da) | Opret adgangstokens trin for trin med billeder |
 | [Opdatering af frameworket](UpdatingTheFramework.da) | Hold et projekts framework-submodul opdateret |
 | [Fejlfinding](Troubleshooting.da) | Almindelige fejl og hvad du skal gøre |
+| [Appendiks](Appendix.da) | Links til al projektdokumentation i `docs/` |
 
 Den fulde reference (konfigurationsfiler, sikkerhedsbeslutninger, fejlhåndtering, kendte begrænsninger) er [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md).
 Meld et problem som en [issue](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues).

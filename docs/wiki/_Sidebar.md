@@ -8,6 +8,7 @@
 - [Access tokens](AccessTokens)
 - [Updating the framework](UpdatingTheFramework)
 - [Troubleshooting](Troubleshooting)
+- [Appendix](Appendix)
 
 **Dansk**
 
@@ -17,6 +18,7 @@
 - [Adgangstokens](AccessTokens.da)
 - [Opdatering af frameworket](UpdatingTheFramework.da)
 - [Fejlfinding](Troubleshooting.da)
+- [Appendiks](Appendix.da)
 
 **Bahasa Melayu**
 
@@ -26,3 +28,4 @@
 - [Token akses](AccessTokens.ms)
 - [Mengemas kini framework](UpdatingTheFramework.ms)
 - [Diagnosis](Troubleshooting.ms)
+- [Lampiran](Appendix.ms)
