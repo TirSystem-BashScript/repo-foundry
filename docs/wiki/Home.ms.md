@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 054f37c6e99b -->
+<!-- translation of Home.md, source sha256 d2282870a736 -->
 
 > Ini ialah terjemahan [`Home`](Home). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -25,6 +25,7 @@ Ia ialah skrip Bash. Ia memaparkan pelan dahulu dan tidak mencipta apa-apa sehin
 | [Token akses](AccessTokens.ms) | Cipta token akses langkah demi langkah dengan gambar |
 | [Mengemas kini framework](UpdatingTheFramework.ms) | Pastikan submodul framework projek sentiasa terkini |
 | [Diagnosis](Troubleshooting.ms) | Kegagalan lazim dan tindakan yang perlu diambil |
+| [Lampiran](Appendix.ms) | Pautan ke semua dokumentasi projek dalam `docs/` |
 
 Rujukan penuh (fail konfigurasi, keputusan keselamatan, pengendalian ralat, had yang diketahui) ialah [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md).
 Laporkan masalah sebagai [issue](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues).

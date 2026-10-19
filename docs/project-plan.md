@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-014 (proposed dates 2027-01-11 to 2027-01-13): the timeout of a repository create request (issue 107) | [d1120f7] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added phase MIL-015 (proposed dates 2027-01-14 to 2027-01-15): release 0.3.6 | [7823687] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added phase MIL-015 (proposed dates 2027-01-14 to 2027-01-15): release 0.3.6 | [7823687] |
+| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-016 (proposed dates 2027-01-18 to 2027-01-19): release 0.3.7 | [6696dce] |
 
 ---
 
@@ -44,6 +44,7 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Launch Tests Follow the qc Layout | [MIL-013] | 2027-01-08 to 2027-01-08 | 2027-01-08 | S01 | US-001 | The two launch tests pass against the checklists in `framework/qc/artifacts/` | |
 | Timeout of a Repository Create Request | [MIL-014] | 2027-01-11 to 2027-01-13 | 2027-01-13 | S01 | US-001.02 | The cause of issue 107 is found and a timeout of a create request is handled | |
 | Release 0.3.6 | [MIL-015] | 2027-01-14 to 2027-01-15 | 2027-01-15 | S01 | US-001 | Version 0.3.6 released on Gitea with its changelog entry | |
+| Release 0.3.7 | [MIL-016] | 2027-01-18 to 2027-01-19 | 2027-01-19 | S01 | US-001 | Version 0.3.7 released on Gitea with its changelog entry | |
 
 ```plantuml
 @startgantt
@@ -78,6 +79,8 @@ Project starts 2026-10-05
 [Timeout of a Repository Create Request Go/No-Go] happens 2027-01-13
 [Release 0.3.6] starts 2027-01-14 and ends 2027-01-15
 [Release 0.3.6 Go/No-Go] happens 2027-01-15
+[Release 0.3.7] starts 2027-01-18 and ends 2027-01-19
+[Release 0.3.7 Go/No-Go] happens 2027-01-19
 @endgantt
 ```
 
@@ -104,11 +107,12 @@ Project starts 2026-10-05
 | The two launch tests pass against the checklists in `framework/qc/artifacts/` | [MIL-013] |
 | The cause of issue 107 is found and a timeout of a create request is handled | [MIL-014] |
 | Version 0.3.6 released | [MIL-015] |
+| Version 0.3.7 released | [MIL-016] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -147,6 +151,7 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-013]: ./milestones/mil-013-launch-tests-qc-layout.md
 [MIL-014]: ./milestones/mil-014-github-create-timeout.md
 [MIL-015]: ./milestones/mil-015-release-0-3-6.md
+[MIL-016]: ./milestones/mil-016-release-0-3-7.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
@@ -155,3 +160,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [Milestone 45]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/milestone/45
 [d1120f7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/d1120f7da03f41e6af8b5f35d860eee5bfd5f015
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
+[6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939

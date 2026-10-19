@@ -13,6 +13,16 @@ file.
 
 ## [Unreleased]
 
+## [0.3.7] - 2026-10-19
+
+### Changed
+
+- The framework submodule moves from `v0.13.1` to `v0.14.0`.
+- The wiki has an Appendix page, in English, Danish and Bahasa Melayu, that
+  links the project documents in `docs/`.
+- Version 0.3.6 was merged but never tagged, so its changes below are released
+  with this version.
+
 ## [0.3.6] - 2026-10-15
 
 ### Changed

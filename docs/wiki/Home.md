@@ -21,6 +21,7 @@ It is a Bash script. It shows a plan first and creates nothing until you pass `-
 | [Access tokens](AccessTokens) | Create the access tokens, step by step with pictures |
 | [Updating the framework](UpdatingTheFramework) | Keep the framework submodule of a project up to date |
 | [Troubleshooting](Troubleshooting) | Common failures and what to do |
+| [Appendix](Appendix) | Links to all project documentation in `docs/` |
 
 The full reference (configuration files, security decisions, error handling, known limitations) is the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md).
 Report a problem as an [issue](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues).
