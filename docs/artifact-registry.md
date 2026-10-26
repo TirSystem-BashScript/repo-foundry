@@ -43,7 +43,7 @@ if it is missing. A translated artifact is named `<artifact>.<language>.md`
 | --- | --- | --- |
 | BC, KPI, PP, MIL | IT Executive English | Yes |
 | SA, BMC, BPMN, UCD, US, UC, SSD, DM, RA, GOV, DICT | IT Professional English | Yes |
-| OC, SD, DCD, ERD, ADR, TM, RC, QC, source code | IT Professional English | No |
+| OC, SD, DCD, ERD, TP, ADR, TM, RC, QC, source code | IT Professional English | No |
 
 ## Notes
 
