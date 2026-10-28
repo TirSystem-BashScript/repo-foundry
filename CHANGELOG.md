@@ -13,6 +13,13 @@ file.
 
 ## [Unreleased]
 
+## [0.3.8] - 2026-10-28
+
+### Changed
+
+- The framework submodule moves from `v0.14.0` to `v0.17.1`.
+- The register table of the Artifact Registry lists the types `TP` and `AD`.
+
 ## [0.3.7] - 2026-10-19
 
 ### Changed
