@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-015 (release 0.3.6) and review RC-039 | [7823687] |
-| 2026-10-19 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-016 (release 0.3.7) and review RC-040 | [6696dce] |
+| 2026-10-19 | Deprecated | Jens Tirsvad Nielsen | S02 | Added MIL-016 (release 0.3.7) and review RC-040 | [6696dce] |
+| 2026-10-28 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-017 (release 0.3.8) and review RC-041 | pending |
 
 ---
 
@@ -24,9 +24,9 @@ updated whenever an artifact instance is created or reviewed.
 
 | Artifact Instance | Type | Upstream (Backward Link) | Downstream (Forward Link) | Last Reviewed (RC-ID) |
 | --- | --- | --- | --- | --- |
-| [BC-001] | BC | - | [SA-001], [PP-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [US-001], [UCD-001] | [RC-010], [RC-018], [RC-020], [RC-022], [RC-029], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040] |
+| [BC-001] | BC | - | [SA-001], [PP-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [US-001], [UCD-001] | [RC-010], [RC-018], [RC-020], [RC-022], [RC-029], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041] |
 | [SA-001] | SA | [BC-001] | [UCD-001], [UC-001], [DICT-001] | [RC-013] |
-| [PP-001] | PP | [BC-001], [SA-001] | [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016] | [RC-012], [RC-018], [RC-020], [RC-022], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040] |
+| [PP-001] | PP | [BC-001], [SA-001] | [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017] | [RC-012], [RC-018], [RC-020], [RC-022], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041] |
 | [MIL-001] | MIL | [BC-001], [PP-001] | [US-001] | [RC-011], [RC-016] |
 | [MIL-002] | MIL | [BC-001], [PP-001] | [US-001] | [RC-014], [RC-017] |
 | [MIL-003] | MIL | [BC-001], [PP-001] | [US-001] | [RC-015], [RC-017], [RC-031] |
@@ -43,8 +43,9 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-014] | MIL | [BC-001], [PP-001], [MIL-013] | [US-001] | [RC-037], [RC-038] |
 | [MIL-015] | MIL | [BC-001], [PP-001], [MIL-014] | [US-001] | [RC-039] |
 | [MIL-016] | MIL | [BC-001], [PP-001], [MIL-015] | [US-001] | [RC-040] |
+| [MIL-017] | MIL | [BC-001], [PP-001], [MIL-016] | [US-001] | [RC-041] |
 | [UCD-001] | UCD | [BC-001], [SA-001] | [US-001], [UC-001], [UC-002] | [RC-009], [RC-023] |
-| [US-001] | US | [BC-001], [UCD-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016] | [UC-001] | [RC-001], [RC-020], [RC-022], [RC-029], [RC-030], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040] |
+| [US-001] | US | [BC-001], [UCD-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017] | [UC-001] | [RC-001], [RC-020], [RC-022], [RC-029], [RC-030], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041] |
 | [UC-001] | UC | [UCD-001], [US-001], [SA-001] | [SSD-001], [DM-001] | [RC-002], [RC-020], [RC-023], [RC-031], [RC-032] |
 | [UC-002] | UC | [UCD-001], [US-001], [SA-001], [BC-001] | [SSD-002], [DM-003] | [RC-023], [RC-029], [RC-030] |
 | [SSD-002] | SSD | [UC-002], [DM-003] | [OC-002] | [RC-024], [RC-029] |
@@ -87,6 +88,7 @@ updated whenever an artifact instance is created or reviewed.
 [MIL-014]: ../milestones/mil-014-github-create-timeout.md
 [MIL-015]: ../milestones/mil-015-release-0-3-6.md
 [MIL-016]: ../milestones/mil-016-release-0-3-7.md
+[MIL-017]: ../milestones/mil-017-release-0-3-8.md
 [RC-018]: ./reviews/rc-018-mil-004.md
 [RC-019]: ./reviews/rc-019-mil-004-code.md
 [RC-020]: ./reviews/rc-020-mil-005.md
@@ -110,6 +112,7 @@ updated whenever an artifact instance is created or reviewed.
 [RC-038]: ./reviews/rc-038-mil-014-code.md
 [RC-039]: ./reviews/rc-039-release-0-3-6.md
 [RC-040]: ./reviews/rc-040-release-0-3-7.md
+[RC-041]: ./reviews/rc-041-release-0-3-8.md
 [DCD-001]: ../use-cases/uc-001/dcd.md
 [DCD-002]: ../dcd.md
 [UCD-001]: ../use-case-diagram.md
