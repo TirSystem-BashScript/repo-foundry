@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-19 | Deprecated | Jens Tirsvad Nielsen | S02 | Added MIL-016 (release 0.3.7) and review RC-040 | [6696dce] |
-| 2026-10-28 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-017 (release 0.3.8) and review RC-041 | pending |
+| 2026-10-28 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-017 (release 0.3.8) and review RC-041 | [2d3932f] |
 
 ---
 
@@ -150,3 +150,4 @@ updated whenever an artifact instance is created or reviewed.
 [0db0fdf]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/0db0fdf20b59f7d841637fa63b6414e6571d9b59
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
 [6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939
+[2d3932f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/2d3932f135d56411439477dead63a21f0bc35294
