@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [b63fe29] |
 
 ---
 
@@ -89,3 +89,4 @@ Confirmed by S01 in chat: the default status check pattern. A pattern that match
 [US-001]: ../user-stories.md
 [MIL-018]: ./mil-018-delete-branch-after-merge.md
 [MIL-020]: ./mil-020-release-0-3-9.md
+[b63fe29]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b63fe29d7df28b62bade9fc5b14500229dc43d80

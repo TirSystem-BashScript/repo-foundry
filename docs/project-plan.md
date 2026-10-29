@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-020 (proposed dates 2027-02-01 to 2027-02-02): release 0.3.9 | [b220a3e] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-021 (proposed dates 2027-02-03 to 2027-02-09): protect the default branch of a new Gitea repository | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-021 (proposed dates 2027-02-03 to 2027-02-09): protect the default branch of a new Gitea repository | [b63fe29] |
 
 ---
 
@@ -189,3 +189,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [2d3932f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/2d3932f135d56411439477dead63a21f0bc35294
 [4ecfb14]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/4ecfb143a9f06c007f61da7f8e98dc331b727442
 [b220a3e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b220a3e7b7672f1437e9dece247d6d86d5d29c2c
+[b63fe29]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b63fe29d7df28b62bade9fc5b14500229dc43d80
