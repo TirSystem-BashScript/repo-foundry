@@ -1,4 +1,4 @@
-<!-- translation of SshAndTokens.md, source sha256 11fb80c5a514 -->
+<!-- translation of SshAndTokens.md, source sha256 179abdc8a49e -->
 
 > Dette er en oversættelse af [`SshAndTokens`](SshAndTokens). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -19,7 +19,7 @@ Framework-submodulet hentes over SSH på port **10022**. Før du kører scriptet
 
    En besked om, at du er godkendt, uden shell-adgang, betyder, at det virker.
 
-> **Nøgler med adgangskode.** Scriptet beder aldrig om en adgangskode. En nøgle med adgangskode skal allerede være indlæst i `ssh-agent` (`ssh-add`). Det følges i [issue 77](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues/77).
+> **Nøgler med adgangskode.** Scriptet beder aldrig om en adgangskode. En nøgle med adgangskode skal allerede være indlæst i `ssh-agent` (`ssh-add`). Se [SSH-nøgler med adgangskode](SshPassphrase.da).
 
 ## Tokens
 

@@ -15,7 +15,7 @@ The framework submodule is fetched over SSH on port **10022**. Before you run th
 
    A message that you have successfully authenticated, without shell access, means it works.
 
-> **Passphrase keys.** The script never prompts for a passphrase. A key with a passphrase must already be loaded in `ssh-agent` (`ssh-add`). This is tracked in [issue 77](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues/77).
+> **Passphrase keys.** The script never prompts for a passphrase. A key with a passphrase must already be loaded in `ssh-agent` (`ssh-add`). See [SSH keys with a passphrase](SshPassphrase).
 
 ## Tokens
 

@@ -43,6 +43,7 @@ A maintainer or a small team that starts several projects and wants them to look
 | --- | --- |
 | [Getting started](GettingStarted) | Requirements, install and the first run |
 | [SSH and tokens](SshAndTokens) | SSH access to Gitea and the two access tokens |
+| [SSH keys with a passphrase](SshPassphrase) | Load a key that has a passphrase into the SSH agent |
 | [Access tokens](AccessTokens) | Create the access tokens, step by step with pictures |
 | [Updating the framework](UpdatingTheFramework) | Keep the framework submodule of a project up to date |
 | [Troubleshooting](Troubleshooting) | Common failures and what to do |

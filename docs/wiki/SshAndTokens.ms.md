@@ -1,4 +1,4 @@
-<!-- translation of SshAndTokens.md, source sha256 11fb80c5a514 -->
+<!-- translation of SshAndTokens.md, source sha256 179abdc8a49e -->
 
 > Ini ialah terjemahan [`SshAndTokens`](SshAndTokens). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -19,7 +19,7 @@ Submodul framework diambil melalui SSH pada port **10022**. Sebelum anda menjala
 
    Mesej bahawa anda telah berjaya disahkan, tanpa akses shell, bermakna ia berfungsi.
 
-> **Kunci dengan frasa laluan.** Skrip tidak pernah meminta frasa laluan. Kunci dengan frasa laluan mesti sudah dimuatkan dalam `ssh-agent` (`ssh-add`). Perkara ini dijejaki dalam [issue 77](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/issues/77).
+> **Kunci dengan frasa laluan.** Skrip tidak pernah meminta frasa laluan. Kunci dengan frasa laluan mesti sudah dimuatkan dalam `ssh-agent` (`ssh-add`). Lihat [Kunci SSH dengan frasa laluan](SshPassphrase.ms).
 
 ## Token
 
