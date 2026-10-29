@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 9e1e36dacd34 -->
+<!-- translation of Home.md, source sha256 3affc71fbc28 -->
 
 > Ini ialah terjemahan [`Home`](Home). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -8,9 +8,7 @@
 
 Repo Foundry (`src/create-project.sh`) ialah skrip Bash yang menyediakan projek baharu dalam satu larian, dengan cara yang sama setiap kali.
 
-## Mengapa ia wujud
-
-Menyediakan projek secara manual bermakna banyak langkah kecil pada dua hos dan pada mesin anda: cipta repositori, pilih keterlihatan dan pemilik, tambah lesen, cipta repositori kedua dan mirror, klon, tambah framework, pasang skill dan hook-nya, serta pastikan rahsia tidak berada dalam remote. Jika dibuat secara manual, tiada dua projek yang benar-benar serupa, dan langkah yang terlupa hanya ditemui beberapa minggu kemudian.
+## Tujuan
 
 Repo Foundry wujud untuk:
 
