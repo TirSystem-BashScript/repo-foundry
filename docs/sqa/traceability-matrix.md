@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added MIL-018 (delete branch after merge) and MIL-019 (Gitea token names) and reviews RC-042 and RC-043 | [4ecfb14] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-020 (release 0.3.9) and review RC-044 | [b220a3e] |
+| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added MIL-020 (release 0.3.9) and review RC-044 | [b220a3e] |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added MIL-021 (protect the default branch) and review RC-045 | pending |
 
 ---
 
@@ -24,9 +24,9 @@ updated whenever an artifact instance is created or reviewed.
 
 | Artifact Instance | Type | Upstream (Backward Link) | Downstream (Forward Link) | Last Reviewed (RC-ID) |
 | --- | --- | --- | --- | --- |
-| [BC-001] | BC | - | [SA-001], [PP-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [US-001], [UCD-001] | [RC-010], [RC-018], [RC-020], [RC-022], [RC-029], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044] |
+| [BC-001] | BC | - | [SA-001], [PP-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [US-001], [UCD-001] | [RC-010], [RC-018], [RC-020], [RC-022], [RC-029], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044], [RC-045] |
 | [SA-001] | SA | [BC-001] | [UCD-001], [UC-001], [DICT-001] | [RC-013] |
-| [PP-001] | PP | [BC-001], [SA-001] | [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020] | [RC-012], [RC-018], [RC-020], [RC-022], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044] |
+| [PP-001] | PP | [BC-001], [SA-001] | [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021] | [RC-012], [RC-018], [RC-020], [RC-022], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044], [RC-045] |
 | [MIL-001] | MIL | [BC-001], [PP-001] | [US-001] | [RC-011], [RC-016] |
 | [MIL-002] | MIL | [BC-001], [PP-001] | [US-001] | [RC-014], [RC-017] |
 | [MIL-003] | MIL | [BC-001], [PP-001] | [US-001] | [RC-015], [RC-017], [RC-031] |
@@ -47,8 +47,9 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-018] | MIL | [BC-001], [PP-001], [MIL-017] | [US-001] | [RC-042] |
 | [MIL-019] | MIL | [BC-001], [PP-001], [MIL-018] | [US-001] | [RC-043] |
 | [MIL-020] | MIL | [BC-001], [PP-001], [MIL-017], [MIL-019] | [US-001] | [RC-044] |
+| [MIL-021] | MIL | [BC-001], [PP-001], [MIL-018], [MIL-020] | [US-001] | [RC-045] |
 | [UCD-001] | UCD | [BC-001], [SA-001] | [US-001], [UC-001], [UC-002] | [RC-009], [RC-023] |
-| [US-001] | US | [BC-001], [UCD-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020] | [UC-001] | [RC-001], [RC-020], [RC-022], [RC-029], [RC-030], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044] |
+| [US-001] | US | [BC-001], [UCD-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021] | [UC-001] | [RC-001], [RC-020], [RC-022], [RC-029], [RC-030], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044], [RC-045] |
 | [UC-001] | UC | [UCD-001], [US-001], [SA-001] | [SSD-001], [DM-001] | [RC-002], [RC-020], [RC-023], [RC-031], [RC-032] |
 | [UC-002] | UC | [UCD-001], [US-001], [SA-001], [BC-001] | [SSD-002], [DM-003] | [RC-023], [RC-029], [RC-030] |
 | [SSD-002] | SSD | [UC-002], [DM-003] | [OC-002] | [RC-024], [RC-029] |
@@ -95,6 +96,7 @@ updated whenever an artifact instance is created or reviewed.
 [MIL-018]: ../milestones/mil-018-delete-branch-after-merge.md
 [MIL-019]: ../milestones/mil-019-gitea-token-names.md
 [MIL-020]: ../milestones/mil-020-release-0-3-9.md
+[MIL-021]: ../milestones/mil-021-protect-default-branch.md
 [RC-018]: ./reviews/rc-018-mil-004.md
 [RC-019]: ./reviews/rc-019-mil-004-code.md
 [RC-020]: ./reviews/rc-020-mil-005.md
@@ -122,6 +124,7 @@ updated whenever an artifact instance is created or reviewed.
 [RC-042]: ./reviews/rc-042-delete-branch-after-merge.md
 [RC-043]: ./reviews/rc-043-gitea-token-names.md
 [RC-044]: ./reviews/rc-044-release-0-3-9.md
+[RC-045]: ./reviews/rc-045-protect-default-branch.md
 [DCD-001]: ../use-cases/uc-001/dcd.md
 [DCD-002]: ../dcd.md
 [UCD-001]: ../use-case-diagram.md
