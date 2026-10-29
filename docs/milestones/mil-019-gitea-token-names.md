@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [4ecfb14] |
 
 ---
 
@@ -78,3 +78,4 @@ No token value is printed, put on a command line or written anywhere new. The sc
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-018]: ./mil-018-delete-branch-after-merge.md
+[4ecfb14]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/4ecfb143a9f06c007f61da7f8e98dc331b727442

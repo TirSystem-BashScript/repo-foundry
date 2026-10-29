@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [4ecfb14] |
 
 ---
 
@@ -76,3 +76,4 @@ The script asks for no new credential: the token that creates the repository can
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-017]: ./mil-017-release-0-3-8.md
+[4ecfb14]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/4ecfb143a9f06c007f61da7f8e98dc331b727442
