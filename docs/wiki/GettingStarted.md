@@ -36,3 +36,18 @@ src/create-project.sh --apply    # creates everything after a final yes
 ```
 
 No commit is made in the new project. Work on a branch there: the framework's hooks refuse commits on `main`.
+
+## Branch protection
+
+A new Gitea repository gets a branch protection rule: no direct push to `main`, every change arrives by a pull request. The first commit of the new project goes the same way: push a branch and open a pull request.
+
+The rule is set with three optional keys in `config.env` (glob patterns, lists separated by `;`): `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none) and `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`). See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+
+To give an existing repository the same rule:
+
+```bash
+src/create-project.sh --protect OWNER/NAME           # dry run: reads, changes nothing
+src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the rule
+```
+
+An existing rule that differs is changed only after a yes.

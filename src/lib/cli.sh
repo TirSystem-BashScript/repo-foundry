@@ -9,6 +9,7 @@
 usage() {
   cat <<EOF
 Usage: ${0##*/} [--apply] [--config FILE] [--env FILE]
+       ${0##*/} --protect OWNER/NAME [--apply] [--config FILE] [--env FILE]
        Without --config and --env, ./config.env and ./.env in the current folder
        are read, then the ones in the checkout.
        ${0##*/} --help | --version
@@ -27,6 +28,13 @@ parse_args() {
       --apply)
         IS_APPLY=1
         shift
+        ;;
+      --protect)
+        (($# >= 2)) || usage_error "--protect needs OWNER/NAME"
+        is_valid_repository_path "$2" ||
+          usage_error "--protect needs OWNER/NAME: $HINT_PROTECT_TARGET"
+        PROTECT_TARGET="$2"
+        shift 2
         ;;
       --config)
         (($# >= 2)) || usage_error "--config needs a file"

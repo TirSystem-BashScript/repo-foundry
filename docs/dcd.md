@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | FrameworkInstaller.excludeFromGit() and InstallResult.trackedPaths: `.claude`, `.agents` and `AGENTS.md` are excluded from git; UC-001 P15 (MIL-009) | [08cb484] |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | pending |
 
 ---
 
@@ -65,6 +65,9 @@ class GiteaClient <<facade>> {
   +createRepository(request : ProjectRequest, license : String [0..1]) : GiteaRepository
   +addPushMirror(source : GiteaRepository, target : GitHubRepository) : PushMirror
   -requestSync(mirror : PushMirror) : void
+  +protectBranch(repository : GiteaRepository, rule : ProtectionRule) : ProtectionRule
+  +findProtection(repository : GiteaRepository, name : String) : ProtectionRule [0..1]
+  +changeProtection(repository : GiteaRepository, rule : ProtectionRule) : ProtectionRule
 }
 class GitHubClient <<facade>> {
   +GitHubClient(configuration : Configuration)
@@ -111,6 +114,9 @@ class Configuration {
   -githubApiUrl : String
   -giteaSshPort : Integer
   -mirrorInterval : String
+  -protectedBranchPattern : String
+  -protectedFilePatterns : String
+  -protectedStatusChecks : String
   -frameworkRepo : String
   -presetDetails : Map [0..1]
 }
@@ -159,6 +165,12 @@ class LicenseFile {
 class PushMirror {
   -interval : String
   -syncOnCommit : Boolean
+}
+class ProtectionRule {
+  -branchPattern : String
+  -filePatterns : String
+  -statusCheckPatterns : String
+  -directPushAllowed : Boolean = false
 }
 class LocalProject {
   -directory : Path
@@ -238,6 +250,7 @@ Repository <|-- GitHubRepository
 Repository "0..*" --> "1" Owner : owned by
 GiteaRepository "1" *-- "0..1" LicenseFile
 PushMirror "0..*" --> "1" GiteaRepository : source
+ProtectionRule "0..*" --> "1" GiteaRepository : protects
 PushMirror "0..*" --> "1" GitHubRepository : target
 PushMirror "0..*" --> "1" Credential : authorised by
 
@@ -272,13 +285,13 @@ Repository "0..*" --> "1" Visibility
 | `ToolChecker` | none (system concept `ToolCheck`) | Detects the required and optional tools. | none | `check` |
 | `Preflight` | none (system concept `PreflightResult`) | Runs the read-only checks of both hosts before anything is created. | none | `check` |
 | `GitHost` | Git Host | The operations every host offers: check the token, check that an owner accepts new repositories, check that a name is free. | `name`, `webAddress`, `apiAddress` | `verifyToken`, `ownerAccepts`, `nameFree` |
-| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository and the push mirror. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `createRepository`, `addPushMirror`, `requestSync` |
+| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository, the push mirror and the branch protection rule. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `createRepository`, `addPushMirror`, `requestSync`, `protectBranch`, `findProtection`, `changeProtection` |
 | `GitHubClient` | Git Host (GitHub) | Hides the GitHub API and its token; creates the empty repository. | none beyond `GitHost` (uses `Configuration`) | `GitHubClient`, `createEmptyRepository` |
 | `LocalProjectBuilder` | Local Project, Remote | Creates the project directory, its git repository and its credential-free remotes. | none | `build` |
 | `FrameworkInstaller` | Framework, Framework Setup, Template | Adds the framework submodule, installs skills and hooks once, copies the templates without overwriting, and excludes `.claude`, `.agents` and `AGENTS.md` from git through `.git/info/exclude`. | none | `install`, `excludeFromGit` |
 | `SummaryReport` | Summary | Composes the report of what was created, skipped or failed. | none | `compose` |
 | `Run` | none (system concept) | Holds the state of one execution. | `isApply` | none |
-| `Configuration` | Configuration | Holds the service addresses, the credentials and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `frameworkRepo`, `presetDetails` | none |
+| `Configuration` | Configuration | Holds the service addresses, the credentials and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `protectedBranchPattern`, `protectedFilePatterns`, `protectedStatusChecks`, `frameworkRepo`, `presetDetails` | none |
 | `Credential` | Access Token | Holds a secret in memory only; it never becomes part of an address or a message. | `kind`, `value` | none |
 | `ToolCheck` | none (system concept) | Records which tools are present. | `hasGit`, `hasCurl`, `hasJq` | none |
 | `PromptSet` | none (system concept) | The questions still to ask; a detail preset in `config.env` is not in it. | `prompts` | none |
@@ -290,6 +303,7 @@ Repository "0..*" --> "1" Visibility
 | `GitHubRepository` | GitHub Repository | Receives its content from the mirror. | none beyond `Repository` | none |
 | `LicenseFile` | License | The license file in the Gitea repository when a license applies. | `key` | none |
 | `PushMirror` | Mirror | The Gitea to GitHub push mirror. | `interval`, `syncOnCommit` | none |
+| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `directPushAllowed` | none |
 | `LocalProject` | Local Project | The project directory on the Maintainer's machine. | `directory` | none |
 | `Remote` | Remote | A named link to a repository (`origin`), without a credential. | `name`, `address` | none |
 | `Submodule` | Framework | The framework added to the local project. | `name`, `address` | none |
@@ -322,6 +336,9 @@ Repository "0..*" --> "1" Visibility
 | `GiteaClient.createRepository(request, license) : GiteaRepository` | [SD-001] `createRepository(request, license)`; P3, P4 |
 | `GiteaClient.addPushMirror(source, target) : PushMirror` | [SD-001] `addPushMirror(giteaRepository, gitHubRepository)`; P6 |
 | `GiteaClient.requestSync(mirror) : void` | [SD-001] `requestSync(pushMirror)`; P6 |
+| `GiteaClient.protectBranch(repository, rule) : ProtectionRule` | [SD-001] `protectBranch(giteaRepository, protectionRule)`; P6a; also `--protect` for an existing repository |
+| `GiteaClient.findProtection(repository, name) : ProtectionRule` | `--protect`: reads the rule of that name |
+| `GiteaClient.changeProtection(repository, rule) : ProtectionRule` | `--protect`: changes a differing rule after a yes |
 | `GitHubClient(configuration)` | [SD-001] `new(configuration)` to `GitHubClient` |
 | `GitHubClient.createEmptyRepository(request) : GitHubRepository` | [SD-001] `createEmptyRepository(request)`; P5 |
 | `LocalProjectBuilder.build(directory, source, sshPassed) : LocalProject` | [SD-001] `build(directory, giteaRepository, sshPassed)`; P7, P8, P9 |
@@ -357,7 +374,7 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 | `CredentialCollector` | planned for [MIL-005]: `lib/credentials.sh`, with `lib/prompts.sh` |
 | `EnvFileWriter` | planned for [MIL-005]: `lib/envfile.sh` |
 | `Preflight` | `lib/preflight.sh` |
-| `GitHost`, `GiteaClient`, `GitHubClient` | `lib/api.sh`, `lib/http.sh`, `lib/json.sh`, `lib/repositories.sh`, `lib/mirror.sh`, `lib/hosts.sh` |
+| `GitHost`, `GiteaClient`, `GitHubClient` | `lib/api.sh`, `lib/http.sh`, `lib/json.sh`, `lib/repositories.sh`, `lib/mirror.sh`, `lib/protection.sh`, `lib/hosts.sh` |
 | `LocalProjectBuilder` | `lib/localproject.sh`, `lib/git.sh` |
 | `FrameworkInstaller` | `lib/framework.sh` |
 | `SummaryReport` | `lib/steps.sh`, `lib/plan.sh` |

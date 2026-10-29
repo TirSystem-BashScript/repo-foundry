@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: is_valid_framework_repo, is_valid_repo_name, is_valid_gitea_owner, is_valid_github_owner, is_valid_description, is_valid_directory, is_valid_base_url, is_valid_request_url, is_valid_token, is_valid_port, is_valid_interval, normalize_url
+# Provides: is_valid_repository_path, is_valid_protected_branch, is_valid_protected_list, is_valid_framework_repo, is_valid_repo_name, is_valid_gitea_owner, is_valid_github_owner, is_valid_description, is_valid_directory, is_valid_base_url, is_valid_request_url, is_valid_token, is_valid_port, is_valid_interval, normalize_url
 
 is_valid_repo_name() {
   local name="$1"
@@ -52,6 +52,27 @@ is_valid_token() {
 # OWNER/NAME of the framework repository on Gitea.
 is_valid_framework_repo() {
   [[ $1 =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ && $1 != */.. && $1 != ../* && $1 != ./* && $1 != */. ]]
+}
+
+# OWNER/NAME of a Gitea repository, as --protect takes it.
+is_valid_repository_path() {
+  [[ $1 == */* ]] && is_valid_gitea_owner "${1%%/*}" && is_valid_repo_name "${1#*/}"
+}
+
+# A branch pattern of the protection rule: one non-empty glob pattern.
+is_valid_protected_branch() {
+  [[ -n $1 && $1 != *";"* ]] && ! has_control_character "$1"
+}
+
+# A semicolon separated list of glob patterns, none of them empty. An empty
+# list is valid for the file patterns and the status checks.
+is_valid_protected_list() {
+  local items=() item
+  [[ -z $1 ]] && return 0
+  split_patterns "$1" items
+  for item in "${items[@]}"; do
+    [[ -n $item ]] && ! has_control_character "$item" || return 1
+  done
 }
 
 is_valid_port() {

@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | install() excludes the installed files from git with excludeFromGit() and returns the tracked paths; P15 (MIL-009) | [08cb484] |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | pending |
 
 ---
 
@@ -145,6 +145,11 @@ opt githubOwner present
   deactivate GT
 end
 
+PC -> GT : protectBranch(giteaRepository, protectionRule)
+activate GT
+GT --> PC : protectionRule
+deactivate GT
+
 create LB
 PC -> LB : build(directory, giteaRepository, sshPassed)
 activate LB
@@ -201,6 +206,7 @@ destroy SR
 | P4 LicenseFile when a license applies, otherwise empty | `createRepository(request, license)`; `license` is the one the `ProjectRequest` carries (`PROJECT_LICENSE`, or AGPL-3.0 when GitHub was chosen and the project is public), and is absent for `none` |
 | P2 GitHub credentials known before the first request | `collect(configuration, GITHUB_PAT, GITHUB_USER)` inside `opt githubOwner present` |
 | P5 empty GitHubRepository when chosen | `createEmptyRepository(request)` |
+| P6a ProtectionRule on a created Gitea repository, never a direct push | `protectBranch(giteaRepository, protectionRule)` |
 | P6 PushMirror and first sync | `addPushMirror(...)` and `requestSync(pushMirror)` |
 | P7 LocalProject created, history from Gitea when not empty | `build(directory, ...)` |
 | P8 origin remote (SSH if the test passed, else HTTPS) | `build(..., sshPassed)` |

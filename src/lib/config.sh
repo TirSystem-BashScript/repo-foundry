@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, resolve_legacy_gitea_token, validate_credentials, warn_if_env_unsafe, load_configuration
+# Provides: validate_protection_settings, unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, resolve_legacy_gitea_token, validate_credentials, warn_if_env_unsafe, load_configuration
 
 # unquote_value RAW: strip matching quotes (or a trailing " # comment" on an
 # unquoted value) and return the value in REPLY. Fails on unbalanced quotes.
@@ -104,6 +104,29 @@ validate_config() {
   is_valid_framework_repo "${CONFIG[FRAMEWORK_REPO]}" ||
     die "FRAMEWORK_REPO in $CONFIG_FILE must look like OWNER/NAME"
   validate_project_presets
+  validate_protection_settings
+}
+
+# validate_protection_settings: the three keys of the branch protection rule
+# (MIL-021). Absent means the default; a key that is present counts as set,
+# so an empty list switches that part of the rule off. The message names the
+# key, never the value.
+validate_protection_settings() {
+  local key default
+  if [[ -z ${CONFIG[PROTECTED_BRANCH_PATTERN]+set} ]]; then
+    CONFIG[PROTECTED_BRANCH_PATTERN]="$DEFAULT_PROTECTED_BRANCH_PATTERN"
+  fi
+  is_valid_protected_branch "${CONFIG[PROTECTED_BRANCH_PATTERN]}" ||
+    die "PROTECTED_BRANCH_PATTERN in $CONFIG_FILE is not valid: $HINT_PROTECTED_BRANCH"
+  for key in PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS; do
+    default="$DEFAULT_PROTECTED_FILE_PATTERNS"
+    [[ $key == PROTECTED_STATUS_CHECKS ]] && default="$DEFAULT_PROTECTED_STATUS_CHECKS"
+    if [[ -z ${CONFIG[$key]+set} ]]; then
+      CONFIG[$key]="$default"
+    fi
+    is_valid_protected_list "${CONFIG[$key]}" ||
+      die "$key in $CONFIG_FILE is not valid: $HINT_PROTECTED_LIST"
+  done
 }
 
 # check_preset KEY VALIDATOR HINT: when KEY is set in config.env its value must

@@ -25,10 +25,17 @@
 #
 # Usage
 #   create-project.sh [--apply] [--config FILE] [--env FILE]
+#   create-project.sh --protect OWNER/NAME [--apply] [--config FILE] [--env FILE]
 #   create-project.sh --help | --version
 #
 # Options
 #   --apply         create the repositories and the mirror (after a final yes)
+#   --protect OWNER/NAME
+#                   do nothing else than give the existing Gitea repository
+#                   OWNER/NAME the branch protection rule of config.env (no
+#                   direct push; status checks; protected files). A dry run
+#                   without --apply; an existing rule that differs is changed
+#                   only after a yes
 #   --config FILE   service addresses (default: config.env in the project root)
 #   --env FILE      credentials (default: .env in the project root); optional:
 #                   a credential it does not provide is asked, not echoed
@@ -39,7 +46,11 @@
 #   config.env  GITHUB_API_URL, GITHUB_WEB_URL, GITEA_URL, GITEA_API_URL and
 #               the optional GITEA_SSH_PORT (default 10022), MIRROR_INTERVAL
 #               (default 10m0s) and FRAMEWORK_REPO (default
-#               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME)
+#               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME) and the
+#               optional PROTECTED_BRANCH_PATTERN (default main),
+#               PROTECTED_FILE_PATTERNS (default none) and
+#               PROTECTED_STATUS_CHECKS (default "TirSystem/git-workflows: *"),
+#               glob patterns; the two lists are separated by semicolons
 #   .env        GITHUB_PAT, GITHUB_USER (required only when GitHub is chosen),
 #               TOKEN_FOR_GITEA_REPO (always required; GITEA_TOKEN is its older
 #               name); each is asked when missing. TOKEN_FOR_GITEA_ISSUES and
@@ -73,7 +84,7 @@
 #   the files in lib/ next to it (one job per file, see the first lines of
 #   each file): constants, output, temp, util, validate, config, tools, json,
 #   http, api, prompts, credentials, project, hosts, preflight, steps, plan,
-#   repositories, mirror, git, localproject, framework, envfile, apply and cli. The files are loaded
+#   repositories, mirror, protection, git, localproject, framework, envfile, apply and cli. The files are loaded
 #   from this directory only.
 #
 # Exit codes
@@ -165,6 +176,8 @@ source "$SCRIPT_DIR/lib/plan.sh"
 source "$SCRIPT_DIR/lib/repositories.sh"
 # shellcheck source=lib/mirror.sh
 source "$SCRIPT_DIR/lib/mirror.sh"
+# shellcheck source=lib/protection.sh
+source "$SCRIPT_DIR/lib/protection.sh"
 # shellcheck source=lib/git.sh
 source "$SCRIPT_DIR/lib/git.sh"
 # shellcheck source=lib/localproject.sh
@@ -200,6 +213,10 @@ main() {
   setup_temp_dir
   load_configuration
   collect_credentials TOKEN_FOR_GITEA_REPO
+  if [[ -n $PROTECT_TARGET ]]; then
+    protect_existing_repository "$PROTECT_TARGET"
+    return 0
+  fi
   collect_project_details
   if ((PROJECT[has_github])); then
     collect_credentials GITHUB_PAT GITHUB_USER

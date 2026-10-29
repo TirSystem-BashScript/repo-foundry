@@ -20,6 +20,13 @@ readonly DEFAULT_FRAMEWORK_REPO="TirSystem/SQA-QC-Framework"
 readonly AGPL_LICENSE_KEY="AGPL-3.0"
 readonly NO_LICENSE_WORD="none"
 readonly DEFAULT_BRANCH="main"
+# The branch protection rule of a Gitea repository (MIL-021). The patterns are
+# glob patterns (https://github.com/gobwas/glob); the lists are separated by
+# semicolons. The default status check pattern matches the checks of the
+# shared workflows that run for every repository of the organisation.
+readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
+readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
+readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: *"
 # What the prompts and the preset keys in config.env both tell the Maintainer
 # when a value is refused.
 readonly HINT_REPO_NAME="use letters, digits, '.', '_' or '-' (at most 100), not ending in .git"
@@ -28,6 +35,9 @@ readonly HINT_GITEA_OWNER="use letters, digits, '.', '_' or '-' (at most 39)"
 readonly HINT_GITHUB_OWNER="use letters, digits or '-' (at most 39)"
 readonly HINT_LICENSE="use a Gitea license key (letters, digits, '.', '+' or '-', at most 64), such as AGPL-3.0 or MIT, or none"
 readonly HINT_DIRECTORY="must not be empty, start with '-' or contain control characters"
+readonly HINT_PROTECTED_BRANCH="a glob pattern without control characters or ';', such as main or release/*"
+readonly HINT_PROTECTED_LIST="glob patterns separated by ';', none of them empty and none with control characters"
+readonly HINT_PROTECT_TARGET="OWNER/NAME of a Gitea repository, such as TirSystem/my-app"
 readonly HINT_TOKEN="8 to 255 letters, digits or _ . ~ + / = -"
 readonly ENV_FILE_NAME=".env"
 # What the framework installs into the new project that git must not list: the
@@ -35,12 +45,13 @@ readonly ENV_FILE_NAME=".env"
 # root. They go into .git/info/exclude of the new project.
 readonly FRAMEWORK_EXCLUDES=(/.claude /.agents /AGENTS.md)
 readonly PLAN_STEPS=("GitHub repository" "Gitea repository" "Push mirror"
-  "Local project" "Framework" "Skills and hooks" "Templates" "Git excludes" "Project .env")
+  "Branch protection" "Local project" "Framework" "Skills and hooks" "Templates" "Git excludes" "Project .env")
 # shellcheck disable=SC2034  # read through namerefs (parse_env_file)
 readonly CONFIG_KEYS=(GITHUB_API_URL GITHUB_WEB_URL GITEA_URL GITEA_API_URL
   GITEA_SSH_PORT MIRROR_INTERVAL FRAMEWORK_REPO
   PROJECT_NAME PROJECT_DESCRIPTION PROJECT_VISIBILITY GITEA_OWNER USE_GITHUB
-  GITHUB_OWNER PROJECT_DIRECTORY ENABLE_PLAN_GATE PROJECT_LICENSE)
+  GITHUB_OWNER PROJECT_DIRECTORY ENABLE_PLAN_GATE PROJECT_LICENSE
+  PROTECTED_BRANCH_PATTERN PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS)
 # The Gitea tokens use the names of the framework: TOKEN_FOR_GITEA_REPO is the
 # one used here; TOKEN_FOR_GITEA_ISSUES and TOKEN_FOR_GITEA_WIKI belong to the
 # framework scripts and workflows. They are accepted so that one .env can serve
@@ -66,6 +77,8 @@ HTTP_ERROR=""
 HTTP_CURL_STATUS=0
 REPLY=""
 IS_APPLY=0
+# OWNER/NAME given to --protect: the run only protects that repository.
+PROTECT_TARGET=""
 IS_CREATION_STARTED=0
 SECRET_VALUES=()
 TEMP_FILES=()

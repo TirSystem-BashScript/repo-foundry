@@ -153,6 +153,27 @@ chmod 600 .env                       # Linux and macOS
 Every URL must start with `https://` and must not contain a user name,
 password, query string or fragment. A credential key in this file is rejected.
 
+### `config.env` (branch protection, optional)
+
+A new Gitea repository gets a branch protection rule: nothing is pushed
+straight to the protected branch, every change arrives by a pull request. The
+rule is set after the repository and its mirror exist. The three values are
+glob patterns ([syntax](https://github.com/gobwas/glob)); the two lists are
+separated by semicolons.
+
+| Key | Meaning | Default |
+| --- | --- | --- |
+| `PROTECTED_BRANCH_PATTERN` | the protected branch name pattern | `main` |
+| `PROTECTED_FILE_PATTERNS` | protected file patterns, such as `docs/**;*.lock` | none |
+| `PROTECTED_STATUS_CHECKS` | status check patterns that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: *` |
+
+There is no key that allows a direct push. The default status check pattern
+matches the checks of the shared workflows that run for every repository of the
+organisation; a pattern that matches no check blocks every merge, so change it
+if your project has none of them. A rule that Gitea refuses is a warning and
+the run goes on. An existing repository that the run reuses is not changed; use
+[`--protect`](#protect-an-existing-repository) for it.
+
 ### `config.env` (project details, optional)
 
 Any of the details the script asks for can be set in `config.env` instead.
@@ -262,6 +283,7 @@ Plan:
   Gitea repository  : create (public) with the AGPL-3.0 license (default: GitHub and a public project) https://git.example.org/Team/my-app
   GitHub repository : create (public), empty https://github.com/acme/my-app
   Push mirror       : Gitea -> GitHub every 10m0s
+  Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); status checks: TirSystem/git-workflows: *; protected files: none
   Local project     : create ./my-app (new directory), git on main, no commit
   Local origin      : will use SSH (the SSH test passed)
   Framework         : add ssh://git@git.example.org:10022/Team/SQA-QC-Framework.git as a submodule
@@ -276,18 +298,42 @@ Without `--apply` that is all that happens. With `--apply` the script asks
 1. the GitHub repository (empty), if chosen;
 2. the Gitea repository (with the license that applies: `PROJECT_LICENSE`, or AGPL-3.0 for a public project with GitHub);
 3. the push mirror Gitea -> GitHub, and a request for its first sync;
-4. the local directory, `git init` on `main`, the `origin` remote (the only
+4. the branch protection rule on the Gitea repository (no direct push to
+   `main`; see [Branch protection](#configenv-branch-protection-optional));
+5. the local directory, `git init` on `main`, the `origin` remote (the only
    remote: a push to it reaches GitHub through the mirror) and, if the Gitea
    repository holds the license commit, that history;
-5. the framework as the submodule `framework`;
-6. the framework's skills and git hooks, and the plan gate if chosen;
-7. `AGENTS.md` and `docs/artifact-registry.md` from the framework's templates;
-8. `/.claude`, `/.agents` and `/AGENTS.md` added to the new project's
+6. the framework as the submodule `framework`;
+7. the framework's skills and git hooks, and the plan gate if chosen;
+8. `AGENTS.md` and `docs/artifact-registry.md` from the framework's templates;
+9. `/.claude`, `/.agents` and `/AGENTS.md` added to the new project's
    `.git/info/exclude`, so git does not list them (see
    [The files git ignores](#the-files-git-ignores-in-the-new-project)).
 
 No commit is made in the new project. Work on a branch there: the framework's
-hooks refuse commits on `main`.
+hooks refuse commits on `main`, and the Gitea rule refuses a push to it.
+
+### Protect an existing repository
+
+```bash
+src/create-project.sh --protect OWNER/NAME           # dry run: reads, changes nothing
+src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the rule
+```
+
+`--protect` gives an existing Gitea repository the rule of
+[`config.env`](#configenv-branch-protection-optional) and does nothing else: it
+asks for the Gitea token only, creates no repository, mirror or directory and
+makes no GitHub request. The dry run reads the repository and the rule and says
+what would be done.
+
+- No rule of that name: with `--apply` it is created.
+- A rule that differs: the differences are shown, and the rule is changed only
+  after a yes (default no).
+- A rule that is as wanted: nothing is sent.
+- Rules of other names are never changed or deleted.
+
+The exit status is 0 when the rule is as wanted at the end, and not 0 when a
+request is refused (the message names the cause), or when you answer no.
 
 ### Choices
 
@@ -494,6 +540,10 @@ web interface and the project directory by hand.
   local project. A Gitea repository that holds only these files counts as
   content this script created and is offered for reuse; a repository with
   anything else counts as having content and is refused.
+- **A new repository refuses a direct push to `main`.** That includes the first
+  commit of the new project: push a branch and open a pull request. The status
+  check pattern must match a check that runs on pull requests, or no pull
+  request can be merged.
 - **No rollback.** See [Error handling and recovery](#error-handling-and-recovery).
 - **Mirror direction is Gitea to GitHub only.** Push to Gitea; GitHub is a
   copy.
@@ -535,6 +585,7 @@ file. The files are loaded from that directory only, by a fixed path.
 | `plan.sh` | printing what the script is about to do |
 | `repositories.sh` | creating the GitHub and Gitea repositories |
 | `mirror.sh` | the Gitea to GitHub push mirror |
+| `protection.sh` | the branch protection rule of a Gitea repository: for a new one, and `--protect` for an existing one |
 | `git.sh` | running git for the new project without prompts or tokens on a command line, and adding entries to its `.git/info/exclude` |
 | `localproject.sh` | the local directory, git repository and remotes |
 | `framework.sh` | the framework submodule, skills, hooks and templates, and the git excludes for the files it installs |
