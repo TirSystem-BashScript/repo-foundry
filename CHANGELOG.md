@@ -13,6 +13,11 @@ file.
 
 ## [Unreleased]
 
+### Added
+
+- A new Gitea repository gets a branch protection rule: no direct push to `main` (a change arrives by a pull request), status check patterns and protected file patterns. The patterns are glob patterns and are set with the optional `config.env` keys `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none) and `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`). A reused repository is not changed, and a rule that Gitea refuses is a warning.
+- `create-project.sh --protect OWNER/NAME` gives an existing Gitea repository the same rule: a dry run without `--apply`, a missing rule is created, a rule that differs is changed only after a yes, and other rules are never touched. It needs the Gitea token only.
+
 ## [0.3.9] - 2026-10-29
 
 ### Changed

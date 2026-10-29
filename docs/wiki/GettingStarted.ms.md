@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 b030cafee29e -->
+<!-- translation of GettingStarted.md, source sha256 12a0dc0d0857 -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -40,3 +40,18 @@ src/create-project.sh --apply    # mencipta semuanya selepas ya terakhir
 ```
 
 Tiada commit dibuat dalam projek baharu. Bekerja pada branch di sana: hook framework menolak commit pada `main`.
+
+## Perlindungan branch
+
+Repositori Gitea baharu mendapat peraturan perlindungan branch: tiada push terus ke `main`, setiap perubahan datang melalui pull request. Commit pertama projek baharu mengikut laluan yang sama: push satu branch dan buka pull request.
+
+Peraturan ditetapkan dengan tiga kunci pilihan dalam `config.env` (corak glob, senarai dipisahkan dengan `;`): `PROTECTED_BRANCH_PATTERN` (lalai `main`), `PROTECTED_FILE_PATTERNS` (lalai tiada) dan `PROTECTED_STATUS_CHECKS` (lalai `TirSystem/git-workflows: *`). Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+
+Untuk memberi repositori sedia ada peraturan yang sama:
+
+```bash
+src/create-project.sh --protect OWNER/NAME           # larian kering: membaca, tiada perubahan
+src/create-project.sh --protect OWNER/NAME --apply   # mencipta atau menukar peraturan
+```
+
+Peraturan sedia ada yang berbeza hanya ditukar selepas jawapan ya.

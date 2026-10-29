@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Postcondition, step 9, extension 9f and a rule: `.claude`, `.agents` and `AGENTS.md` are excluded from git (MIL-009) | [08cb484] |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
 
 ---
 
@@ -33,6 +33,7 @@
 - **Postconditions (success guarantee):**
   - A repository exists on Gitea under the chosen owner. It is empty, or it holds the license file that applies: the license set in `config.env`, or AGPL-3.0 when the Maintainer chose GitHub, the project is public and no license is set.
   - When the Maintainer chose to create a GitHub repository, an empty repository exists on GitHub under the chosen owner, the Gitea repository is a push mirror to it, and the license file, if any, reaches GitHub through the mirror.
+  - On a created Gitea repository the protected branch accepts no direct push; the rule also holds the configured status check patterns and protected file patterns (it is missing only if Gitea refused it, and the Maintainer was warned).
   - A local project directory exists with one credential-free remote, `origin` (Gitea), the `framework` submodule, installed skills and hooks, and the copied templates.
   - Git ignores `.claude`, `.agents` and `AGENTS.md` in the local project, through the project's own `.git/info/exclude`; no tracked file is changed.
   - When the Maintainer agreed, the local project has a `.env` that holds only the credentials the project needs, is readable by its owner only and is ignored by git.
@@ -47,6 +48,7 @@
 5. Optional: if the Maintainer chose GitHub, the system creates the empty GitHub repository.
 6. The system creates the Gitea repository. If a license applies, the repository is created with its license file and so is not empty; otherwise it is empty. The license that applies is the one set in `config.env` (`PROJECT_LICENSE`; `none` means no license); when none is set it is AGPL-3.0 if the Maintainer chose GitHub and the project is public, and none otherwise. The license is never asked.
 7. Optional: if GitHub was chosen, the system configures the Gitea repository as a push mirror to GitHub and verifies it. A license file in the Gitea repository is pushed to GitHub by the mirror.
+7a. The system sets a branch protection rule on the Gitea repository it created: no direct push to the protected branch (a change arrives by a pull request), status check patterns and protected file patterns, all from `config.env` (`PROTECTED_BRANCH_PATTERN`, `PROTECTED_FILE_PATTERNS`, `PROTECTED_STATUS_CHECKS`). A refused request is a warning, not the end of the run. A reused repository is not changed.
 8. The system creates the local project with the `origin` remote. It adds no `github` remote: a push to `origin` reaches GitHub through the mirror of step 7.
 9. The system adds the framework submodule and fetches its own submodules (the `qc` checklists), installs its skills and hooks (and the plan gate if chosen) and copies the templates. It then excludes `.claude`, `.agents` and `AGENTS.md` from git. If the Maintainer agrees, it also creates the project's own `.env` with the credentials the project needs.
 10. The system reports a summary of what was created.
@@ -93,6 +95,8 @@
 | 3 | A project detail set in `config.env` (the key is present, even if empty where an empty value is allowed) is not asked; only the confirmations stay interactive |
 | 3, 5, 7 | GitHub is optional; without it no GitHub repository or mirror is created and the GitHub credentials are not required |
 | 6 | The license that applies is added to the Gitea repository when it is created, so that repository is not empty: `PROJECT_LICENSE` if set (a Gitea license key such as `MIT`, or `none`), otherwise AGPL-3.0 when GitHub is chosen and the project is public, otherwise none. It is independent of the GitHub choice when set, and it is never asked |
+| 7a | The rule never allows a direct push and no key turns it on; the three patterns are glob patterns (https://github.com/gobwas/glob) sent as given; an empty `PROTECTED_STATUS_CHECKS` switches the status check off. The rule is made after the repository and its mirror, and only for a repository this run created |
+| 7a | `--protect OWNER/NAME` gives an existing Gitea repository the same rule: a dry run without `--apply`; a missing rule is created; an existing rule that differs is changed only after a yes; rules of other names are never touched; it needs the Gitea token only |
 | 7 | The mirror direction is Gitea to GitHub; the GitHub repository stays empty and receives its content from the mirror |
 | 8 | `origin` is the only remote, with or without GitHub, and a remote already in the directory, such as a `github` remote made by an earlier version, is never removed or replaced. `origin` uses HTTPS derived from `GITEA_URL`, or SSH when the SSH test in step 4 passed; when the Gitea repository is not empty (GitHub chosen) the local project is created by fetching it, not by an unrelated `git init` history |
 | 8, 9 | Nothing is overwritten or deleted without consent, and no commit is made |
@@ -111,3 +115,4 @@
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
+[796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c

@@ -15,6 +15,7 @@ create_all() {
   if ((PROJECT[has_github])); then
     configure_mirror
   fi
+  configure_protection
   create_local_project
   add_framework
   install_framework

@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 b030cafee29e -->
+<!-- translation of GettingStarted.md, source sha256 12a0dc0d0857 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -40,3 +40,18 @@ src/create-project.sh --apply    # opretter alt efter et sidste ja
 ```
 
 Der laves ingen commit i det nye projekt. Arbejd på en branch der: frameworkets hooks afviser commits på `main`.
+
+## Beskyttelse af branch
+
+Et nyt Gitea-repository får en regel for beskyttet branch: ingen direkte push til `main`, hver ændring kommer via en pull request. Det nye projekts første commit går samme vej: push en branch og åbn en pull request.
+
+Reglen sættes med tre valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen) og `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+
+Sådan giver du et eksisterende repository samme regel:
+
+```bash
+src/create-project.sh --protect OWNER/NAME           # tørkørsel: læser, ændrer intet
+src/create-project.sh --protect OWNER/NAME --apply   # opretter eller ændrer reglen
+```
+
+En eksisterende regel, der afviger, ændres kun efter et ja.

@@ -309,6 +309,7 @@ POST|api.github.com/orgs/acme-org/repos|201|{"html_url":"https://github.com/acme
 POST|/api/v1/orgs/TirSystem/repos|201|{"html_url":"https://git.example.test/TirSystem/my-app"}
 POST|/api/v1/repos/TirSystem/my-app/push_mirrors|200|{"remote_address":"https://github.com/acme-org/my-app.git"}
 POST|/api/v1/repos/TirSystem/my-app/push_mirrors-sync|200|{}
+POST|/api/v1/repos/TirSystem/my-app/branch_protections|201|{"rule_name":"main"}
 ROUTES
 }
 

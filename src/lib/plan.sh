@@ -40,6 +40,11 @@ print_plan() {
     say "$(printf '  %-18s: %s' "GitHub repository" "not used")"
     say "$(printf '  %-18s: %s' "Push mirror" "not used")"
   fi
+  if ((STATE[reuse_gitea])); then
+    say "$(printf '  %-18s: %s' "Branch protection" "not changed (the Gitea repository is reused)")"
+  else
+    say "$(printf '  %-18s: %s' "Branch protection" "create on Gitea: $(protection_summary)")"
+  fi
   if ((STATE[is_ssh_ok])); then
     origin_note="SSH (the SSH test passed)"
   else
