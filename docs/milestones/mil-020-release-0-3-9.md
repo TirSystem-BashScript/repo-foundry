@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [b220a3e] |
 
 ---
 
@@ -76,3 +76,4 @@ The change is a patch release: it changes which key names the script reads from 
 [MIL-017]: ./mil-017-release-0-3-8.md
 [MIL-019]: ./mil-019-gitea-token-names.md
 [MIL-018]: ./mil-018-delete-branch-after-merge.md
+[b220a3e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b220a3e7b7672f1437e9dece247d6d86d5d29c2c

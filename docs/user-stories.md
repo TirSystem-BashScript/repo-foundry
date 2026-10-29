@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-018 and MIL-019 added to CrossReference; the Gitea token key is TOKEN_FOR_GITEA_REPO | [4ecfb14] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-020 added to CrossReference | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-020 added to CrossReference | [b220a3e] |
 
 ---
 
@@ -186,3 +186,4 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939
 [2d3932f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/2d3932f135d56411439477dead63a21f0bc35294
 [4ecfb14]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/4ecfb143a9f06c007f61da7f8e98dc331b727442
+[b220a3e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b220a3e7b7672f1437e9dece247d6d86d5d29c2c
