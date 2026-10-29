@@ -74,7 +74,7 @@ fetch_origin() {
   chmod 700 "$askpass"
   # Not "cmd; rm": a failed fetch must still be reported to the caller.
   if ! GIT_ASKPASS="$askpass" REPOFOUNDRY_ASKPASS_USER="${STATE[gitea_login]}" \
-    REPOFOUNDRY_ASKPASS_TOKEN="${CREDENTIALS[GITEA_TOKEN]}" \
+    REPOFOUNDRY_ASKPASS_TOKEN="${CREDENTIALS[TOKEN_FOR_GITEA_REPO]}" \
     git_project "$dir" fetch -q origin; then
     rm -f -- "$askpass"
     return 1

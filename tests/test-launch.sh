@@ -13,7 +13,7 @@ make_checkout() {
   mkdir -p "$CHECKOUT"
   cp -R "$SRC_DIR" "$CHECKOUT/src"
   cp "$WORK/config.env" "$CHECKOUT/config.env"
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$CHECKOUT/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$CHECKOUT/.env"
 }
 
 # make_folder: an empty working folder; the path is in FOLDER.
@@ -40,7 +40,7 @@ run_from() {
 
 test_the_framework_checklists_are_fetched() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   local dir="$WORK/project" answers
   printf -v answers 'my-app\n\n\nTirSystem\nn\n%s\nn\n' "$dir"
   run_apply "$answers"$'y\n'
@@ -52,7 +52,7 @@ test_the_framework_checklists_are_fetched() {
 
 test_an_empty_qc_is_filled_by_a_second_run_and_a_complete_one_is_not_changed() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   local dir="$WORK/project" answers
   printf -v answers 'my-app\n\n\nTirSystem\nn\n%s\nn\n' "$dir"
   run_apply "$answers"$'y\n'
@@ -73,7 +73,7 @@ test_an_empty_qc_is_filled_by_a_second_run_and_a_complete_one_is_not_changed() {
 
 test_a_failed_qc_fetch_names_the_command_to_run_by_hand() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   local dir="$WORK/project" answers
   printf -v answers 'my-app\n\n\nTirSystem\nn\n%s\nn\n' "$dir"
   run_apply "$answers"$'y\n'
@@ -108,7 +108,7 @@ test_files_in_the_working_folder_are_used_after_a_yes() {
   make_checkout
   make_folder
   cp "$WORK/config.env" "$FOLDER/config.env"
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
   run_from "$SCRIPT" "$FOLDER" $'y\n'"$ANSWERS_GITEA_ONLY"
   assert_status "folder files" 0 "$STATUS"
   assert_contains "config named" "$OUT" "Config file     : $FOLDER/config.env (from the working folder)"
@@ -122,7 +122,7 @@ test_files_in_the_working_folder_are_not_used_without_a_yes() {
   make_checkout
   make_folder
   cp "$WORK/config.env" "$FOLDER/config.env"
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
   rm -f "$WORK/curl.calls"
   run_from "$SCRIPT" "$FOLDER" $'\n'"$ANSWERS_GITEA_ONLY"
   assert_status "default no" 1 "$STATUS"
@@ -135,8 +135,8 @@ test_named_files_win_and_are_not_confirmed() {
   make_checkout
   make_folder
   cp "$WORK/config.env" "$FOLDER/config.env"
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_from "$SCRIPT" "$FOLDER" "$ANSWERS_GITEA_ONLY" --config "$WORK/config.env" --env "$WORK/.env"
   assert_status "named files" 0 "$STATUS"
   assert_contains "named" "$OUT" "Config file     : $WORK/config.env (named on the command line)"
@@ -158,7 +158,7 @@ test_each_file_is_chosen_on_its_own() {
   setup_hosts
   make_checkout
   make_folder
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$FOLDER/.env"
   run_from "$CHECKOUT/src/create-project.sh" "$FOLDER" $'y\n'"$ANSWERS_GITEA_ONLY"
   assert_status "mixed" 0 "$STATUS"
   assert_contains "config from the checkout" "$OUT" "Config file     : $CHECKOUT/config.env (from the checkout)"

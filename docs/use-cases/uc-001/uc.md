@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Postcondition, step 8 and its rule: origin is the only remote; no github remote (MIL-008) | [039a28c] |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | Postcondition, step 9, extension 9f and a rule: `.claude`, `.agents` and `AGENTS.md` are excluded from git (MIL-009) | [08cb484] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Postcondition, step 9, extension 9f and a rule: `.claude`, `.agents` and `AGENTS.md` are excluded from git (MIL-009) | [08cb484] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | pending |
 
 ---
 
@@ -88,7 +88,7 @@
 | --- | --- |
 | 2, 4 | A token never appears in output, logs, command lines, remote URLs or temporary files left behind |
 | 2 | A credential that is asked is read without echo, validated like one read from `.env`, and held in memory for the run |
-| 9 | The project's `.env` is the only place a token is written. It is created only after a yes (default no), holds only the keys the project needs (`GITEA_TOKEN`; `GITHUB_PAT` and `GITHUB_USER` when GitHub was chosen), is readable by its owner only, is excluded from git without changing a tracked file, and is never replaced without a yes |
+| 9 | The project's `.env` is the only place a token is written. It is created only after a yes (default no), holds only the keys the project needs (`TOKEN_FOR_GITEA_REPO`; `GITHUB_PAT` and `GITHUB_USER` when GitHub was chosen), is readable by its owner only, is excluded from git without changing a tracked file, and is never replaced without a yes |
 | 3 | The GitHub owner and the Gitea owner are chosen separately; `GITHUB_USER` is only the authenticating account |
 | 3 | A project detail set in `config.env` (the key is present, even if empty where an empty value is allowed) is not asked; only the confirmations stay interactive |
 | 3, 5, 7 | GitHub is optional; without it no GitHub repository or mirror is created and the GitHub credentials are not required |

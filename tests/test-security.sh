@@ -23,7 +23,7 @@ test_full_run_with_github() {
   assert_contains "Gitea link derived from config" "$OUT" "https://git.example.test/TirSystem/my-app"
   assert_contains "GitHub link uses the chosen organization" "$OUT" "https://github.com/acme-org/my-app"
   assert_contains "no default license for a private project" "$OUT" "License      : none (no default for a private project)"
-  assert_contains "credential state" "$OUT" "GITEA_TOKEN set, GITHUB_PAT set"
+  assert_contains "credential state" "$OUT" "TOKEN_FOR_GITEA_REPO set, GITHUB_PAT set"
   assert_not_contains "no Gitea token in output" "$OUT$ERR" "$FAKE_GITEA_TOKEN"
   assert_not_contains "no GitHub token in output" "$OUT$ERR" "$FAKE_GITHUB_PAT"
   assert_contains "reads from Gitea" "$(calls)" "GET https://git.example.test/api/v1/user"
@@ -36,7 +36,7 @@ test_full_run_with_github() {
 
 test_full_run_without_github() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_cli "$ANSWERS_GITEA_ONLY" --config "$WORK/config.env" --env "$WORK/.env"
   assert_status "Gitea-only run needs no GitHub credentials" 0 "$STATUS"
   assert_contains "GitHub not used" "$OUT" "GitHub       : not used"
@@ -49,7 +49,7 @@ test_full_run_without_github() {
 
 test_github_chosen_without_credentials_stops_when_input_ends() {
   write_fixtures
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_cli "$ANSWERS_GITHUB" --config "$WORK/config.env" --env "$WORK/.env"
   assert_status "missing GitHub credentials, no answer" 1 "$STATUS"
   assert_contains "names the credential" "$ERR" "no input available for 'GitHub personal access token'"
@@ -59,10 +59,10 @@ test_github_chosen_without_credentials_stops_when_input_ends() {
 
 test_error_messages_never_contain_the_value() {
   write_fixtures
-  printf 'GITEA_TOKEN=S3CR3T\nGITHUB_PAT=%s\n' "$FAKE_GITHUB_PAT" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=S3CR3T\nGITHUB_PAT=%s\n' "$FAKE_GITHUB_PAT" >"$WORK/.env"
   run_cli "" --config "$WORK/config.env" --env "$WORK/.env"
   assert_status "invalid token" 1 "$STATUS"
-  assert_contains "says what is wrong" "$ERR" "GITEA_TOKEN"
+  assert_contains "says what is wrong" "$ERR" "TOKEN_FOR_GITEA_REPO"
   assert_not_contains "invalid value not echoed" "$OUT$ERR" "S3CR3T"
   assert_not_contains "valid PAT not echoed" "$OUT$ERR" "$FAKE_GITHUB_PAT"
   printf 'this line holds %s as text\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"

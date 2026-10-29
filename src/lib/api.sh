@@ -23,7 +23,7 @@ try_api_call() {
   case "$host" in
     gitea)
       http_request "$method" "${CONFIG[GITEA_API_URL]}$path" token \
-        "${CREDENTIALS[GITEA_TOKEN]}" "$body"
+        "${CREDENTIALS[TOKEN_FOR_GITEA_REPO]}" "$body"
       ;;
     github)
       http_request "$method" "${CONFIG[GITHUB_API_URL]}$path" bearer \

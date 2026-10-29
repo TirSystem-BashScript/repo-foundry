@@ -8,10 +8,14 @@ Each release lists its changes in these groups, in this order: **Breaking**,
 **Added**, **Changed**, **Fixed**. A release with a Breaking entry has a new
 major version.
 
-`python tools/changelog.py check` of `TirSystem/github-action` verifies this
+`python tools/changelog.py check` of `TirSystem/git-workflows` verifies this
 file.
 
 ## [Unreleased]
+
+### Changed
+
+- The Gitea token in `.env` is `TOKEN_FOR_GITEA_REPO`, the name the framework (0.18.0) uses; `create-project.sh` no longer stops with `unknown key 'TOKEN_FOR_GITEA_REPO'`. `TOKEN_FOR_GITEA_ISSUES` is accepted like `TOKEN_FOR_GITEA_WIKI`: checked, kept secret, never used. The `.env` written into a new project holds `TOKEN_FOR_GITEA_REPO`. `GITEA_TOKEN` still works for one release as the older name, with a note that it is deprecated; when both are set, `TOKEN_FOR_GITEA_REPO` is used.
 
 ## [0.3.8] - 2026-10-28
 

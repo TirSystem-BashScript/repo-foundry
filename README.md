@@ -201,7 +201,8 @@ src/create-project.sh --apply        # asks only "Create these now (y/n) [n]"
 
 | Key | Meaning |
 | --- | --- |
-| `GITEA_TOKEN` | Gitea access token |
+| `TOKEN_FOR_GITEA_REPO` | Gitea access token (the older name `GITEA_TOKEN` still works for one release and prints a note; when both are set, `TOKEN_FOR_GITEA_REPO` is used) |
+| `TOKEN_FOR_GITEA_ISSUES` | optional: the framework's Gitea token for issues and milestones; accepted so one `.env` serves all, never used or asked for by this script |
 | `GITHUB_PAT` | GitHub personal access token (required when you choose GitHub, so the mirror can be created; not used otherwise) |
 | `GITHUB_USER` | the GitHub account the token belongs to (required when you choose GitHub; not used otherwise) |
 | `TOKEN_FOR_GITEA_WIKI` | optional: Gitea access token for publishing the wiki, with the repository write scope (`write:repository`) only; accepted so one `.env` serves both, never used or asked for by this script |
@@ -222,7 +223,7 @@ valid value is entered, the run stops before any request to a host.
 
 When the project exists, the script asks whether to create a `.env` in it
 (default no). On a yes the file holds only the credentials the project needs:
-`GITEA_TOKEN`, and `GITHUB_PAT` and `GITHUB_USER` when you chose GitHub, as read
+`TOKEN_FOR_GITEA_REPO`, and `GITHUB_PAT` and `GITHUB_USER` when you chose GitHub, as read
 from your `.env` or typed.
 
 - The file is created readable by you only (mode 600), never readable by
@@ -395,7 +396,7 @@ repositories for the chosen owner and to push to the new one.
 - **`GITHUB_USER`:** if it differs from the account the token belongs to, the
   script warns and uses the account the token belongs to.
 
-### Gitea token (`GITEA_TOKEN`)
+### Gitea token (`TOKEN_FOR_GITEA_REPO`)
 
 | Need | Scope | Source |
 | --- | --- | --- |

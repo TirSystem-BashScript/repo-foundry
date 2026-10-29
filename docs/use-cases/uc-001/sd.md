@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | build() no longer receives the GitHub repository and returns a local project with the remote origin; P9 (MIL-008) | [039a28c] |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | install() excludes the installed files from git with excludeFromGit() and returns the tracked paths; P15 (MIL-009) | [08cb484] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | install() excludes the installed files from git with excludeFromGit() and returns the tracked paths; P15 (MIL-009) | [08cb484] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | pending |
 
 ---
 
@@ -40,7 +40,7 @@ activate CL
 CL --> PC : configuration
 deactivate CL
 create CC
-PC -> CC : collect(configuration, GITEA_TOKEN)
+PC -> CC : collect(configuration, TOKEN_FOR_GITEA_REPO)
 activate CC
 CC --> PC : configuration
 deactivate CC
@@ -70,7 +70,7 @@ destroy TC
 | Postcondition (from contract) | Satisfied by message |
 | --- | --- |
 | P1 Run created | `startProjectCreation` received by `ProjectCreator` |
-| P2 Configuration created and validated; a missing credential entered, validated and held in memory | `load(config.env, .env)` and `collect(configuration, GITEA_TOKEN)` |
+| P2 Configuration created and validated; a missing credential entered, validated and held in memory | `load(config.env, .env)` and `collect(configuration, TOKEN_FOR_GITEA_REPO)` |
 | P3 ToolCheck created | `check(git, curl, jq)` |
 | P4 PromptSet returned | `promptSet` return to the Maintainer |
 

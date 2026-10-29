@@ -1,4 +1,4 @@
-<!-- translation of AccessTokens.md, source sha256 d47b9f31557a -->
+<!-- translation of AccessTokens.md, source sha256 39953ed82366 -->
 
 > Ini ialah terjemahan [`AccessTokens`](AccessTokens). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -10,11 +10,13 @@ RepoFoundry berhubung dengan dua hos dan memerlukan satu token untuk setiap satu
 
 | Token | Kunci | Diperlukan | Jenis |
 | --- | --- | --- | --- |
-| Token akses Gitea | `GITEA_TOKEN` | sentiasa | token akses dengan skop |
+| Token akses Gitea | `TOKEN_FOR_GITEA_REPO` | sentiasa | token akses dengan skop |
 | GitHub personal access token | `GITHUB_PAT` | diperlukan apabila anda memilih GitHub (cermin) | personal access token **klasik** (PAT) |
 | Token akses Gitea untuk wiki | `TOKEN_FOR_GITEA_WIKI` | pilihan (hanya untuk menerbitkan wiki) | token akses dengan skop tulis repositori sahaja (`write:repository`) |
 
 `TOKEN_FOR_GITEA_WIKI` tidak digunakan oleh RepoFoundry. Ia disenaraikan kerana `.env` yang sama mungkin mengandunginya, dan RepoFoundry menerimanya di situ. Cipta ia dengan cara yang sama seperti token Gitea dalam bahagian 1, dan tandakan skop tulis repositori sahaja.
+
+`TOKEN_FOR_GITEA_ISSUES` (token framework untuk isu dan milestone) diterima dengan cara yang sama dan tidak pernah digunakan. `GITEA_TOKEN` ialah nama lama bagi `TOKEN_FOR_GITEA_REPO`; ia masih berfungsi untuk satu keluaran dan mencetak nota. Jika kedua-duanya ada dalam `.env`, `TOKEN_FOR_GITEA_REPO` digunakan.
 
 Panduan ini menunjukkan dua yang pertama, langkah demi langkah. Nombor merah dalam setiap gambar sepadan dengan langkah bernombor di sebelahnya.
 
@@ -160,7 +162,7 @@ chmod 600 .env          # Linux dan macOS: hanya anda boleh membacanya
 Buka `.env` dan isi nilai; gantikan teks dalam kurungan sudut dan buang kurungan itu:
 
 ```text
-GITEA_TOKEN=<token Gitea>
+TOKEN_FOR_GITEA_REPO=<token Gitea>
 GITHUB_PAT=<token GitHub>
 GITHUB_USER=<nama akaun GitHub anda>
 TOKEN_FOR_GITEA_WIKI=<token Gitea untuk wiki, skop tulis repositori sahaja>

@@ -41,9 +41,13 @@ readonly CONFIG_KEYS=(GITHUB_API_URL GITHUB_WEB_URL GITEA_URL GITEA_API_URL
   GITEA_SSH_PORT MIRROR_INTERVAL FRAMEWORK_REPO
   PROJECT_NAME PROJECT_DESCRIPTION PROJECT_VISIBILITY GITEA_OWNER USE_GITHUB
   GITHUB_OWNER PROJECT_DIRECTORY ENABLE_PLAN_GATE PROJECT_LICENSE)
-# TOKEN_FOR_GITEA_WIKI belongs to the wiki publishing; it is accepted so that
-# one .env can serve both, checked and kept secret, but never used here.
-readonly CREDENTIAL_KEYS=(GITHUB_PAT GITHUB_USER GITEA_TOKEN TOKEN_FOR_GITEA_WIKI)
+# The Gitea tokens use the names of the framework: TOKEN_FOR_GITEA_REPO is the
+# one used here; TOKEN_FOR_GITEA_ISSUES and TOKEN_FOR_GITEA_WIKI belong to the
+# framework scripts and workflows. They are accepted so that one .env can serve
+# all, checked and kept secret, but never used here. GITEA_TOKEN is the older
+# name of TOKEN_FOR_GITEA_REPO, still read for one release.
+readonly CREDENTIAL_KEYS=(GITHUB_PAT GITHUB_USER TOKEN_FOR_GITEA_REPO
+  TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI GITEA_TOKEN)
 
 # The configuration files: named by --config and --env, or chosen by
 # locate_config_file. The origin is named, folder or checkout.

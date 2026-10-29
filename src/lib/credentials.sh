@@ -9,7 +9,7 @@
 # credential_label KEY: the name of a credential as the Maintainer sees it.
 credential_label() {
   case "$1" in
-    GITEA_TOKEN) printf 'Gitea access token' ;;
+    TOKEN_FOR_GITEA_REPO) printf 'Gitea access token' ;;
     GITHUB_PAT) printf 'GitHub personal access token' ;;
     GITHUB_USER) printf 'GitHub account name (the account the token belongs to)' ;;
     *) printf '%s' "$1" ;;

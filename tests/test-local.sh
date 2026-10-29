@@ -57,7 +57,7 @@ test_local_project_gets_the_origin_remote_only_and_the_license_history() {
 
 test_gitea_only_project_has_the_origin_remote_only_and_no_commit() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   local dir="$WORK/project"
   local_answers "$dir" n n
   run_apply "$LOCAL_ANSWERS"$'y\n'
@@ -526,7 +526,7 @@ fi
 exec '$real_git' \"\$@\""
   run_lib "" "setup_temp_dir
 STATE[gitea_login]=gitea-user
-CREDENTIALS[GITEA_TOKEN]='$FAKE_GITEA_TOKEN'
+CREDENTIALS[TOKEN_FOR_GITEA_REPO]='$FAKE_GITEA_TOKEN'
 fetch_origin '$WORK'
 cleanup"
   assert_status "fetch" 0 "$STATUS"
@@ -542,7 +542,7 @@ if [[ \$* == *fetch* ]]; then exit 128; fi
 exit 0"
   run_lib "" "setup_temp_dir
 STATE[gitea_login]=gitea-user
-CREDENTIALS[GITEA_TOKEN]='$FAKE_GITEA_TOKEN'
+CREDENTIALS[TOKEN_FOR_GITEA_REPO]='$FAKE_GITEA_TOKEN'
 if fetch_origin '$WORK'; then echo ok; else echo failed; fi
 cleanup"
   assert_eq "failure passed on" "failed" "$OUT"

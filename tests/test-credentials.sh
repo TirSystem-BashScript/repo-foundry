@@ -57,8 +57,8 @@ test_prompt_secret_stops_when_input_ends() {
 
 test_collect_credentials_asks_only_what_is_missing() {
   run_lib "$FAKE_GITHUB_PAT${NL}octo-user$NL" \
-    'CREDENTIALS[GITEA_TOKEN]=giteaFAKEtoken1234567890
-collect_credentials GITEA_TOKEN GITHUB_PAT GITHUB_USER
+    'CREDENTIALS[TOKEN_FOR_GITEA_REPO]=giteaFAKEtoken1234567890
+collect_credentials TOKEN_FOR_GITEA_REPO GITHUB_PAT GITHUB_USER
 printf "%s|%s\n" "${CREDENTIALS[GITHUB_USER]}" "${#SECRET_VALUES[@]}"'
   assert_status "asked" 0 "$STATUS"
   assert_eq "account name kept, one secret registered" "octo-user|1" "$OUT"
@@ -70,18 +70,18 @@ printf "%s|%s\n" "${CREDENTIALS[GITHUB_USER]}" "${#SECRET_VALUES[@]}"'
 
 test_a_token_that_is_asked_is_registered_as_a_secret() {
   run_lib "$FAKE_GITEA_TOKEN$NL" \
-    'collect_credentials GITEA_TOKEN
+    'collect_credentials TOKEN_FOR_GITEA_REPO
 warn "the token is giteaFAKEtoken1234567890 here"'
   assert_status "asked" 0 "$STATUS"
   assert_not_contains "redacted in later messages" "$ERR" "$FAKE_GITEA_TOKEN"
 }
 
 test_an_empty_value_in_env_counts_as_not_provided() {
-  printf 'GITEA_TOKEN=\nGITHUB_USER=\n' >"$WORK/e.env"
+  printf 'TOKEN_FOR_GITEA_REPO=\nGITHUB_USER=\n' >"$WORK/e.env"
   run_lib "$FAKE_GITEA_TOKEN$NL" \
     'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
 validate_credentials
-collect_credentials GITEA_TOKEN
+collect_credentials TOKEN_FOR_GITEA_REPO
 echo asked-ok'
   assert_status "empty value tolerated" 0 "$STATUS"
   assert_contains "asked instead" "$ERR" "Gitea access token"
@@ -94,11 +94,11 @@ validate_credentials
 echo fine'
   assert_status "no credential required" 0 "$STATUS"
   assert_eq "no error" "fine" "$OUT"
-  printf 'GITEA_TOKEN=short\n' >"$WORK/e.env"
+  printf 'TOKEN_FOR_GITEA_REPO=short\n' >"$WORK/e.env"
   run_lib "" 'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
 validate_credentials'
   assert_status "a provided bad token is still refused" 1 "$STATUS"
-  assert_contains "named" "$ERR" "GITEA_TOKEN"
+  assert_contains "named" "$ERR" "TOKEN_FOR_GITEA_REPO"
 }
 
 # --------------------------------------------------------------- the run
@@ -124,7 +124,7 @@ test_a_provided_credential_is_not_asked() {
 
 test_github_credentials_are_asked_only_when_github_is_chosen() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_dry_cred "$ANSWERS_GITEA_ONLY"
   assert_status "Gitea only" 0 "$STATUS"
   assert_not_contains "no GitHub token asked" "$ERR" "GitHub personal access token"
@@ -139,7 +139,7 @@ test_github_credentials_are_asked_only_when_github_is_chosen() {
 test_the_wiki_token_is_accepted_never_asked_and_never_shown() {
   local wiki_token="wikiFAKEtoken1234567890"
   setup_hosts
-  printf 'GITEA_TOKEN=%s\nTOKEN_FOR_GITEA_WIKI=%s\n' "$FAKE_GITEA_TOKEN" "$wiki_token" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\nTOKEN_FOR_GITEA_WIKI=%s\n' "$FAKE_GITEA_TOKEN" "$wiki_token" >"$WORK/.env"
   run_dry_cred "$ANSWERS_GITEA_ONLY"
   assert_status "accepted in .env" 0 "$STATUS"
   assert_not_contains "not asked" "$ERR" "wiki"
@@ -149,6 +149,54 @@ test_the_wiki_token_is_accepted_never_asked_and_never_shown() {
   assert_not_contains "not asked with GitHub" "$ERR" "wiki"
   assert_not_contains "not shown with GitHub" "$OUT$ERR" "$wiki_token"
   assert_not_contains "never sent to a host" "$(calls)" "$wiki_token"
+}
+
+test_the_three_gitea_token_names_of_the_framework_are_accepted() {
+  local issues_token="issuesFAKEtoken1234567890" wiki_token="wikiFAKEtoken1234567890"
+  setup_hosts
+  printf '%s\n' "TOKEN_FOR_GITEA_ISSUES=$issues_token" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN" "TOKEN_FOR_GITEA_WIKI=$wiki_token" >"$WORK/.env"
+  run_dry_cred "$ANSWERS_GITEA_ONLY"
+  assert_status "all three accepted in .env" 0 "$STATUS"
+  assert_not_contains "no unknown key" "$OUT$ERR" "unknown key"
+  assert_not_contains "repo token not asked" "$ERR" "Gitea access token"
+  assert_not_contains "issues token not shown" "$OUT$ERR" "$issues_token"
+  assert_not_contains "no token sent to a host" "$(calls)" "$issues_token"
+}
+
+test_gitea_token_is_the_deprecated_name_of_the_repo_token() {
+  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/e.env"
+  run_lib "" 'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
+validate_credentials
+[[ ${CREDENTIALS[TOKEN_FOR_GITEA_REPO]} == "'"$FAKE_GITEA_TOKEN"'" ]] && echo old-used'
+  assert_status "the old name still works" 0 "$STATUS"
+  assert_eq "the value is used" "old-used" "$OUT"
+  assert_contains "deprecation named" "$ERR" "GITEA_TOKEN"
+  assert_contains "new name suggested" "$ERR" "rename it to TOKEN_FOR_GITEA_REPO"
+  assert_not_contains "token not shown" "$OUT$ERR" "$FAKE_GITEA_TOKEN"
+}
+
+test_the_repo_token_wins_over_the_old_name() {
+  local old_token="oldFAKEtoken1234567890"
+  printf 'GITEA_TOKEN=%s\nTOKEN_FOR_GITEA_REPO=%s\n' "$old_token" "$FAKE_GITEA_TOKEN" >"$WORK/e.env"
+  run_lib "" 'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
+validate_credentials
+[[ ${CREDENTIALS[TOKEN_FOR_GITEA_REPO]} == "'"$FAKE_GITEA_TOKEN"'" ]] && echo new-wins'
+  assert_status "both names" 0 "$STATUS"
+  assert_eq "the new name is used" "new-wins" "$OUT"
+  assert_contains "both named" "$ERR" "TOKEN_FOR_GITEA_REPO is used"
+  assert_not_contains "old token not shown" "$OUT$ERR" "$old_token"
+}
+
+test_a_bad_value_of_any_gitea_token_is_refused_without_showing_it() {
+  local key
+  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI; do
+    printf '%s=bad value\n' "$key" >"$WORK/e.env"
+    run_lib "" 'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
+validate_credentials'
+    assert_status "$key refused" 1 "$STATUS"
+    assert_contains "$key named" "$ERR" "$key in"
+    assert_not_contains "$key value not shown" "$ERR" "bad value"
+  done
 }
 
 test_an_invalid_asked_value_is_asked_again_and_never_shown() {
@@ -187,7 +235,7 @@ test_asked_tokens_do_not_leak_under_bash_x() {
 test_the_dry_run_names_the_env_step_and_writes_nothing() {
   setup_hosts
   run_dry_cred "$ANSWERS_GITHUB"
-  assert_contains "plan line" "$OUT" "Project .env      : you are asked whether to create it (GITEA_TOKEN GITHUB_PAT GITHUB_USER)"
+  assert_contains "plan line" "$OUT" "Project .env      : you are asked whether to create it (TOKEN_FOR_GITEA_REPO GITHUB_PAT GITHUB_USER)"
   assert_file_missing "no .env" "$WORK/my-app/.env"
 }
 
@@ -207,9 +255,9 @@ test_the_project_env_holds_only_the_needed_keys_and_is_private() {
   run_apply_cred "${ANSWERS_GITHUB}y${NL}y$NL"
   assert_status "run" 0 "$STATUS"
   assert_file_exists ".env created" "$WORK/my-app/.env"
-  assert_eq "exactly the needed keys" "GITEA_TOKEN=$FAKE_GITEA_TOKEN${NL}GITHUB_PAT=$FAKE_GITHUB_PAT${NL}GITHUB_USER=octo-user" "$(cat "$WORK/my-app/.env")"
+  assert_eq "exactly the needed keys" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN${NL}GITHUB_PAT=$FAKE_GITHUB_PAT${NL}GITHUB_USER=octo-user" "$(cat "$WORK/my-app/.env")"
   assert_eq "owner-only" "$(env_mode "$WORK/my-app/.env")" "$([[ -z "$(env_mode "$WORK/my-app/.env")" ]] || echo 600)"
-  assert_contains "reported with the keys, not the values" "$OUT" "Project .env      : created (GITEA_TOKEN GITHUB_PAT GITHUB_USER;"
+  assert_contains "reported with the keys, not the values" "$OUT" "Project .env      : created (TOKEN_FOR_GITEA_REPO GITHUB_PAT GITHUB_USER;"
   assert_not_contains "no token in the output" "$OUT$ERR" "$FAKE_GITEA_TOKEN"
   assert_not_contains "no GitHub token in the output" "$OUT$ERR" "$FAKE_GITHUB_PAT"
   # Git ignores it without any tracked file changing.
@@ -231,8 +279,8 @@ test_the_project_env_without_github_holds_only_the_gitea_token() {
   setup_hosts
   run_apply_cred "${ANSWERS_GITEA_ONLY}y${NL}y$NL"
   assert_status "run" 0 "$STATUS"
-  assert_eq "one key" "GITEA_TOKEN=$FAKE_GITEA_TOKEN" "$(cat "$WORK/my-app/.env")"
-  assert_contains "reported" "$OUT" "Project .env      : created (GITEA_TOKEN;"
+  assert_eq "one key" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN" "$(cat "$WORK/my-app/.env")"
+  assert_contains "reported" "$OUT" "Project .env      : created (TOKEN_FOR_GITEA_REPO;"
 }
 
 test_asked_credentials_are_what_the_project_env_holds() {
@@ -240,7 +288,7 @@ test_asked_credentials_are_what_the_project_env_holds() {
   without_env
   run_apply_cred "$(credentials_input)${NL}y${NL}y$NL"
   assert_status "run" 0 "$STATUS"
-  assert_eq "the asked values" "GITEA_TOKEN=$FAKE_GITEA_TOKEN${NL}GITHUB_PAT=$FAKE_GITHUB_PAT${NL}GITHUB_USER=octo-user" "$(cat "$WORK/my-app/.env")"
+  assert_eq "the asked values" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN${NL}GITHUB_PAT=$FAKE_GITHUB_PAT${NL}GITHUB_USER=octo-user" "$(cat "$WORK/my-app/.env")"
   assert_not_contains "no token in the output" "$OUT$ERR" "$FAKE_GITEA_TOKEN"
 }
 
@@ -272,7 +320,7 @@ test_an_existing_env_is_kept_unless_the_maintainer_says_replace() {
   printf 'keep\n' >"$WORK/my-app/.env"
   run_apply_cred "${ANSWERS_GITHUB}y${NL}y${NL}y${NL}y$NL"
   assert_status "agreed to replace" 0 "$STATUS"
-  assert_contains "replaced" "$(cat "$WORK/my-app/.env")" "GITEA_TOKEN=$FAKE_GITEA_TOKEN"
+  assert_contains "replaced" "$(cat "$WORK/my-app/.env")" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN"
   assert_eq "private after replacing" "$(env_mode "$WORK/my-app/.env")" "$([[ -z "$(env_mode "$WORK/my-app/.env")" ]] || echo 600)"
 }
 
@@ -284,7 +332,7 @@ test_a_tracked_env_is_never_written() {
   git -C "$WORK/p" -c user.name=t -c user.email=t@example.test commit -q -m init
   run_lib "y$NL" \
     'PROJECT[directory]="'"$WORK"'/p"; PROJECT[has_github]=0
-CREDENTIALS[GITEA_TOKEN]=giteaFAKEtoken1234567890
+CREDENTIALS[TOKEN_FOR_GITEA_REPO]=giteaFAKEtoken1234567890
 init_steps
 create_env_file
 echo "${STEP_STATUS["Project .env"]}"'

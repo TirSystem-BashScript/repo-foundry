@@ -125,6 +125,6 @@ print_summary() {
   say "  License      : ${PROJECT[license]:-none}$(license_note)"
   say "  Directory    : ${PROJECT[directory]}$(source_note directory)"
   say "  Plan gate    : $(yes_no "${PROJECT[is_plan_gate_enabled]}")$(source_note is_plan_gate_enabled)"
-  say "Credentials    : GITEA_TOKEN $(credential_state GITEA_TOKEN)," \
+  say "Credentials    : TOKEN_FOR_GITEA_REPO $(credential_state TOKEN_FOR_GITEA_REPO)," \
     "GITHUB_PAT $(credential_state GITHUB_PAT)"
 }

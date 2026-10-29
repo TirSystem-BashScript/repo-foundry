@@ -17,7 +17,7 @@ use_license() {
 
 # gitea_only_env: a Gitea-only run needs no GitHub credentials.
 gitea_only_env() {
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
 }
 
 # ------------------------------------------------------------- key is set
