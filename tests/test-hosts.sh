@@ -162,7 +162,7 @@ test_license_must_be_offered_when_a_public_project_has_github() {
   assert_status "private with GitHub" 0 "$STATUS"
   setup_hosts
   prepend_route 'GET|/api/v1/licenses|200|[{"key":"MIT","name":"MIT"}]'
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_dry "$ANSWERS_GITEA_ONLY"
   assert_status "Gitea only" 0 "$STATUS"
 }
@@ -336,7 +336,7 @@ test_apply_sends_the_license_for_a_public_project_with_github() {
 
 test_apply_with_gitea_only() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_apply "$ANSWERS_GITEA_ONLY"$'y\n'
   assert_status "Gitea only" 0 "$STATUS"
   assert_contains "Gitea repository created" "$(calls)" "$GITEA_REPO_CALL"
@@ -385,7 +385,7 @@ ROUTES
 
 test_public_visibility_and_special_characters_in_the_description() {
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   run_apply $'my-app\nSay "hi" \\ there\npublic\nTirSystem\nn\n\nn\ny\n'
   assert_status "apply" 0 "$STATUS"
   assert_contains "public" "$(cat "$WORK/curl.bodies")" '"private":false'
@@ -439,7 +439,7 @@ test_gitea_repository_with_only_the_license_can_be_reused() {
   assert_contains "reported" "$OUT" "Gitea repository  : reused https://git.example.test/TirSystem/my-app"
   # Without GitHub the license is not expected, so the repository has content.
   setup_hosts
-  printf 'GITEA_TOKEN=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   prepend_route 'GET|/api/v1/repos/TirSystem/my-app|200|{"empty":false}'
   prepend_route 'GET|/api/v1/repos/TirSystem/my-app/contents|200|[{"name":"LICENSE","type":"file"}]'
   run_dry "$ANSWERS_GITEA_ONLY"

@@ -6,13 +6,15 @@ RepoFoundry talks to two hosts and needs one token for each:
 
 | Token | Key | Needed | Type |
 | --- | --- | --- | --- |
-| Gitea access token | `GITEA_TOKEN` | always | an access token with scopes |
+| Gitea access token | `TOKEN_FOR_GITEA_REPO` | always | an access token with scopes |
 | GitHub personal access token | `GITHUB_PAT` | required when you choose GitHub (the mirror) | a **classic** personal access token (PAT) |
 | Gitea access token for the wiki | `TOKEN_FOR_GITEA_WIKI` | optional (only to publish the wiki) | an access token with the repository write scope (`write:repository`) only |
 
 `TOKEN_FOR_GITEA_WIKI` is not used by RepoFoundry. It is listed because the
 same `.env` may hold it, and RepoFoundry accepts it there. Create it the same
 way as the Gitea token in part 1, ticking only the repository write scope.
+
+`TOKEN_FOR_GITEA_ISSUES` (the framework's token for issues and milestones) is accepted the same way and never used. `GITEA_TOKEN` is the older name of `TOKEN_FOR_GITEA_REPO`; it still works for one release and prints a note. When both are in `.env`, `TOKEN_FOR_GITEA_REPO` is used.
 
 This guide shows the first two, step by step. The red numbers in each picture
 match the numbered steps next to it.
@@ -203,7 +205,7 @@ Open `.env` and fill in the values; replace the text in angle brackets and
 remove the brackets:
 
 ```text
-GITEA_TOKEN=<the Gitea token>
+TOKEN_FOR_GITEA_REPO=<the Gitea token>
 GITHUB_PAT=<the GitHub token>
 GITHUB_USER=<your GitHub account name>
 TOKEN_FOR_GITEA_WIKI=<the Gitea token for the wiki, repository write scope only>

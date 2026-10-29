@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-19 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-016 (proposed dates 2027-01-18 to 2027-01-19): release 0.3.7 | [6696dce] |
-| 2026-10-28 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-017 (proposed dates 2027-01-20 to 2027-01-21): release 0.3.8 | [2d3932f] |
+| 2026-10-28 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-017 (proposed dates 2027-01-20 to 2027-01-21): release 0.3.8 | [2d3932f] |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added phases MIL-018 (2027-01-22 to 2027-01-26, delete branch after merge) and MIL-019 (2027-01-27 to 2027-01-29, Gitea token names), proposed dates | [4ecfb14] |
 
 ---
 
@@ -46,6 +46,8 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Release 0.3.6 | [MIL-015] | 2027-01-14 to 2027-01-15 | 2027-01-15 | S01 | US-001 | Version 0.3.6 released on Gitea with its changelog entry | |
 | Release 0.3.7 | [MIL-016] | 2027-01-18 to 2027-01-19 | 2027-01-19 | S01 | US-001 | Version 0.3.7 released on Gitea with its changelog entry | |
 | Release 0.3.8 | [MIL-017] | 2027-01-20 to 2027-01-21 | 2027-01-21 | S01 | US-001 | Version 0.3.8 released on Gitea with its changelog entry | |
+| Delete Branch After Merge | [MIL-018] | 2027-01-22 to 2027-01-26 | 2027-01-26 | S01 | US-001.02 | A new Gitea repository has "Delete pull request branch after merge by default" on | |
+| Gitea Token Names | [MIL-019] | 2027-01-27 to 2027-01-29 | 2027-01-29 | S01 | US-001 | `create-project.sh` accepts the `TOKEN_FOR_GITEA_*` keys of the framework | |
 
 ```plantuml
 @startgantt
@@ -84,6 +86,10 @@ Project starts 2026-10-05
 [Release 0.3.7 Go/No-Go] happens 2027-01-19
 [Release 0.3.8] starts 2027-01-20 and ends 2027-01-21
 [Release 0.3.8 Go/No-Go] happens 2027-01-21
+[Delete Branch After Merge] starts 2027-01-22 and ends 2027-01-26
+[Delete Branch After Merge Go/No-Go] happens 2027-01-26
+[Gitea Token Names] starts 2027-01-27 and ends 2027-01-29
+[Gitea Token Names Go/No-Go] happens 2027-01-29
 @endgantt
 ```
 
@@ -112,11 +118,13 @@ Project starts 2026-10-05
 | Version 0.3.6 released | [MIL-015] |
 | Version 0.3.7 released | [MIL-016] |
 | Version 0.3.8 released | [MIL-017] |
+| A new Gitea repository has the delete-branch-after-merge setting on | [MIL-018] |
+| `create-project.sh` accepts the Gitea token names of the framework | [MIL-019] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -157,6 +165,8 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-015]: ./milestones/mil-015-release-0-3-6.md
 [MIL-016]: ./milestones/mil-016-release-0-3-7.md
 [MIL-017]: ./milestones/mil-017-release-0-3-8.md
+[MIL-018]: ./milestones/mil-018-delete-branch-after-merge.md
+[MIL-019]: ./milestones/mil-019-gitea-token-names.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
@@ -167,3 +177,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
 [6696dce]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6696dcebb97825b66c385e1cd6a51e5ef16fd939
 [2d3932f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/2d3932f135d56411439477dead63a21f0bc35294
+[4ecfb14]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/4ecfb143a9f06c007f61da7f8e98dc331b727442

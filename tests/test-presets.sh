@@ -157,7 +157,7 @@ test_new_keys_are_rejected_in_env_and_credentials_in_config() {
   assert_status ".env with a project key" 1 "$STATUS"
   assert_contains "unknown in .env" "$ERR" "unknown key 'PROJECT_NAME'"
   setup_hosts
-  printf 'GITEA_TOKEN=abcdefgh12345\n' >>"$WORK/config.env"
+  printf 'TOKEN_FOR_GITEA_REPO=abcdefgh12345\n' >>"$WORK/config.env"
   run_dry ""
   assert_status "config.env with a credential" 1 "$STATUS"
   assert_contains "credential refused" "$ERR" "is a credential"

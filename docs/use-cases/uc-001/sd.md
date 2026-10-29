@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | build() no longer receives the GitHub repository and returns a local project with the remote origin; P9 (MIL-008) | [039a28c] |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | install() excludes the installed files from git with excludeFromGit() and returns the tracked paths; P15 (MIL-009) | [08cb484] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | install() excludes the installed files from git with excludeFromGit() and returns the tracked paths; P15 (MIL-009) | [08cb484] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
 
 ---
 
@@ -40,7 +40,7 @@ activate CL
 CL --> PC : configuration
 deactivate CL
 create CC
-PC -> CC : collect(configuration, GITEA_TOKEN)
+PC -> CC : collect(configuration, TOKEN_FOR_GITEA_REPO)
 activate CC
 CC --> PC : configuration
 deactivate CC
@@ -70,7 +70,7 @@ destroy TC
 | Postcondition (from contract) | Satisfied by message |
 | --- | --- |
 | P1 Run created | `startProjectCreation` received by `ProjectCreator` |
-| P2 Configuration created and validated; a missing credential entered, validated and held in memory | `load(config.env, .env)` and `collect(configuration, GITEA_TOKEN)` |
+| P2 Configuration created and validated; a missing credential entered, validated and held in memory | `load(config.env, .env)` and `collect(configuration, TOKEN_FOR_GITEA_REPO)` |
 | P3 ToolCheck created | `check(git, curl, jq)` |
 | P4 PromptSet returned | `promptSet` return to the Maintainer |
 
@@ -225,3 +225,4 @@ destroy SR
 [UC-002]: ../uc-002/uc.md
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
+[1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d

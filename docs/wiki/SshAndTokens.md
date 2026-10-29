@@ -21,7 +21,7 @@ The framework submodule is fetched over SSH on port **10022**. Before you run th
 
 | Token | Key in `.env` | Needed | Type |
 | --- | --- | --- | --- |
-| Gitea access token | `GITEA_TOKEN` | always | access token with scopes |
+| Gitea access token | `TOKEN_FOR_GITEA_REPO` | always | access token with scopes |
 | GitHub personal access token | `GITHUB_PAT` | required when you choose GitHub (the mirror) | **classic** personal access token |
 | Gitea access token for the wiki | `TOKEN_FOR_GITEA_WIKI` | optional (only to publish the wiki) | access token with the repository write scope (`write:repository`) only; the script accepts it but never uses it |
 

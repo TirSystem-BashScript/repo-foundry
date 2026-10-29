@@ -26,7 +26,7 @@ test_parser_rejects_bad_input() {
     assert_contains "$case_name message" "$ERR" "$expected"
   done <<'EOF'
 unknown key|OTHER=1\n|unknown key 'OTHER'
-credential in config|GITEA_TOKEN=abcdefgh12345\n|is a credential
+credential in config|TOKEN_FOR_GITEA_REPO=abcdefgh12345\n|is a credential
 not KEY=VALUE|just some text\n|line 1: expected KEY=VALUE
 lowercase key|gitea_url=https://a.test\n|unknown key 'gitea_url'
 duplicate key|GITEA_URL=https://a.test\nGITEA_URL=https://b.test\n|set twice
@@ -49,7 +49,7 @@ test_parser_never_executes_values() {
 validate_config"
   assert_file_missing "command substitution not run" "$marker"
   assert_status "bad value rejected" 1 "$STATUS"
-  printf 'GITEA_TOKEN=$(touch %s)\n' "$marker" >"$WORK/e.env"
+  printf 'TOKEN_FOR_GITEA_REPO=$(touch %s)\n' "$marker" >"$WORK/e.env"
   run_lib "" "parse_env_file \"$WORK/e.env\" CREDENTIAL_KEYS CREDENTIALS
 validate_credentials"
   assert_file_missing "token value not run" "$marker"
@@ -96,10 +96,10 @@ validate_credentials"
     assert_status "$case_name" 1 "$STATUS"
     assert_contains "$case_name message" "$ERR" "$expected"
   done <<'EOF'
-token too short|GITEA_TOKEN=short\n|not a valid token
-token with a backslash|GITEA_TOKEN=abc\\defgh12345\n|not a valid token
-bad GitHub token|GITEA_TOKEN=abcdefgh12345\nGITHUB_PAT=bad token\n|GITHUB_PAT
-bad GitHub user|GITEA_TOKEN=abcdefgh12345\nGITHUB_USER=-bad-\n|GITHUB_USER
+token too short|TOKEN_FOR_GITEA_REPO=short\n|not a valid token
+token with a backslash|TOKEN_FOR_GITEA_REPO=abc\\defgh12345\n|not a valid token
+bad GitHub token|TOKEN_FOR_GITEA_REPO=abcdefgh12345\nGITHUB_PAT=bad token\n|GITHUB_PAT
+bad GitHub user|TOKEN_FOR_GITEA_REPO=abcdefgh12345\nGITHUB_USER=-bad-\n|GITHUB_USER
 bad wiki token|TOKEN_FOR_GITEA_WIKI=short\n|TOKEN_FOR_GITEA_WIKI
 EOF
 }

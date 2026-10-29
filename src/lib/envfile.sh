@@ -9,7 +9,7 @@
 # env_file_keys: the credentials the new project needs, one per line: the
 # Gitea token, and the GitHub token and account name when GitHub was chosen.
 env_file_keys() {
-  printf '%s\n' GITEA_TOKEN
+  printf '%s\n' TOKEN_FOR_GITEA_REPO
   if ((PROJECT[has_github])); then
     printf '%s\n' GITHUB_PAT GITHUB_USER
   fi

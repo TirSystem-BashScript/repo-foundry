@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | LocalProjectBuilder.build() no longer takes the GitHub repository; a Local Project has one Remote, origin (MIL-008) | [039a28c] |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | FrameworkInstaller.excludeFromGit() and InstallResult.trackedPaths: `.claude`, `.agents` and `AGENTS.md` are excluded from git; P15 (MIL-009) | [08cb484] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | FrameworkInstaller.excludeFromGit() and InstallResult.trackedPaths: `.claude`, `.agents` and `AGENTS.md` are excluded from git; P15 (MIL-009) | [08cb484] |
+| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
 
 ---
 
@@ -280,7 +280,7 @@ Repository "0..*" --> "1" Visibility
 | `ProjectCreator.startProjectCreation() : PromptSet` | [OC-001] `startProjectCreation`; [SD-001] `startProjectCreation()` |
 | `ProjectCreator.provideProjectDetails(name, description, visibility, giteaOwner, githubOwner, directory, enablePlanGate, writeEnvFile) : Summary` | [OC-001] `provideProjectDetails`; [SD-001] `provideProjectDetails(...)` |
 | `ConfigLoader.load(configFile, envFile) : Configuration` | [SD-001] `load(config.env, .env)`; [OC-001] `startProjectCreation` P2 |
-| `CredentialCollector.collect(configuration, kinds) : Configuration` | [SD-001] `collect(configuration, GITEA_TOKEN)` and `collect(configuration, GITHUB_PAT, GITHUB_USER)`; [OC-001] `startProjectCreation` P2 and the precondition of `provideProjectDetails` |
+| `CredentialCollector.collect(configuration, kinds) : Configuration` | [SD-001] `collect(configuration, TOKEN_FOR_GITEA_REPO)` and `collect(configuration, GITHUB_PAT, GITHUB_USER)`; [OC-001] `startProjectCreation` P2 and the precondition of `provideProjectDetails` |
 | `EnvFileWriter.write(project, configuration, hasGithub) : EnvFile` | [SD-001] `write(localProject, configuration, githubOwner present)`; [OC-001] `provideProjectDetails` P14 |
 | `ToolChecker.check(tools) : ToolCheck` | [SD-001] `check(git, curl, jq)`; [OC-001] `startProjectCreation` P3 |
 | `Preflight.check(request) : PreflightResult` | [SD-001] `check(request)`; [OC-001] `provideProjectDetails` P2 |
@@ -347,3 +347,4 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [UC-002]: ../uc-002/uc.md
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
+[1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d

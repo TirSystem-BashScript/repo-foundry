@@ -1,4 +1,4 @@
-<!-- translation of AccessTokens.md, source sha256 d47b9f31557a -->
+<!-- translation of AccessTokens.md, source sha256 39953ed82366 -->
 
 > Dette er en oversættelse af [`AccessTokens`](AccessTokens). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -10,11 +10,13 @@ RepoFoundry taler med to værter og har brug for ét token til hver:
 
 | Token | Nøgle | Nødvendig | Type |
 | --- | --- | --- | --- |
-| Gitea-adgangstoken | `GITEA_TOKEN` | altid | et adgangstoken med scopes |
+| Gitea-adgangstoken | `TOKEN_FOR_GITEA_REPO` | altid | et adgangstoken med scopes |
 | GitHub personal access token | `GITHUB_PAT` | påkrævet, når du vælger GitHub (spejlet) | et **klassisk** personal access token (PAT) |
 | Gitea-adgangstoken til wikien | `TOKEN_FOR_GITEA_WIKI` | valgfri (kun for at udgive wikien) | et adgangstoken kun med repository-skriveadgang (`write:repository`) |
 
 `TOKEN_FOR_GITEA_WIKI` bruges ikke af RepoFoundry. Det er nævnt her, fordi den samme `.env` kan indeholde det, og RepoFoundry accepterer det dér. Opret det på samme måde som Gitea-tokenet i del 1, og sæt kun flueben ved repository-skriveadgang.
+
+`TOKEN_FOR_GITEA_ISSUES` (frameworkets token til issues og milestones) accepteres på samme måde og bruges aldrig. `GITEA_TOKEN` er det ældre navn for `TOKEN_FOR_GITEA_REPO`; det virker stadig i én udgivelse og skriver en note. Står begge i `.env`, bruges `TOKEN_FOR_GITEA_REPO`.
 
 Denne vejledning viser de to første trin for trin. De røde tal i hvert billede svarer til de nummererede trin ved siden af.
 
@@ -160,7 +162,7 @@ chmod 600 .env          # Linux og macOS: kun du kan læse den
 Åbn `.env` og udfyld værdierne; erstat teksten i vinkelparenteser, og fjern parenteserne:
 
 ```text
-GITEA_TOKEN=<Gitea-tokenet>
+TOKEN_FOR_GITEA_REPO=<Gitea-tokenet>
 GITHUB_PAT=<GitHub-tokenet>
 GITHUB_USER=<dit GitHub-kontonavn>
 TOKEN_FOR_GITEA_WIKI=<Gitea-tokenet til wikien, kun repository-skriveadgang>

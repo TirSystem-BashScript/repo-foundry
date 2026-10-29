@@ -41,8 +41,9 @@
 #               (default 10m0s) and FRAMEWORK_REPO (default
 #               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME)
 #   .env        GITHUB_PAT, GITHUB_USER (required only when GitHub is chosen),
-#               GITEA_TOKEN (always required); each is asked when missing.
-#               TOKEN_FOR_GITEA_WIKI is optional and not used here
+#               TOKEN_FOR_GITEA_REPO (always required; GITEA_TOKEN is its older
+#               name); each is asked when missing. TOKEN_FOR_GITEA_ISSUES and
+#               TOKEN_FOR_GITEA_WIKI are optional and not used here
 #
 # Environment
 #   REPOFOUNDRY_NAME       project name used in messages (default: RepoFoundry)
@@ -198,7 +199,7 @@ main() {
   check_tools
   setup_temp_dir
   load_configuration
-  collect_credentials GITEA_TOKEN
+  collect_credentials TOKEN_FOR_GITEA_REPO
   collect_project_details
   if ((PROJECT[has_github])); then
     collect_credentials GITHUB_PAT GITHUB_USER

@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, validate_credentials, warn_if_env_unsafe, load_configuration
+# Provides: unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, resolve_legacy_gitea_token, validate_credentials, warn_if_env_unsafe, load_configuration
 
 # unquote_value RAW: strip matching quotes (or a trailing " # comment" on an
 # unquoted value) and return the value in REPLY. Fails on unbalanced quotes.
@@ -145,25 +145,44 @@ validate_project_presets() {
   check_preset PROJECT_LICENSE is_valid_license "$HINT_LICENSE"
 }
 
+# resolve_legacy_gitea_token: GITEA_TOKEN is the older name of
+# TOKEN_FOR_GITEA_REPO. It is used when the new name is absent, with a note that
+# it is deprecated; when both are present the new name wins and the old one is
+# ignored. The value is registered as a secret and checked before any message.
+resolve_legacy_gitea_token() {
+  local old="${CREDENTIALS[GITEA_TOKEN]:-}"
+  if [[ -z $old ]]; then
+    return 0
+  fi
+  SECRET_VALUES+=("$old")
+  is_valid_token "$old" ||
+    die "GITEA_TOKEN in $ENV_FILE is not a valid token ($HINT_TOKEN)"
+  if [[ -n ${CREDENTIALS[TOKEN_FOR_GITEA_REPO]:-} ]]; then
+    warn "$ENV_FILE has both TOKEN_FOR_GITEA_REPO and GITEA_TOKEN; TOKEN_FOR_GITEA_REPO is used, remove GITEA_TOKEN"
+  else
+    CREDENTIALS[TOKEN_FOR_GITEA_REPO]="$old"
+    warn "GITEA_TOKEN in $ENV_FILE is deprecated; rename it to TOKEN_FOR_GITEA_REPO"
+  fi
+}
+
 # validate_credentials: check the credentials that .env provides. A credential
 # that is not provided is not an error: it is asked later (collect_credentials).
 validate_credentials() {
   # Register secrets first so that no later message can show them.
-  if [[ -n ${CREDENTIALS[GITEA_TOKEN]:-} ]]; then
-    SECRET_VALUES+=("${CREDENTIALS[GITEA_TOKEN]}")
-  fi
+  local key value
   if [[ -n ${CREDENTIALS[GITHUB_PAT]:-} ]]; then
     SECRET_VALUES+=("${CREDENTIALS[GITHUB_PAT]}")
   fi
-  if [[ -n ${CREDENTIALS[TOKEN_FOR_GITEA_WIKI]:-} ]]; then
-    SECRET_VALUES+=("${CREDENTIALS[TOKEN_FOR_GITEA_WIKI]}")
-    is_valid_token "${CREDENTIALS[TOKEN_FOR_GITEA_WIKI]}" ||
-      die "TOKEN_FOR_GITEA_WIKI in $ENV_FILE is not a valid token ($HINT_TOKEN)"
-  fi
-  if [[ -n ${CREDENTIALS[GITEA_TOKEN]:-} ]] &&
-    ! is_valid_token "${CREDENTIALS[GITEA_TOKEN]}"; then
-    die "GITEA_TOKEN in $ENV_FILE is not a valid token ($HINT_TOKEN)"
-  fi
+  resolve_legacy_gitea_token
+  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI; do
+    value="${CREDENTIALS[$key]:-}"
+    if [[ -z $value ]]; then
+      continue
+    fi
+    SECRET_VALUES+=("$value")
+    is_valid_token "$value" ||
+      die "$key in $ENV_FILE is not a valid token ($HINT_TOKEN)"
+  done
   if [[ -n ${CREDENTIALS[GITHUB_PAT]:-} ]] &&
     ! is_valid_token "${CREDENTIALS[GITHUB_PAT]}"; then
     die "GITHUB_PAT in $ENV_FILE is not a valid token ($HINT_TOKEN)"

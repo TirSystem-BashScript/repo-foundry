@@ -1,4 +1,4 @@
-<!-- translation of SshAndTokens.md, source sha256 ec9001c0248b -->
+<!-- translation of SshAndTokens.md, source sha256 11fb80c5a514 -->
 
 > Dette er en oversættelse af [`SshAndTokens`](SshAndTokens). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -25,7 +25,7 @@ Framework-submodulet hentes over SSH på port **10022**. Før du kører scriptet
 
 | Token | Nøgle i `.env` | Nødvendig | Type |
 | --- | --- | --- | --- |
-| Gitea-adgangstoken | `GITEA_TOKEN` | altid | adgangstoken med scopes |
+| Gitea-adgangstoken | `TOKEN_FOR_GITEA_REPO` | altid | adgangstoken med scopes |
 | GitHub personal access token | `GITHUB_PAT` | påkrævet, når du vælger GitHub (spejlet) | **klassisk** personal access token |
 | Gitea-adgangstoken til wikien | `TOKEN_FOR_GITEA_WIKI` | valgfri (kun for at udgive wikien) | adgangstoken kun med repository-skriveadgang (`write:repository`); scriptet accepterer den, men bruger den aldrig |
 

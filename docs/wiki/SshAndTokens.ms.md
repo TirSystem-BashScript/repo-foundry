@@ -1,4 +1,4 @@
-<!-- translation of SshAndTokens.md, source sha256 ec9001c0248b -->
+<!-- translation of SshAndTokens.md, source sha256 11fb80c5a514 -->
 
 > Ini ialah terjemahan [`SshAndTokens`](SshAndTokens). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -25,7 +25,7 @@ Submodul framework diambil melalui SSH pada port **10022**. Sebelum anda menjala
 
 | Token | Kunci dalam `.env` | Diperlukan | Jenis |
 | --- | --- | --- | --- |
-| Token akses Gitea | `GITEA_TOKEN` | sentiasa | token akses dengan skop |
+| Token akses Gitea | `TOKEN_FOR_GITEA_REPO` | sentiasa | token akses dengan skop |
 | GitHub personal access token | `GITHUB_PAT` | diperlukan apabila anda memilih GitHub (cermin) | personal access token **klasik** |
 | Token akses Gitea untuk wiki | `TOKEN_FOR_GITEA_WIKI` | pilihan (hanya untuk menerbitkan wiki) | token akses dengan skop tulis repositori sahaja (`write:repository`); skrip menerimanya tetapi tidak pernah menggunakannya |
 
