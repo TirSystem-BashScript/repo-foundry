@@ -4,9 +4,7 @@ English | [Dansk](Home.da) | [Bahasa Melayu](Home.ms)
 
 Repo Foundry (`src/create-project.sh`) is a Bash script that sets up a new project in one run, the same way every time.
 
-## Why it exists
-
-Setting up a project by hand means many small steps on two hosts and on your own machine: create the repository, choose its visibility and owner, add a license, create a second repository and a mirror, clone, add the framework, install its skills and hooks, and keep secrets out of the remotes. Done by hand, no two projects end up quite alike, and a forgotten step is found weeks later.
+## Purpose
 
 Repo Foundry exists to:
 

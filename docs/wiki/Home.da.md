@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 9e1e36dacd34 -->
+<!-- translation of Home.md, source sha256 3affc71fbc28 -->
 
 > Dette er en oversættelse af [`Home`](Home). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -8,9 +8,7 @@
 
 Repo Foundry (`src/create-project.sh`) er et Bash-script, der opretter et nyt projekt i én kørsel, på samme måde hver gang.
 
-## Hvorfor det findes
-
-At oprette et projekt i hånden er mange små trin på to værter og på din egen maskine: opret repository, vælg synlighed og ejer, tilføj en licens, opret et andet repository og et spejl, klon, tilføj frameworket, installér dets skills og hooks, og hold hemmeligheder ude af remotes. Gøres det i hånden, ender ingen to projekter helt ens, og et glemt trin opdages først uger senere.
+## Formål
 
 Repo Foundry findes for at:
 
