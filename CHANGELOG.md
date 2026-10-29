@@ -13,8 +13,11 @@ file.
 
 ## [Unreleased]
 
+## [0.3.9] - 2026-10-29
+
 ### Changed
 
+- The framework submodule moves from `v0.17.1` to `v0.19.0`.
 - The Gitea token in `.env` is `TOKEN_FOR_GITEA_REPO`, the name the framework (0.18.0) uses; `create-project.sh` no longer stops with `unknown key 'TOKEN_FOR_GITEA_REPO'`. `TOKEN_FOR_GITEA_ISSUES` is accepted like `TOKEN_FOR_GITEA_WIKI`: checked, kept secret, never used. The `.env` written into a new project holds `TOKEN_FOR_GITEA_REPO`. `GITEA_TOKEN` still works for one release as the older name, with a note that it is deprecated; when both are set, `TOKEN_FOR_GITEA_REPO` is used.
 
 ## [0.3.8] - 2026-10-28

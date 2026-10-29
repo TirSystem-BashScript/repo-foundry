@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | US-001 |
-| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019] |
+| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-28 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-017 added to CrossReference | [2d3932f] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-018 and MIL-019 added to CrossReference; the Gitea token key is TOKEN_FOR_GITEA_REPO | [4ecfb14] |
+| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-018 and MIL-019 added to CrossReference; the Gitea token key is TOKEN_FOR_GITEA_REPO | [4ecfb14] |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-020 added to CrossReference | pending |
 
 ---
 
@@ -179,6 +179,7 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [MIL-017]: ./milestones/mil-017-release-0-3-8.md
 [MIL-018]: ./milestones/mil-018-delete-branch-after-merge.md
 [MIL-019]: ./milestones/mil-019-gitea-token-names.md
+[MIL-020]: ./milestones/mil-020-release-0-3-9.md
 [PP-001]: ./project-plan.md
 [d1120f7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/d1120f7da03f41e6af8b5f35d860eee5bfd5f015
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
