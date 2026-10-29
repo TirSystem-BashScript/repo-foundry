@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-021 (proposed dates 2027-02-03 to 2027-02-09): protect the default branch of a new Gitea repository | [b63fe29] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-022 (proposed dates 2027-02-10 to 2027-02-16): apply the branch protection rule to an existing Gitea repository | [1d59d45] |
+| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-022 (proposed dates 2027-02-10 to 2027-02-16): apply the branch protection rule to an existing Gitea repository | [1d59d45] |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-017 (release 0.3.8) is not tagged on its own and is released with 0.3.9 (MIL-020) | pending |
 
 ---
 
@@ -126,7 +126,7 @@ Project starts 2026-10-05
 | The cause of issue 107 is found and a timeout of a create request is handled | [MIL-014] |
 | Version 0.3.6 released | [MIL-015] |
 | Version 0.3.7 released | [MIL-016] |
-| Version 0.3.8 released | [MIL-017] |
+| Version 0.3.8 released with 0.3.9 | [MIL-017] |
 | A new Gitea repository has the delete-branch-after-merge setting on | [MIL-018] |
 | `create-project.sh` accepts the Gitea token names of the framework | [MIL-019] |
 | Version 0.3.9 released | [MIL-020] |
