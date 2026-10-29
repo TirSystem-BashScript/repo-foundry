@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | [fe54cde] |
 
 ---
 
@@ -81,3 +81,4 @@ Go â€” every criterion of the checklist passes and the changed documents ag
 [US-001]: ../../user-stories.md
 [PP-001]: ../../project-plan.md
 [TM-001]: ../traceability-matrix.md
+[fe54cde]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fe54cde487c3ddbea8d26c6b3e408ea92c9dd7e1

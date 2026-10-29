@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | Added MIL-022 (protect an existing repository) and review RC-046 | [1d59d45] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added review RC-047 (release 0.3.9 without a tag for 0.3.8) | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Added review RC-047 (release 0.3.9 without a tag for 0.3.8) | [fe54cde] |
 
 ---
 
@@ -171,3 +171,4 @@ updated whenever an artifact instance is created or reviewed.
 [b220a3e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b220a3e7b7672f1437e9dece247d6d86d5d29c2c
 [b63fe29]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b63fe29d7df28b62bade9fc5b14500229dc43d80
 [1d59d45]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1d59d4552c024a43b810a2d6a25e29d5c3a27a84
+[fe54cde]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fe54cde487c3ddbea8d26c6b3e408ea92c9dd7e1

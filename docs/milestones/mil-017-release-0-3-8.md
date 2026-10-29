@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-28 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [2d3932f] |
-| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Not tagged on its own; released with 0.3.9 ([MIL-020]) | pending |
+| 2026-10-29 | Accepted | Jens Tirsvad Nielsen | S02 | Not tagged on its own; released with 0.3.9 ([MIL-020]) | [fe54cde] |
 
 ---
 
@@ -77,3 +77,4 @@ The change is a patch release: the only change to the script is its version numb
 [MIL-016]: ./mil-016-release-0-3-7.md
 [MIL-020]: ./mil-020-release-0-3-9.md
 [2d3932f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/2d3932f135d56411439477dead63a21f0bc35294
+[fe54cde]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fe54cde487c3ddbea8d26c6b3e408ea92c9dd7e1
