@@ -54,7 +54,8 @@
 #   .env        GITHUB_PAT, GITHUB_USER (required only when GitHub is chosen),
 #               TOKEN_FOR_GITEA_REPO (always required; GITEA_TOKEN is its older
 #               name); each is asked when missing. TOKEN_FOR_GITEA_ISSUES and
-#               TOKEN_FOR_GITEA_WIKI are optional and not used here
+#               TOKEN_FOR_GITEA_WIKI and TOKEN_FOR_GITEA_RELEASE are optional
+#               and not used here
 #
 # Environment
 #   REPOFOUNDRY_NAME       project name used in messages (default: RepoFoundry)

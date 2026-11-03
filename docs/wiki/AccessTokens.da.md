@@ -1,4 +1,4 @@
-<!-- translation of AccessTokens.md, source sha256 39953ed82366 -->
+<!-- translation of AccessTokens.md, source sha256 a07dd0f80ca9 -->
 
 > Dette er en oversættelse af [`AccessTokens`](AccessTokens). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -16,7 +16,7 @@ RepoFoundry taler med to værter og har brug for ét token til hver:
 
 `TOKEN_FOR_GITEA_WIKI` bruges ikke af RepoFoundry. Det er nævnt her, fordi den samme `.env` kan indeholde det, og RepoFoundry accepterer det dér. Opret det på samme måde som Gitea-tokenet i del 1, og sæt kun flueben ved repository-skriveadgang.
 
-`TOKEN_FOR_GITEA_ISSUES` (frameworkets token til issues og milestones) accepteres på samme måde og bruges aldrig. `GITEA_TOKEN` er det ældre navn for `TOKEN_FOR_GITEA_REPO`; det virker stadig i én udgivelse og skriver en note. Står begge i `.env`, bruges `TOKEN_FOR_GITEA_REPO`.
+`TOKEN_FOR_GITEA_ISSUES` (frameworkets token til issues og milestones) og `TOKEN_FOR_GITEA_RELEASE` (dets token til udgivelser) accepteres på samme måde og bruges aldrig. `GITEA_TOKEN` er det ældre navn for `TOKEN_FOR_GITEA_REPO`; det virker stadig i én udgivelse og skriver en note. Står begge i `.env`, bruges `TOKEN_FOR_GITEA_REPO`.
 
 Denne vejledning viser de to første trin for trin. De røde tal i hvert billede svarer til de nummererede trin ved siden af.
 

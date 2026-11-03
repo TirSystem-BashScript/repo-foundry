@@ -151,16 +151,18 @@ test_the_wiki_token_is_accepted_never_asked_and_never_shown() {
   assert_not_contains "never sent to a host" "$(calls)" "$wiki_token"
 }
 
-test_the_three_gitea_token_names_of_the_framework_are_accepted() {
+test_the_four_gitea_token_names_of_the_framework_are_accepted() {
   local issues_token="issuesFAKEtoken1234567890" wiki_token="wikiFAKEtoken1234567890"
+  local release_token="releaseFAKEtoken1234567890"
   setup_hosts
-  printf '%s\n' "TOKEN_FOR_GITEA_ISSUES=$issues_token" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN" "TOKEN_FOR_GITEA_WIKI=$wiki_token" >"$WORK/.env"
+  printf '%s\n' "TOKEN_FOR_GITEA_ISSUES=$issues_token" "TOKEN_FOR_GITEA_REPO=$FAKE_GITEA_TOKEN" "TOKEN_FOR_GITEA_WIKI=$wiki_token" "TOKEN_FOR_GITEA_RELEASE=$release_token" >"$WORK/.env"
   run_dry_cred "$ANSWERS_GITEA_ONLY"
-  assert_status "all three accepted in .env" 0 "$STATUS"
+  assert_status "all four accepted in .env" 0 "$STATUS"
   assert_not_contains "no unknown key" "$OUT$ERR" "unknown key"
   assert_not_contains "repo token not asked" "$ERR" "Gitea access token"
   assert_not_contains "issues token not shown" "$OUT$ERR" "$issues_token"
-  assert_not_contains "no token sent to a host" "$(calls)" "$issues_token"
+  assert_not_contains "release token not shown" "$OUT$ERR" "$release_token"
+  assert_not_contains "no token sent to a host" "$(calls)" "$issues_token$release_token"
 }
 
 test_gitea_token_is_the_deprecated_name_of_the_repo_token() {
@@ -189,7 +191,7 @@ validate_credentials
 
 test_a_bad_value_of_any_gitea_token_is_refused_without_showing_it() {
   local key
-  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI; do
+  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI TOKEN_FOR_GITEA_RELEASE; do
     printf '%s=bad value\n' "$key" >"$WORK/e.env"
     run_lib "" 'parse_env_file "'"$WORK"'/e.env" CREDENTIAL_KEYS CREDENTIALS
 validate_credentials'

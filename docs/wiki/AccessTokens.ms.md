@@ -1,4 +1,4 @@
-<!-- translation of AccessTokens.md, source sha256 39953ed82366 -->
+<!-- translation of AccessTokens.md, source sha256 a07dd0f80ca9 -->
 
 > Ini ialah terjemahan [`AccessTokens`](AccessTokens). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -16,7 +16,7 @@ RepoFoundry berhubung dengan dua hos dan memerlukan satu token untuk setiap satu
 
 `TOKEN_FOR_GITEA_WIKI` tidak digunakan oleh RepoFoundry. Ia disenaraikan kerana `.env` yang sama mungkin mengandunginya, dan RepoFoundry menerimanya di situ. Cipta ia dengan cara yang sama seperti token Gitea dalam bahagian 1, dan tandakan skop tulis repositori sahaja.
 
-`TOKEN_FOR_GITEA_ISSUES` (token framework untuk isu dan milestone) diterima dengan cara yang sama dan tidak pernah digunakan. `GITEA_TOKEN` ialah nama lama bagi `TOKEN_FOR_GITEA_REPO`; ia masih berfungsi untuk satu keluaran dan mencetak nota. Jika kedua-duanya ada dalam `.env`, `TOKEN_FOR_GITEA_REPO` digunakan.
+`TOKEN_FOR_GITEA_ISSUES` (token framework untuk isu dan milestone) dan `TOKEN_FOR_GITEA_RELEASE` (token untuk keluaran) diterima dengan cara yang sama dan tidak pernah digunakan. `GITEA_TOKEN` ialah nama lama bagi `TOKEN_FOR_GITEA_REPO`; ia masih berfungsi untuk satu keluaran dan mencetak nota. Jika kedua-duanya ada dalam `.env`, `TOKEN_FOR_GITEA_REPO` digunakan.
 
 Panduan ini menunjukkan dua yang pertama, langkah demi langkah. Nombor merah dalam setiap gambar sepadan dengan langkah bernombor di sebelahnya.
 
