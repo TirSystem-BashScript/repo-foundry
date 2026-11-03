@@ -3,6 +3,7 @@
 - [Home](Home)
 - [Getting started](GettingStarted)
 - [SSH and tokens](SshAndTokens)
+- [SSH keys with a passphrase](SshPassphrase)
 - [Access tokens](AccessTokens)
 - [Updating the framework](UpdatingTheFramework)
 - [Troubleshooting](Troubleshooting)
