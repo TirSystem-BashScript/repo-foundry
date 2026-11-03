@@ -197,7 +197,7 @@ validate_credentials() {
     SECRET_VALUES+=("${CREDENTIALS[GITHUB_PAT]}")
   fi
   resolve_legacy_gitea_token
-  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI; do
+  for key in TOKEN_FOR_GITEA_REPO TOKEN_FOR_GITEA_ISSUES TOKEN_FOR_GITEA_WIKI TOKEN_FOR_GITEA_RELEASE; do
     value="${CREDENTIALS[$key]:-}"
     if [[ -z $value ]]; then
       continue

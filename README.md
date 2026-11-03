@@ -224,6 +224,7 @@ src/create-project.sh --apply        # asks only "Create these now (y/n) [n]"
 | --- | --- |
 | `TOKEN_FOR_GITEA_REPO` | Gitea access token (the older name `GITEA_TOKEN` still works for one release and prints a note; when both are set, `TOKEN_FOR_GITEA_REPO` is used) |
 | `TOKEN_FOR_GITEA_ISSUES` | optional: the framework's Gitea token for issues and milestones; accepted so one `.env` serves all, never used or asked for by this script |
+| `TOKEN_FOR_GITEA_RELEASE` | optional: the framework's Gitea token for releases; accepted so one `.env` serves all, never used or asked for by this script |
 | `GITHUB_PAT` | GitHub personal access token (required when you choose GitHub, so the mirror can be created; not used otherwise) |
 | `GITHUB_USER` | the GitHub account the token belongs to (required when you choose GitHub; not used otherwise) |
 | `TOKEN_FOR_GITEA_WIKI` | optional: Gitea access token for publishing the wiki, with the repository write scope (`write:repository`) only; accepted so one `.env` serves both, never used or asked for by this script |

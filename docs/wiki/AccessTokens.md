@@ -14,7 +14,7 @@ RepoFoundry talks to two hosts and needs one token for each:
 same `.env` may hold it, and RepoFoundry accepts it there. Create it the same
 way as the Gitea token in part 1, ticking only the repository write scope.
 
-`TOKEN_FOR_GITEA_ISSUES` (the framework's token for issues and milestones) is accepted the same way and never used. `GITEA_TOKEN` is the older name of `TOKEN_FOR_GITEA_REPO`; it still works for one release and prints a note. When both are in `.env`, `TOKEN_FOR_GITEA_REPO` is used.
+`TOKEN_FOR_GITEA_ISSUES` (the framework's token for issues and milestones) and `TOKEN_FOR_GITEA_RELEASE` (its token for releases) are accepted the same way and never used. `GITEA_TOKEN` is the older name of `TOKEN_FOR_GITEA_REPO`; it still works for one release and prints a note. When both are in `.env`, `TOKEN_FOR_GITEA_REPO` is used.
 
 This guide shows the first two, step by step. The red numbers in each picture
 match the numbered steps next to it.
