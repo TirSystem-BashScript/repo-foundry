@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-03 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-03 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [6133fe6] |
 
 ---
 
@@ -74,3 +74,4 @@ No token value is printed, put on a command line or written anywhere new. No new
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-019]: ./mil-019-gitea-token-names.md
+[6133fe6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6133fe6f3b7067656ca3c9cc9d367a00111c4198
