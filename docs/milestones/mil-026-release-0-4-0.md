@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [3edc44e] |
 
 ---
 
@@ -79,3 +79,4 @@ The entry lists the five branch protection changes under Added and the changelog
 [MIL-023]: ./mil-023-release-token-key.md
 [MIL-024]: ./mil-024-require-signed-commits.md
 [MIL-025]: ./mil-025-block-merge-rules.md
+[3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
