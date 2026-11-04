@@ -40,7 +40,13 @@ In Gitea open **Settings**, **SSH / GPG Keys**. The public key you use for pushi
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
 ```
 
-On Windows, run it in Git Bash. The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----`. Paste the whole block into the field in Gitea and confirm.
+On Windows, run it in Git Bash, or in PowerShell with the form that Gitea shows for Windows:
+
+```powershell
+cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $env:USERPROFILE\.ssh\id_ed25519"
+```
+
+The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----`. Paste the whole block into the field in Gitea and confirm.
 
 The e-mail address in `git config user.email` must be one of the addresses of your Gitea account, or the commit is shown as unverified.
 

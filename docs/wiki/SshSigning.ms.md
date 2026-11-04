@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 2f50ff67bb38 -->
+<!-- translation of SshSigning.md, source sha256 92815584a40c -->
 
 > Ini ialah terjemahan [`SshSigning`](SshSigning). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -44,7 +44,13 @@ Buka **Settings**, **SSH / GPG Keys** dalam Gitea. Kunci awam yang anda gunakan 
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
 ```
 
-Pada Windows, jalankannya dalam Git Bash. Arahan itu mencetak satu blok yang bermula dengan `-----BEGIN SSH SIGNATURE-----`. Tampal keseluruhan blok itu ke dalam medan dalam Gitea dan sahkan.
+Pada Windows, jalankannya dalam Git Bash, atau dalam PowerShell dengan bentuk yang ditunjukkan Gitea untuk Windows:
+
+```powershell
+cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $env:USERPROFILE\.ssh\id_ed25519"
+```
+
+Arahan itu mencetak satu blok yang bermula dengan `-----BEGIN SSH SIGNATURE-----`. Tampal keseluruhan blok itu ke dalam medan dalam Gitea dan sahkan.
 
 Alamat e-mel dalam `git config user.email` mestilah salah satu alamat akaun Gitea anda, jika tidak commit ditunjukkan sebagai tidak disahkan.
 

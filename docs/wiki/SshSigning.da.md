@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 2f50ff67bb38 -->
+<!-- translation of SshSigning.md, source sha256 92815584a40c -->
 
 > Dette er en oversættelse af [`SshSigning`](SshSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -44,7 +44,13 @@ git config --global commit.gpgsign true
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
 ```
 
-På Windows kører du den i Git Bash. Kommandoen skriver en blok, der starter med `-----BEGIN SSH SIGNATURE-----`. Indsæt hele blokken i feltet i Gitea, og bekræft.
+På Windows kører du den i Git Bash, eller i PowerShell med den form, Gitea viser til Windows:
+
+```powershell
+cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $env:USERPROFILE\.ssh\id_ed25519"
+```
+
+Kommandoen skriver en blok, der starter med `-----BEGIN SSH SIGNATURE-----`. Indsæt hele blokken i feltet i Gitea, og bekræft.
 
 Mailadressen i `git config user.email` skal være en af adresserne på din Gitea-konto, ellers vises commit'et som ikke verificeret.
 
