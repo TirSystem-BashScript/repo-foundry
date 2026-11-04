@@ -20,6 +20,14 @@ git config --global user.signingkey ~/.ssh/id_ed25519.pub
 git config --global commit.gpgsign true
 ```
 
+On Windows, in PowerShell:
+
+```powershell
+git config --global gpg.format ssh
+git config --global user.signingkey "$env:USERPROFILE\.ssh\id_ed25519.pub"
+git config --global commit.gpgsign true
+```
+
 `commit.gpgsign true` signs every commit. Leave it out, and sign one commit at a time with `git commit -S`. Use `git config` without `--global` inside a repository to change only that repository.
 
 ## 2. Let Gitea verify the signatures
@@ -28,7 +36,34 @@ In Gitea open **Settings**, **SSH / GPG Keys**. The public key you use for pushi
 
 The e-mail address in `git config user.email` must be one of the addresses of your Gitea account, or the commit is shown as unverified.
 
-## 3. Check that it works
+## 3. Let git verify the signatures on your machine
+
+Git signs with your private key, but to *verify* a signature (in `git log --show-signature`, or when you merge) it needs a list of the keys it trusts: an **allowed signers** file. Without it the commit is still signed and Gitea still shows it as Verified, but your own git answers `No principal matched` and cannot confirm it.
+
+Linux, macOS and Git Bash (run it in the shell, from any folder; it uses the e-mail address of your git configuration):
+
+```bash
+mkdir -p ~/.ssh
+printf '%s namespaces="git" %s\n' \
+  "$(git config user.email)" \
+  "$(cat ~/.ssh/id_ed25519.pub)" \
+  > ~/.ssh/allowed_signers
+chmod 600 ~/.ssh/allowed_signers
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+```
+
+Windows, in PowerShell:
+
+```powershell
+"$(git config user.email) namespaces=`"git`" $((Get-Content "$env:USERPROFILE\.ssh\id_ed25519.pub" -Raw).Trim())" |
+  Set-Content -Encoding ascii "$env:USERPROFILE\.ssh\allowed_signers"
+
+git config --global gpg.ssh.allowedSignersFile "$env:USERPROFILE\.ssh\allowed_signers"
+```
+
+The file holds one line: your e-mail address, `namespaces="git"` and your public key. Make sure `git config user.email` is set before you run it.
+
+## 4. Check that it works
 
 ```bash
 git commit --allow-empty -m "Test signing"
@@ -42,5 +77,19 @@ Push a branch and look at the commit in Gitea: a green **Verified** badge means 
 - A commit made on another machine, or by a tool that does not use your git configuration, is not signed. Set up signing on every machine where you commit.
 - Gitea signs the merge commits it makes only if the administrator has set up a signing key for the instance.
 - A branch rule that requires signed commits rejects a pull request with one unsigned commit. Sign first, then turn the rule on.
+
+## Troubleshooting
+
+If a commit is not signed, check which settings git really uses and where they come from (`--show-origin` names the file), then look at the signature of the last commit:
+
+```bash
+git config --show-origin --get commit.gpgsign
+git config --show-origin --get gpg.format
+git config --show-origin --get user.signingkey
+
+git log -1 --show-signature
+```
+
+The three settings should read `true`, `ssh` and the path of your public key. A value from a repository file (`.git/config`) overrides the global one. `git log -1 --show-signature` shows `Good "git" signature` when the commit is signed and your allowed signers file knows the key; `No principal matched` means the allowed signers file is missing or has another e-mail address (step 3), and no signature at all means that the commit was made without signing.
 
 Back to [SSH and tokens](SshAndTokens) or [Troubleshooting](Troubleshooting).
