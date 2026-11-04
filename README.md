@@ -166,8 +166,9 @@ separated by semicolons.
 | `PROTECTED_BRANCH_PATTERN` | the protected branch name pattern | `main` |
 | `PROTECTED_FILE_PATTERNS` | protected file patterns, such as `docs/**;*.lock` | none |
 | `PROTECTED_STATUS_CHECKS` | status check patterns that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: *` |
+| `PROTECTED_REQUIRE_SIGNED_COMMITS` | `true` or `false`: whether every commit of a pull request must carry a verified signature; set it to `true` only when signing is set up on every machine that commits (wiki page `SshSigning`) | `false` |
 
-There is no key that allows a direct push. The default status check pattern
+There is no key that allows a direct push. A rule that requires signed commits rejects a pull request with one unsigned commit. The default status check pattern
 matches the checks of the shared workflows that run for every repository of the
 organisation; a pattern that matches no check blocks every merge, so change it
 if your project has none of them. A rule that Gitea refuses is a warning and

@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-017 (release 0.3.8) is not tagged on its own and is released with 0.3.9 (MIL-020) | [fe54cde] |
-| 2026-11-03 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-023 (proposed dates 2027-02-17 to 2027-02-18): accept the release token key | [6133fe6] |
+| 2026-11-03 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-023 (proposed dates 2027-02-17 to 2027-02-18): accept the release token key | [6133fe6] |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-024 (proposed dates 2027-02-22 to 2027-02-23): optional signed-commit requirement in the branch protection rule | [fd8d8d6] |
 
 ---
 
@@ -52,6 +52,7 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Protect Default Branch | [MIL-021] | 2027-02-03 to 2027-02-09 | 2027-02-09 | S01 | US-001 | A new Gitea repository gets a branch protection rule: no direct push, status checks, file patterns | |
 | Protect Existing Repository | [MIL-022] | 2027-02-10 to 2027-02-16 | 2027-02-16 | S01 | US-001 | `create-project.sh --protect OWNER/NAME` applies the branch protection rule to an existing Gitea repository | |
 | Release Token Key | [MIL-023] | 2027-02-17 to 2027-02-18 | 2027-02-18 | S01 | US-001 | `create-project.sh` accepts `TOKEN_FOR_GITEA_RELEASE` in `.env` | |
+| Require Signed Commits | [MIL-024] | 2027-02-22 to 2027-02-23 | 2027-02-23 | S01 | US-001 | The branch protection rule can require signed commits, off by default | |
 
 ```plantuml
 @startgantt
@@ -102,6 +103,8 @@ Project starts 2026-10-05
 [Protect Existing Repository Go/No-Go] happens 2027-02-16
 [Release Token Key] starts 2027-02-17 and ends 2027-02-18
 [Release Token Key Go/No-Go] happens 2027-02-18
+[Require Signed Commits] starts 2027-02-22 and ends 2027-02-23
+[Require Signed Commits Go/No-Go] happens 2027-02-23
 @endgantt
 ```
 
@@ -136,11 +139,12 @@ Project starts 2026-10-05
 | A new Gitea repository has a branch protection rule | [MIL-021] |
 | An existing Gitea repository can get the branch protection rule | [MIL-022] |
 | `create-project.sh` accepts the release token key | [MIL-023] |
+| The branch protection rule can require signed commits | [MIL-024] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -187,6 +191,7 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-021]: ./milestones/mil-021-protect-default-branch.md
 [MIL-022]: ./milestones/mil-022-protect-existing-repository.md
 [MIL-023]: ./milestones/mil-023-release-token-key.md
+[MIL-024]: ./milestones/mil-024-require-signed-commits.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
@@ -203,3 +208,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [1d59d45]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1d59d4552c024a43b810a2d6a25e29d5c3a27a84
 [fe54cde]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fe54cde487c3ddbea8d26c6b3e408ea92c9dd7e1
 [6133fe6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6133fe6f3b7067656ca3c9cc9d367a00111c4198
+[fd8d8d6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fd8d8d624a2817a3d9ae95da4ddd70270a1f9261

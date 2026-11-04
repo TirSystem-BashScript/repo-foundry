@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 12a0dc0d0857 -->
+<!-- translation of GettingStarted.md, source sha256 af9799a65636 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -45,7 +45,7 @@ Der laves ingen commit i det nye projekt. Arbejd på en branch der: frameworkets
 
 Et nyt Gitea-repository får en regel for beskyttet branch: ingen direkte push til `main`, hver ændring kommer via en pull request. Det nye projekts første commit går samme vej: push en branch og åbn en pull request.
 
-Reglen sættes med tre valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen) og `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+Reglen sættes med fire valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen), `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`) og `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` eller `false`, standard `false`; se [Signering af commits](SshSigning.da)). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 Sådan giver du et eksisterende repository samme regel:
 

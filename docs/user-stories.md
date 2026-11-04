@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | US-001 |
-| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023] |
+| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-022 added to CrossReference | [1d59d45] |
-| 2026-11-03 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-023 added to CrossReference | [6133fe6] |
+| 2026-11-03 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-023 added to CrossReference | [6133fe6] |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-024 added to CrossReference | [fd8d8d6] |
 
 ---
 
@@ -183,6 +183,7 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [MIL-021]: ./milestones/mil-021-protect-default-branch.md
 [MIL-022]: ./milestones/mil-022-protect-existing-repository.md
 [MIL-023]: ./milestones/mil-023-release-token-key.md
+[MIL-024]: ./milestones/mil-024-require-signed-commits.md
 [PP-001]: ./project-plan.md
 [d1120f7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/d1120f7da03f41e6af8b5f35d860eee5bfd5f015
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
@@ -193,3 +194,4 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [b63fe29]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b63fe29d7df28b62bade9fc5b14500229dc43d80
 [1d59d45]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1d59d4552c024a43b810a2d6a25e29d5c3a27a84
 [6133fe6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6133fe6f3b7067656ca3c9cc9d367a00111c4198
+[fd8d8d6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fd8d8d624a2817a3d9ae95da4ddd70270a1f9261

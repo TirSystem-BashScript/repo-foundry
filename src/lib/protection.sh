@@ -64,8 +64,9 @@ protection_body() {
   if [[ $mode == create ]]; then
     name="\"rule_name\":\"$(json_escape "${CONFIG[PROTECTED_BRANCH_PATTERN]}")\","
   fi
-  printf '{%s"enable_push":false,"enable_status_check":%s,"status_check_contexts":[%s],"protected_file_patterns":"%s"}' \
-    "$name" "$enabled" "$contexts" "$(json_escape "${CONFIG[PROTECTED_FILE_PATTERNS]}")"
+  printf '{%s"enable_push":false,"enable_status_check":%s,"status_check_contexts":[%s],"protected_file_patterns":"%s","require_signed_commits":%s}' \
+    "$name" "$enabled" "$contexts" "$(json_escape "${CONFIG[PROTECTED_FILE_PATTERNS]}")" \
+    "${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
 }
 
 # protection_summary: the wanted rule in words, for the plan.
@@ -73,6 +74,9 @@ protection_summary() {
   local checks="${CONFIG[PROTECTED_STATUS_CHECKS]:-none}" files="${CONFIG[PROTECTED_FILE_PATTERNS]:-none}"
   printf "rule '%s': no direct push (use a pull request); status checks: %s; protected files: %s" \
     "${CONFIG[PROTECTED_BRANCH_PATTERN]}" "${checks:-none}" "${files:-none}"
+  if [[ ${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]} == true ]]; then
+    printf '; signed commits required'
+  fi
 }
 
 # protection_array FILE KEY: the strings of a JSON array, one per line.
@@ -92,17 +96,18 @@ protection_array() {
 protection_state() {
   local file="$1" checks
   checks="$(protection_array "$file" status_check_contexts | tr '\n' ';')"
-  printf 'enable_push: %s\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\n' \
+  printf 'enable_push: %s\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\nrequire_signed_commits: %s\n' \
     "$(json_get "$file" enable_push)" "$(json_get "$file" enable_status_check)" \
-    "${checks%;}" "$(json_get "$file" protected_file_patterns)"
+    "${checks%;}" "$(json_get "$file" protected_file_patterns)" "$(json_get "$file" require_signed_commits)"
 }
 
 # protection_wanted: the same lines for the rule in config.env.
 protection_wanted() {
   local enabled=false
   [[ -n ${CONFIG[PROTECTED_STATUS_CHECKS]} ]] && enabled=true
-  printf 'enable_push: false\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\n' \
-    "$enabled" "${CONFIG[PROTECTED_STATUS_CHECKS]}" "${CONFIG[PROTECTED_FILE_PATTERNS]}"
+  printf 'enable_push: false\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\nrequire_signed_commits: %s\n' \
+    "$enabled" "${CONFIG[PROTECTED_STATUS_CHECKS]}" "${CONFIG[PROTECTED_FILE_PATTERNS]}" \
+    "${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
 }
 
 # configure_protection: the step of a new Gitea repository. A refused request
