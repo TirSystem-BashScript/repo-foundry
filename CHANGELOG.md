@@ -13,6 +13,8 @@ file.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-05
+
 ### Added
 
 - A new Gitea repository gets a branch protection rule: no direct push to `main` (a change arrives by a pull request), status check patterns and protected file patterns. The patterns are glob patterns and are set with the optional `config.env` keys `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none) and `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`). A reused repository is not changed, and a rule that Gitea refuses is a warning.
@@ -20,6 +22,11 @@ file.
 - `TOKEN_FOR_GITEA_RELEASE` is accepted in `.env`, like `TOKEN_FOR_GITEA_ISSUES` and `TOKEN_FOR_GITEA_WIKI`: checked, kept secret, never used or asked for. A `.env` that holds it no longer stops the script with `unknown key`.
 - The optional `config.env` key `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` or `false`, default `false`) makes the branch protection rule of a new Gitea repository, and of `--protect`, require signed commits. The plan and the comparison of `--protect` show it.
 - The branch protection rule of a new Gitea repository, and of `--protect`, always blocks a merge on rejected reviews, on official review requests, when the pull request is outdated and for administrators. No key turns them off; the required approvals stay at 0. `--protect` shows a rule where one is off as different and changes it only after a yes.
+
+### Changed
+
+- A new Gitea repository refuses a direct push to `main`: the first commit of a new project goes by a branch and a pull request.
+- The release workflow also runs on pull requests: a `changelog` job checks `CHANGELOG.md`, and its status `Release / changelog (pull_request)` can be a required status check. The release itself still starts only by hand.
 
 ## [0.3.9] - 2026-10-29
 
