@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 2248d9e3606d -->
+<!-- translation of SshSigning.md, source sha256 2f50ff67bb38 -->
 
 > Dette er en oversættelse af [`SshSigning`](SshSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -37,6 +37,14 @@ git config --global commit.gpgsign true
 ## 2. Lad Gitea verificere signaturerne
 
 Åbn **Settings**, **SSH / GPG Keys** i Gitea. Den offentlige nøgle, du pusher med, ligger allerede der; Gitea bruger nøglerne på din konto til at verificere SSH-signaturer. Signerer du med en anden nøgle, så læg den også her.
+
+**Verificér nøglen.** Gitea stoler kun på en SSH-nøgle til signaturer, når du har bevist, at nøglen er din. En nøgle, der ikke er verificeret, står som *Unverified* på listen, og dine commits får intet **Verified**-mærke (API'et siger `no_gpg_keys_found`). Klik **Verify** ved nøglen: Gitea viser et token og den kommando, du skal køre. Den ser sådan ud (brug den kommando, Gitea viser, med dit eget token og din egen nøglefil):
+
+```bash
+echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
+```
+
+På Windows kører du den i Git Bash. Kommandoen skriver en blok, der starter med `-----BEGIN SSH SIGNATURE-----`. Indsæt hele blokken i feltet i Gitea, og bekræft.
 
 Mailadressen i `git config user.email` skal være en af adresserne på din Gitea-konto, ellers vises commit'et som ikke verificeret.
 

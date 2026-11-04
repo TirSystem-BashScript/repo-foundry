@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 2248d9e3606d -->
+<!-- translation of SshSigning.md, source sha256 2f50ff67bb38 -->
 
 > Ini ialah terjemahan [`SshSigning`](SshSigning). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -37,6 +37,14 @@ git config --global commit.gpgsign true
 ## 2. Biarkan Gitea mengesahkan tandatangan
 
 Buka **Settings**, **SSH / GPG Keys** dalam Gitea. Kunci awam yang anda gunakan untuk push sudah ada di situ; Gitea menggunakan kunci akaun anda untuk mengesahkan tandatangan SSH. Jika anda menandatangani dengan kunci lain, tambahkannya di sini juga.
+
+**Sahkan kunci itu.** Gitea mempercayai kunci SSH untuk tandatangan hanya selepas anda membuktikan bahawa kunci itu milik anda. Kunci yang belum disahkan ditunjukkan sebagai *Unverified* dalam senarai, dan commit anda tidak mendapat lencana **Verified** (API menjawab `no_gpg_keys_found`). Klik **Verify** di sebelah kunci itu: Gitea menunjukkan satu token dan arahan yang perlu dijalankan. Ia kelihatan seperti ini (gunakan arahan yang ditunjukkan Gitea, dengan token dan fail kunci anda sendiri):
+
+```bash
+echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
+```
+
+Pada Windows, jalankannya dalam Git Bash. Arahan itu mencetak satu blok yang bermula dengan `-----BEGIN SSH SIGNATURE-----`. Tampal keseluruhan blok itu ke dalam medan dalam Gitea dan sahkan.
 
 Alamat e-mel dalam `git config user.email` mestilah salah satu alamat akaun Gitea anda, jika tidak commit ditunjukkan sebagai tidak disahkan.
 

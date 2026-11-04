@@ -34,6 +34,14 @@ git config --global commit.gpgsign true
 
 In Gitea open **Settings**, **SSH / GPG Keys**. The public key you use for pushing is already there; Gitea uses the keys of your account to verify SSH signatures. If you sign with another key, add it here too.
 
+**Verify the key.** Gitea trusts an SSH key for signatures only after you have proved that the key is yours. A key that is not verified shows as *Unverified* in the list, and your commits get no **Verified** badge (the API says `no_gpg_keys_found`). Click **Verify** next to the key: Gitea shows a token and the command to run. It looks like this (use the command that Gitea shows, with your own token and key file):
+
+```bash
+echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
+```
+
+On Windows, run it in Git Bash. The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----`. Paste the whole block into the field in Gitea and confirm.
+
 The e-mail address in `git config user.email` must be one of the addresses of your Gitea account, or the commit is shown as unverified.
 
 ## 3. Let git verify the signatures on your machine
