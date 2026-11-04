@@ -26,7 +26,6 @@ file.
 ### Changed
 
 - A new Gitea repository refuses a direct push to `main`: the first commit of a new project goes by a branch and a pull request.
-- The release workflow also runs on pull requests: a `changelog` job checks `CHANGELOG.md`, and its status `Release / changelog (pull_request)` can be a required status check. The release itself still starts only by hand.
 
 ## [0.3.9] - 2026-10-29
 

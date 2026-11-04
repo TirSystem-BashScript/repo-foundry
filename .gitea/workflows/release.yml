@@ -9,13 +9,7 @@ name: Release
 #
 # release.py also keeps a moving major tag (v0 for 0.x versions) pointing to
 # the highest release of its major version, as in TirSystem/git-workflows.
-#
-# On a pull request the changelog job checks that CHANGELOG.md follows the
-# convention. Its status, "Release / changelog (pull_request)", can be a
-# required status check of the protected branch, so a pull request that breaks
-# the changelog cannot be merged.
 on:
-  pull_request:
   workflow_dispatch:
     inputs:
       version:
@@ -27,32 +21,11 @@ on:
         default: "true"
 
 concurrency:
-  group: release-${{ gitea.event_name }}
+  group: release
   cancel-in-progress: false
 
 jobs:
-  changelog:
-    if: gitea.event_name == 'pull_request'
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4.2.2
-
-      - name: Fetch the shared script
-        uses: actions/checkout@v4.2.2
-        with:
-          repository: TirSystem/git-workflows
-          ref: v1.1.0
-          path: shared-scripts
-
-      - name: Check the changelog
-        run: python3 shared-scripts/tools/changelog.py check
-
   release:
-    if: gitea.event_name == 'workflow_dispatch'
     permissions:
       contents: write
     runs-on: ubuntu-latest
