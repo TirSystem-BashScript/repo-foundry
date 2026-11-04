@@ -53,7 +53,7 @@ protection_path() {
 # protection_body create|edit: the JSON body of the rule from config.env. The
 # edit request does not carry the rule name. enable_push is always false.
 protection_body() {
-  local mode="$1" items=() item contexts="" enabled=false name=""
+  local mode="$1" items=() item contexts="" enabled=false name="" blocks="" key
   split_patterns "${CONFIG[PROTECTED_STATUS_CHECKS]}" items
   for item in "${items[@]}"; do
     contexts+="${contexts:+,}\"$(json_escape "$item")\""
@@ -64,9 +64,12 @@ protection_body() {
   if [[ $mode == create ]]; then
     name="\"rule_name\":\"$(json_escape "${CONFIG[PROTECTED_BRANCH_PATTERN]}")\","
   fi
-  printf '{%s"enable_push":false,"enable_status_check":%s,"status_check_contexts":[%s],"protected_file_patterns":"%s","require_signed_commits":%s}' \
+  for key in "${PROTECTION_BLOCK_KEYS[@]}"; do
+    blocks+=",\"$key\":true"
+  done
+  printf '{%s"enable_push":false,"enable_status_check":%s,"status_check_contexts":[%s],"protected_file_patterns":"%s","require_signed_commits":%s%s}' \
     "$name" "$enabled" "$contexts" "$(json_escape "${CONFIG[PROTECTED_FILE_PATTERNS]}")" \
-    "${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
+    "${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}" "$blocks"
 }
 
 # protection_summary: the wanted rule in words, for the plan.
@@ -77,6 +80,7 @@ protection_summary() {
   if [[ ${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]} == true ]]; then
     printf '; signed commits required'
   fi
+  printf '; merge blocked on rejected reviews, review requests, an outdated branch and for administrators'
 }
 
 # protection_array FILE KEY: the strings of a JSON array, one per line.
@@ -94,20 +98,26 @@ protection_array() {
 # protection_state FILE: the fields that matter of a rule that Gitea returned,
 # one "key: value" per line, in the form protection_wanted prints.
 protection_state() {
-  local file="$1" checks
+  local file="$1" checks key
   checks="$(protection_array "$file" status_check_contexts | tr '\n' ';')"
   printf 'enable_push: %s\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\nrequire_signed_commits: %s\n' \
     "$(json_get "$file" enable_push)" "$(json_get "$file" enable_status_check)" \
     "${checks%;}" "$(json_get "$file" protected_file_patterns)" "$(json_get "$file" require_signed_commits)"
+  for key in "${PROTECTION_BLOCK_KEYS[@]}"; do
+    printf '%s: %s\n' "$key" "$(json_get "$file" "$key")"
+  done
 }
 
 # protection_wanted: the same lines for the rule in config.env.
 protection_wanted() {
-  local enabled=false
+  local enabled=false key
   [[ -n ${CONFIG[PROTECTED_STATUS_CHECKS]} ]] && enabled=true
   printf 'enable_push: false\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\nrequire_signed_commits: %s\n' \
     "$enabled" "${CONFIG[PROTECTED_STATUS_CHECKS]}" "${CONFIG[PROTECTED_FILE_PATTERNS]}" \
     "${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
+  for key in "${PROTECTION_BLOCK_KEYS[@]}"; do
+    printf '%s: true\n' "$key"
+  done
 }
 
 # configure_protection: the step of a new Gitea repository. A refused request

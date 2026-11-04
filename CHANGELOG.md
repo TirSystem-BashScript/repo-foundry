@@ -19,6 +19,7 @@ file.
 - `create-project.sh --protect OWNER/NAME` gives an existing Gitea repository the same rule: a dry run without `--apply`, a missing rule is created, a rule that differs is changed only after a yes, and other rules are never touched. It needs the Gitea token only.
 - `TOKEN_FOR_GITEA_RELEASE` is accepted in `.env`, like `TOKEN_FOR_GITEA_ISSUES` and `TOKEN_FOR_GITEA_WIKI`: checked, kept secret, never used or asked for. A `.env` that holds it no longer stops the script with `unknown key`.
 - The optional `config.env` key `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` or `false`, default `false`) makes the branch protection rule of a new Gitea repository, and of `--protect`, require signed commits. The plan and the comparison of `--protect` show it.
+- The branch protection rule of a new Gitea repository, and of `--protect`, always blocks a merge on rejected reviews, on official review requests, when the pull request is outdated and for administrators. No key turns them off; the required approvals stay at 0. `--protect` shows a rule where one is off as different and changes it only after a yes.
 
 ## [0.3.9] - 2026-10-29
 

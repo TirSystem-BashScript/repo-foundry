@@ -28,6 +28,9 @@ readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
 readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
 readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: *"
 readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="false"
+# The block-merge settings of every rule (MIL-025): all on, no key turns one off.
+readonly PROTECTION_BLOCK_KEYS=(block_on_rejected_reviews block_on_official_review_requests
+  block_on_outdated_branch block_admin_merge_override)
 # What the prompts and the preset keys in config.env both tell the Maintainer
 # when a value is refused.
 readonly HINT_REPO_NAME="use letters, digits, '.', '_' or '-' (at most 100), not ending in .git"

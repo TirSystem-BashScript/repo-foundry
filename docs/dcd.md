@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
 | 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Optional signed-commit requirement in the branch protection rule (MIL-024) | [8ef17b7] |
+| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
 
 ---
 
@@ -172,6 +172,10 @@ class ProtectionRule {
   -filePatterns : String
   -statusCheckPatterns : String
   -requireSignedCommits : Boolean = false
+  -blockOnRejectedReviews : Boolean = true
+  -blockOnOfficialReviewRequests : Boolean = true
+  -blockOnOutdatedBranch : Boolean = true
+  -blockAdminMergeOverride : Boolean = true
   -directPushAllowed : Boolean = false
 }
 class LocalProject {
@@ -305,7 +309,7 @@ Repository "0..*" --> "1" Visibility
 | `GitHubRepository` | GitHub Repository | Receives its content from the mirror. | none beyond `Repository` | none |
 | `LicenseFile` | License | The license file in the Gitea repository when a license applies. | `key` | none |
 | `PushMirror` | Mirror | The Gitea to GitHub push mirror. | `interval`, `syncOnCommit` | none |
-| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `requireSignedCommits`, `directPushAllowed` | none |
+| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `requireSignedCommits`, `blockOnRejectedReviews`, `blockOnOfficialReviewRequests`, `blockOnOutdatedBranch`, `blockAdminMergeOverride`, `directPushAllowed` | none |
 | `LocalProject` | Local Project | The project directory on the Maintainer's machine. | `directory` | none |
 | `Remote` | Remote | A named link to a repository (`origin`), without a credential. | `name`, `address` | none |
 | `Submodule` | Framework | The framework added to the local project. | `name`, `address` | none |
@@ -401,3 +405,4 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
 [796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
+[7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d

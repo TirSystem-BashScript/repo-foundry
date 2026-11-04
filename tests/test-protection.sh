@@ -40,7 +40,7 @@ ROUTES
 }
 
 readonly RULE_DIFFERENT='{"rule_name":"main","enable_push":true,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":false}'
-readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}'
+readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
 
 # count_calls METHOD: how many requests with METHOD went to the stub.
 count_calls() {
@@ -69,7 +69,7 @@ test_the_default_rule_body_forbids_direct_push() {
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   local body
   body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}' "$body"
+  assert_eq "the whole body" '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$body"
 }
 
 test_the_plan_names_the_rule_for_a_created_repository_only() {
@@ -108,7 +108,7 @@ EOF
   assert_status "apply" 0 "$STATUS"
   local body
   body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":false}' "$body"
+  assert_eq "the whole body" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$body"
 }
 
 test_an_empty_list_of_status_checks_switches_the_check_off() {
@@ -177,6 +177,36 @@ test_protect_compares_the_signed_commits_setting() {
   assert_eq "no PATCH after a no" "0" "$(count_calls PATCH)"
 }
 
+test_the_four_block_merge_settings_are_always_on() {
+  local key
+  setup_hosts
+  prot_apply "$ANSWERS_GITHUB"$'y
+'
+  for key in block_on_rejected_reviews block_on_official_review_requests block_on_outdated_branch block_admin_merge_override; do
+    assert_contains "$key on" "$(cat "$WORK/curl.bodies")" "\"$key\":true"
+  done
+  assert_not_contains "approvals not sent" "$(cat "$WORK/curl.bodies")" "required_approvals"
+  assert_contains "plan names the blocks" "$OUT" "merge blocked on rejected reviews, review requests, an outdated branch and for administrators"
+}
+
+test_no_key_can_turn_a_block_merge_setting_off() {
+  setup_hosts
+  printf 'PROTECTED_BLOCK_ON_OUTDATED_BRANCH=false
+' >>"$WORK/config.env"
+  prot_dry "$ANSWERS_GITHUB"
+  assert_status "unknown key" 1 "$STATUS"
+  assert_contains "named" "$ERR" "unknown key 'PROTECTED_BLOCK_ON_OUTDATED_BRANCH'"
+}
+
+test_protect_changes_a_rule_where_a_block_setting_is_off_only_after_a_yes() {
+  protect_fixtures 200 '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":false,"block_admin_merge_override":true}'
+  prot_run $'y
+' --apply
+  assert_status "yes" 0 "$STATUS"
+  assert_contains "difference shown" "$OUT" "block_on_outdated_branch: false"
+  assert_eq "one PATCH" "1" "$(calls | grep -c -x -F "PATCH $PROTECTION_RULE_URL")"
+}
+
 test_a_refused_rule_is_a_warning_and_the_run_goes_on() {
   local code
   for code in 403 404 422; do
@@ -219,7 +249,7 @@ test_protect_creates_a_missing_rule_with_the_body_of_a_new_repository() {
   assert_eq "one POST" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
   assert_eq "no PATCH" "0" "$(count_calls PATCH)"
   assert_eq "same body as for a new repository" \
-    '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}' \
+    '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' \
     "$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
   assert_contains "done" "$OUT" "The rule 'main' was created"
 }
