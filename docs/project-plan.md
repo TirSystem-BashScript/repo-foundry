@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-04 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-024 (proposed dates 2027-02-22 to 2027-02-23): optional signed-commit requirement in the branch protection rule | [fd8d8d6] |
-| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-025 (proposed dates 2027-02-24 to 2027-02-25): block-merge settings in the branch protection rule | pending |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-025 (proposed dates 2027-02-24 to 2027-02-25): block-merge settings in the branch protection rule | [6fc0836] |
 
 ---
 
@@ -214,3 +214,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [fe54cde]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fe54cde487c3ddbea8d26c6b3e408ea92c9dd7e1
 [6133fe6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6133fe6f3b7067656ca3c9cc9d367a00111c4198
 [fd8d8d6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fd8d8d624a2817a3d9ae95da4ddd70270a1f9261
+[6fc0836]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6fc0836e34c3ced5a557840e751869e33b01caef

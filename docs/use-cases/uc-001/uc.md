@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Optional signed-commit requirement in the branch protection rule (MIL-024) | [8ef17b7] |
-| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | pending |
+| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
 
 ---
 
@@ -117,3 +117,4 @@
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
 [796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
+[7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d

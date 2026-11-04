@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [6fc0836] |
 
 ---
 
@@ -86,3 +86,4 @@ The number of required approvals is not changed: it stays at the Gitea default (
 [MIL-021]: ./mil-021-protect-default-branch.md
 [MIL-022]: ./mil-022-protect-existing-repository.md
 [MIL-024]: ./mil-024-require-signed-commits.md
+[6fc0836]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6fc0836e34c3ced5a557840e751869e33b01caef
