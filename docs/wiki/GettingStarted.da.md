@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 c015ea826a2c -->
+<!-- translation of GettingStarted.md, source sha256 74193627ffe4 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -55,3 +55,17 @@ src/create-project.sh --protect OWNER/NAME --apply   # opretter eller ændrer re
 ```
 
 En eksisterende regel, der afviger, ændres kun efter et ja.
+
+## Brug det som en kommando
+
+For at starte scriptet med `repo-foundry` fra en vilkårlig mappe lægger du et link til det i en mappe på din `PATH`. Kør dette én gang fra roden af dit checkout:
+
+```bash
+mkdir -p ~/bin
+ln -s "$PWD/src/create-project.sh" ~/bin/repo-foundry
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
+Åbn en ny terminal (eller kør `source ~/.bashrc`), og start det med `repo-foundry`. Scriptet følger linket tilbage til checkout'et og finder derfor sine egne filer, og en opdatering med `git pull` i checkout'et når kommandoen med det samme. På macOS bruger du `~/.zshrc` i stedet for `~/.bashrc`, hvis dit shell er zsh.
+
+På Windows bruger du WSL: åbn en WSL-terminal (for eksempel Ubuntu), klon Repo Foundry i den, og kør kommandoerne ovenfor dér.

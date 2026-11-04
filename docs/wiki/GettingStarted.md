@@ -51,3 +51,17 @@ src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the ru
 ```
 
 An existing rule that differs is changed only after a yes.
+
+## Run it as a command
+
+To start the script with `repo-foundry` from any folder, link it into a folder on your `PATH`. Run this once, from the root of your checkout:
+
+```bash
+mkdir -p ~/bin
+ln -s "$PWD/src/create-project.sh" ~/bin/repo-foundry
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
+Open a new terminal (or run `source ~/.bashrc`) and start it with `repo-foundry`. The script follows the link back to the checkout, so it finds its own files, and an update with `git pull` in the checkout reaches the command at once. On macOS, use `~/.zshrc` instead of `~/.bashrc` if your shell is zsh.
+
+On Windows, use WSL: open a WSL terminal (for example Ubuntu), clone Repo Foundry inside it, and run the commands above there.
