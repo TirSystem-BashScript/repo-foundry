@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 c4f26009cfca -->
+<!-- translation of Home.md, source sha256 02a24c1853f8 -->
 
 > Ini ialah terjemahan [`Home`](Home). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -48,6 +48,7 @@ Penyelenggara atau pasukan kecil yang memulakan beberapa projek dan mahu semuany
 | [Bermula](GettingStarted.ms) | Keperluan, pemasangan dan larian pertama |
 | [SSH dan token](SshAndTokens.ms) | Akses SSH ke Gitea dan dua token akses |
 | [Kunci SSH dengan frasa laluan](SshPassphrase.ms) | Muatkan kunci dengan frasa laluan ke dalam ejen SSH |
+| [Menandatangani commit](SshSigning.ms) | Tandatangani commit dengan kunci SSH anda supaya Gitea menunjukkannya sebagai Verified |
 | [Token akses](AccessTokens.ms) | Cipta token akses langkah demi langkah dengan gambar |
 | [Mengemas kini framework](UpdatingTheFramework.ms) | Pastikan submodul framework projek sentiasa terkini |
 | [Diagnosis](Troubleshooting.ms) | Kegagalan lazim dan tindakan yang perlu diambil |

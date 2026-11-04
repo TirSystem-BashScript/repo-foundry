@@ -1,4 +1,4 @@
-<!-- translation of Home.md, source sha256 c4f26009cfca -->
+<!-- translation of Home.md, source sha256 02a24c1853f8 -->
 
 > Dette er en oversættelse af [`Home`](Home). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -48,6 +48,7 @@ En vedligeholder eller et lille team, der starter flere projekter og vil have de
 | [Kom godt i gang](GettingStarted.da) | Krav, installation og første kørsel |
 | [SSH og tokens](SshAndTokens.da) | SSH-adgang til Gitea og de to adgangstokens |
 | [SSH-nøgler med adgangskode](SshPassphrase.da) | Indlæs en nøgle med adgangskode i SSH-agenten |
+| [Signering af commits](SshSigning.da) | Signér commits med din SSH-nøgle, så Gitea viser dem som Verified |
 | [Adgangstokens](AccessTokens.da) | Opret adgangstokens trin for trin med billeder |
 | [Opdatering af frameworket](UpdatingTheFramework.da) | Hold et projekts framework-submodul opdateret |
 | [Fejlfinding](Troubleshooting.da) | Almindelige fejl og hvad du skal gøre |
