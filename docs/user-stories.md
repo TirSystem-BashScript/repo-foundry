@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-03 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-023 added to CrossReference | [6133fe6] |
-| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-024 added to CrossReference | pending |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-024 added to CrossReference | [fd8d8d6] |
 
 ---
 
@@ -194,3 +194,4 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [b63fe29]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b63fe29d7df28b62bade9fc5b14500229dc43d80
 [1d59d45]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1d59d4552c024a43b810a2d6a25e29d5c3a27a84
 [6133fe6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6133fe6f3b7067656ca3c9cc9d367a00111c4198
+[fd8d8d6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fd8d8d624a2817a3d9ae95da4ddd70270a1f9261

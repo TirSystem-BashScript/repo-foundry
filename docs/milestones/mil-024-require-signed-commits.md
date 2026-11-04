@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [fd8d8d6] |
 
 ---
 
@@ -79,3 +79,4 @@ No token value is printed, put on a command line or written anywhere new. No new
 [US-001]: ../user-stories.md
 [MIL-021]: ./mil-021-protect-default-branch.md
 [MIL-022]: ./mil-022-protect-existing-repository.md
+[fd8d8d6]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/fd8d8d624a2817a3d9ae95da4ddd70270a1f9261
