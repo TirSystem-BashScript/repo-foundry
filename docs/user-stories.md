@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | US-001 |
-| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025] |
+| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-024 added to CrossReference | [fd8d8d6] |
-| 2026-11-04 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-025 added to CrossReference | [6fc0836] |
+| 2026-11-04 | Deprecated | Jens Tirsvad Nielsen | S02 | MIL-025 added to CrossReference | [6fc0836] |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-026 added to CrossReference | pending |
 
 ---
 
@@ -185,6 +185,7 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [MIL-023]: ./milestones/mil-023-release-token-key.md
 [MIL-024]: ./milestones/mil-024-require-signed-commits.md
 [MIL-025]: ./milestones/mil-025-block-merge-rules.md
+[MIL-026]: ./milestones/mil-026-release-0-4-0.md
 [PP-001]: ./project-plan.md
 [d1120f7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/d1120f7da03f41e6af8b5f35d860eee5bfd5f015
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e
