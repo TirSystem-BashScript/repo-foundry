@@ -27,6 +27,7 @@ readonly DEFAULT_BRANCH="main"
 readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
 readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
 readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: *"
+readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="false"
 # What the prompts and the preset keys in config.env both tell the Maintainer
 # when a value is refused.
 readonly HINT_REPO_NAME="use letters, digits, '.', '_' or '-' (at most 100), not ending in .git"
@@ -37,6 +38,7 @@ readonly HINT_LICENSE="use a Gitea license key (letters, digits, '.', '+' or '-'
 readonly HINT_DIRECTORY="must not be empty, start with '-' or contain control characters"
 readonly HINT_PROTECTED_BRANCH="a glob pattern without control characters or ';', such as main or release/*"
 readonly HINT_PROTECTED_LIST="glob patterns separated by ';', none of them empty and none with control characters"
+readonly HINT_PROTECTED_BOOLEAN="true or false"
 readonly HINT_PROTECT_TARGET="OWNER/NAME of a Gitea repository, such as TirSystem/my-app"
 readonly HINT_TOKEN="8 to 255 letters, digits or _ . ~ + / = -"
 readonly ENV_FILE_NAME=".env"
@@ -51,7 +53,8 @@ readonly CONFIG_KEYS=(GITHUB_API_URL GITHUB_WEB_URL GITEA_URL GITEA_API_URL
   GITEA_SSH_PORT MIRROR_INTERVAL FRAMEWORK_REPO
   PROJECT_NAME PROJECT_DESCRIPTION PROJECT_VISIBILITY GITEA_OWNER USE_GITHUB
   GITHUB_OWNER PROJECT_DIRECTORY ENABLE_PLAN_GATE PROJECT_LICENSE
-  PROTECTED_BRANCH_PATTERN PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS)
+  PROTECTED_BRANCH_PATTERN PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS
+  PROTECTED_REQUIRE_SIGNED_COMMITS)
 # The Gitea tokens use the names of the framework: TOKEN_FOR_GITEA_REPO is the
 # one used here; TOKEN_FOR_GITEA_ISSUES, TOKEN_FOR_GITEA_WIKI and
 # TOKEN_FOR_GITEA_RELEASE belong to the framework scripts and workflows. They

@@ -107,8 +107,8 @@ validate_config() {
   validate_protection_settings
 }
 
-# validate_protection_settings: the three keys of the branch protection rule
-# (MIL-021). Absent means the default; a key that is present counts as set,
+# validate_protection_settings: the keys of the branch protection rule
+# (MIL-021, MIL-024). Absent means the default; a key that is present counts as set,
 # so an empty list switches that part of the rule off. The message names the
 # key, never the value.
 validate_protection_settings() {
@@ -127,6 +127,11 @@ validate_protection_settings() {
     is_valid_protected_list "${CONFIG[$key]}" ||
       die "$key in $CONFIG_FILE is not valid: $HINT_PROTECTED_LIST"
   done
+  if [[ -z ${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]+set} ]]; then
+    CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]="$DEFAULT_PROTECTED_REQUIRE_SIGNED"
+  fi
+  [[ ${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]} == true || ${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]} == false ]] ||
+    die "PROTECTED_REQUIRE_SIGNED_COMMITS in $CONFIG_FILE is not valid: $HINT_PROTECTED_BOOLEAN"
 }
 
 # check_preset KEY VALIDATOR HINT: when KEY is set in config.env its value must

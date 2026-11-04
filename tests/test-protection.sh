@@ -39,8 +39,8 @@ PATCH|/api/v1/repos/TirSystem/my-app/branch_protections/main|200|{"rule_name":"m
 ROUTES
 }
 
-readonly RULE_DIFFERENT='{"rule_name":"main","enable_push":true,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":""}'
-readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":""}'
+readonly RULE_DIFFERENT='{"rule_name":"main","enable_push":true,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":false}'
+readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}'
 
 # count_calls METHOD: how many requests with METHOD went to the stub.
 count_calls() {
@@ -69,7 +69,7 @@ test_the_default_rule_body_forbids_direct_push() {
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   local body
   body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":""}' "$body"
+  assert_eq "the whole body" '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}' "$body"
 }
 
 test_the_plan_names_the_rule_for_a_created_repository_only() {
@@ -108,7 +108,7 @@ EOF
   assert_status "apply" 0 "$STATUS"
   local body
   body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"docs/**; *.lock"}' "$body"
+  assert_eq "the whole body" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":false}' "$body"
 }
 
 test_an_empty_list_of_status_checks_switches_the_check_off() {
@@ -133,7 +133,8 @@ test_an_invalid_protection_value_stops_before_any_request_and_names_the_key() {
   local line key
   for line in 'PROTECTED_BRANCH_PATTERN=' 'PROTECTED_BRANCH_PATTERN=a;b' \
     'PROTECTED_FILE_PATTERNS=a;;b' 'PROTECTED_FILE_PATTERNS=a;' \
-    'PROTECTED_STATUS_CHECKS=;a' 'PROTECTED_STATUS_CHECKS=a; ;b'; do
+    'PROTECTED_STATUS_CHECKS=;a' 'PROTECTED_STATUS_CHECKS=a; ;b' \
+    'PROTECTED_REQUIRE_SIGNED_COMMITS=yes' 'PROTECTED_REQUIRE_SIGNED_COMMITS='; do
     key="${line%%=*}"
     setup_hosts
     printf '%s\n' "$line" >>"$WORK/config.env"
@@ -144,6 +145,36 @@ test_an_invalid_protection_value_stops_before_any_request_and_names_the_key() {
     remove_workdir
     new_workdir
   done
+}
+
+test_signed_commits_are_required_only_when_the_key_says_true() {
+  setup_hosts
+  prot_apply "$ANSWERS_GITHUB"$'y
+'
+  assert_contains "off by default" "$(cat "$WORK/curl.bodies")" '"require_signed_commits":false'
+  remove_workdir
+  new_workdir
+  setup_hosts
+  printf 'PROTECTED_REQUIRE_SIGNED_COMMITS=true
+' >>"$WORK/config.env"
+  prot_dry "$ANSWERS_GITHUB"
+  assert_contains "plan says so" "$OUT" "signed commits required"
+  prot_apply "$ANSWERS_GITHUB"$'y
+'
+  assert_status "apply" 0 "$STATUS"
+  assert_contains "on" "$(cat "$WORK/curl.bodies")" '"require_signed_commits":true'
+}
+
+test_protect_compares_the_signed_commits_setting() {
+  protect_fixtures 200 "$RULE_AS_WANTED"
+  printf 'PROTECTED_REQUIRE_SIGNED_COMMITS=true
+' >>"$WORK/config.env"
+  prot_run $'n
+' --apply
+  assert_status "differs, answered no" 1 "$STATUS"
+  assert_contains "now" "$OUT" "require_signed_commits: false"
+  assert_contains "wanted" "$OUT" "require_signed_commits: true"
+  assert_eq "no PATCH after a no" "0" "$(count_calls PATCH)"
 }
 
 test_a_refused_rule_is_a_warning_and_the_run_goes_on() {
@@ -188,7 +219,7 @@ test_protect_creates_a_missing_rule_with_the_body_of_a_new_repository() {
   assert_eq "one POST" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
   assert_eq "no PATCH" "0" "$(count_calls PATCH)"
   assert_eq "same body as for a new repository" \
-    '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":""}' \
+    '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false}' \
     "$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
   assert_contains "done" "$OUT" "The rule 'main' was created"
 }

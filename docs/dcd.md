@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
+| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Optional signed-commit requirement in the branch protection rule (MIL-024) | pending |
 
 ---
 
@@ -117,6 +117,7 @@ class Configuration {
   -protectedBranchPattern : String
   -protectedFilePatterns : String
   -protectedStatusChecks : String
+  -protectedRequireSignedCommits : Boolean = false
   -frameworkRepo : String
   -presetDetails : Map [0..1]
 }
@@ -170,6 +171,7 @@ class ProtectionRule {
   -branchPattern : String
   -filePatterns : String
   -statusCheckPatterns : String
+  -requireSignedCommits : Boolean = false
   -directPushAllowed : Boolean = false
 }
 class LocalProject {
@@ -291,7 +293,7 @@ Repository "0..*" --> "1" Visibility
 | `FrameworkInstaller` | Framework, Framework Setup, Template | Adds the framework submodule, installs skills and hooks once, copies the templates without overwriting, and excludes `.claude`, `.agents` and `AGENTS.md` from git through `.git/info/exclude`. | none | `install`, `excludeFromGit` |
 | `SummaryReport` | Summary | Composes the report of what was created, skipped or failed. | none | `compose` |
 | `Run` | none (system concept) | Holds the state of one execution. | `isApply` | none |
-| `Configuration` | Configuration | Holds the service addresses, the credentials and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `protectedBranchPattern`, `protectedFilePatterns`, `protectedStatusChecks`, `frameworkRepo`, `presetDetails` | none |
+| `Configuration` | Configuration | Holds the service addresses, the credentials and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `protectedBranchPattern`, `protectedFilePatterns`, `protectedStatusChecks`, `protectedRequireSignedCommits`, `frameworkRepo`, `presetDetails` | none |
 | `Credential` | Access Token | Holds a secret in memory only; it never becomes part of an address or a message. | `kind`, `value` | none |
 | `ToolCheck` | none (system concept) | Records which tools are present. | `hasGit`, `hasCurl`, `hasJq` | none |
 | `PromptSet` | none (system concept) | The questions still to ask; a detail preset in `config.env` is not in it. | `prompts` | none |
@@ -303,7 +305,7 @@ Repository "0..*" --> "1" Visibility
 | `GitHubRepository` | GitHub Repository | Receives its content from the mirror. | none beyond `Repository` | none |
 | `LicenseFile` | License | The license file in the Gitea repository when a license applies. | `key` | none |
 | `PushMirror` | Mirror | The Gitea to GitHub push mirror. | `interval`, `syncOnCommit` | none |
-| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `directPushAllowed` | none |
+| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `requireSignedCommits`, `directPushAllowed` | none |
 | `LocalProject` | Local Project | The project directory on the Maintainer's machine. | `directory` | none |
 | `Remote` | Remote | A named link to a repository (`origin`), without a credential. | `name`, `address` | none |
 | `Submodule` | Framework | The framework added to the local project. | `name`, `address` | none |

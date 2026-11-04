@@ -41,7 +41,7 @@ No commit is made in the new project. Work on a branch there: the framework's ho
 
 A new Gitea repository gets a branch protection rule: no direct push to `main`, every change arrives by a pull request. The first commit of the new project goes the same way: push a branch and open a pull request.
 
-The rule is set with three optional keys in `config.env` (glob patterns, lists separated by `;`): `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none) and `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`). See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+The rule is set with four optional keys in `config.env` (glob patterns, lists separated by `;`): `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none), `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`) and `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` or `false`, default `false`; see [Signing commits](SshSigning)). See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 To give an existing repository the same rule:
 
