@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 af9799a65636 -->
+<!-- translation of GettingStarted.md, source sha256 883d03177e64 -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -55,3 +55,17 @@ src/create-project.sh --protect OWNER/NAME --apply   # mencipta atau menukar per
 ```
 
 Peraturan sedia ada yang berbeza hanya ditukar selepas jawapan ya.
+
+## Gunakan sebagai arahan
+
+Untuk memulakan skrip dengan `repo-foundry` dari mana-mana folder, pautkannya ke dalam folder yang ada pada `PATH` anda. Jalankan ini sekali, dari akar checkout anda:
+
+```bash
+mkdir -p ~/bin
+ln -s "$PWD/src/create-project.sh" ~/bin/repo-foundry
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
+Buka terminal baharu (atau jalankan `source ~/.bashrc`) dan mulakannya dengan `repo-foundry`. Skrip mengikut pautan kembali ke checkout, jadi ia menjumpai fail-failnya sendiri, dan kemas kini dengan `git pull` dalam checkout sampai ke arahan itu serta-merta. Pada macOS, gunakan `~/.zshrc` dan bukan `~/.bashrc` jika shell anda ialah zsh.
+
+Pada Windows, gunakan WSL: buka terminal WSL (contohnya Ubuntu), klon Repo Foundry di dalamnya, dan jalankan arahan di atas di situ.
