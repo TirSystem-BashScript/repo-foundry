@@ -4,6 +4,7 @@
 - [Getting started](GettingStarted)
 - [SSH and tokens](SshAndTokens)
 - [SSH keys with a passphrase](SshPassphrase)
+- [Signing commits](SshSigning)
 - [Access tokens](AccessTokens)
 - [Updating the framework](UpdatingTheFramework)
 - [Troubleshooting](Troubleshooting)
