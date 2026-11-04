@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-05 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [3edc44e] |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | The release workflow keeps no changelog job of its own (the organisation workflow already gives that status), so the entry does not list it | pending |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | The release workflow keeps no changelog job of its own (the organisation workflow already gives that status), so the entry does not list it | [b257f2f] |
 
 ---
 
@@ -81,3 +81,4 @@ The entry lists the five branch protection changes under Added. The framework pi
 [MIL-024]: ./mil-024-require-signed-commits.md
 [MIL-025]: ./mil-025-block-merge-rules.md
 [3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
+[b257f2f]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b257f2ffa915a2972eef4d7d072bba402cee21f9
