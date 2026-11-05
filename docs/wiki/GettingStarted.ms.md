@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 74193627ffe4 -->
+<!-- translation of GettingStarted.md, source sha256 7320e01bd9c4 -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -40,6 +40,10 @@ src/create-project.sh --apply    # mencipta semuanya selepas ya terakhir
 ```
 
 Tiada commit dibuat dalam projek baharu. Bekerja pada branch di sana: hook framework menolak commit pada `main`.
+
+## Pembersihan branch
+
+Repositori Gitea baharu mempunyai tetapan "Delete pull request branch after merge by default" dihidupkan, supaya branch pull request yang telah digabungkan dipadam oleh Gitea. Repositori yang digunakan semula tidak diubah. Untuk mematikannya, buka tetapan repositori dalam Gitea, di bawah Pull Requests.
 
 ## Perlindungan branch
 

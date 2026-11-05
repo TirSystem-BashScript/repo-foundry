@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 74193627ffe4 -->
+<!-- translation of GettingStarted.md, source sha256 7320e01bd9c4 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -40,6 +40,10 @@ src/create-project.sh --apply    # opretter alt efter et sidste ja
 ```
 
 Der laves ingen commit i det nye projekt. Arbejd på en branch der: frameworkets hooks afviser commits på `main`.
+
+## Oprydning af branches
+
+Et nyt Gitea-repository har indstillingen "Delete pull request branch after merge by default" slået til, så Gitea sletter en pull request-branch, når den er merged. Et genbrugt repository ændres ikke. Vil du slå den fra, så åbn repositoryets indstillinger i Gitea under Pull Requests.
 
 ## Beskyttelse af branch
 

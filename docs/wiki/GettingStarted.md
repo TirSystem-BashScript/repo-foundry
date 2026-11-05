@@ -37,6 +37,10 @@ src/create-project.sh --apply    # creates everything after a final yes
 
 No commit is made in the new project. Work on a branch there: the framework's hooks refuse commits on `main`.
 
+## Branch cleanup
+
+A new Gitea repository has the setting "Delete pull request branch after merge by default" turned on, so a merged pull request branch is deleted by Gitea. A reused repository is not changed. To turn it off, open the repository settings in Gitea, under Pull Requests.
+
 ## Branch protection
 
 A new Gitea repository gets a branch protection rule: no direct push to `main`, every change arrives by a pull request. A merge is also blocked on rejected reviews, on official review requests, when the pull request is outdated, and for administrators; no key turns these off. The first commit of the new project goes the same way: push a branch and open a pull request.

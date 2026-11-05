@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Optional signed-commit requirement in the branch protection rule (MIL-024) | [8ef17b7] |
 | 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
+| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | pending |
 
 ---
 
@@ -65,6 +65,7 @@ class GiteaClient <<facade>> {
   +createRepository(request : ProjectRequest, license : String [0..1]) : GiteaRepository
   +addPushMirror(source : GiteaRepository, target : GitHubRepository) : PushMirror
   -requestSync(mirror : PushMirror) : void
+  +enableBranchCleanup(repository : GiteaRepository) : GiteaRepository
   +protectBranch(repository : GiteaRepository, rule : ProtectionRule) : ProtectionRule
   +findProtection(repository : GiteaRepository, name : String) : ProtectionRule [0..1]
   +changeProtection(repository : GiteaRepository, rule : ProtectionRule) : ProtectionRule
@@ -291,7 +292,7 @@ Repository "0..*" --> "1" Visibility
 | `ToolChecker` | none (system concept `ToolCheck`) | Detects the required and optional tools. | none | `check` |
 | `Preflight` | none (system concept `PreflightResult`) | Runs the read-only checks of both hosts before anything is created. | none | `check` |
 | `GitHost` | Git Host | The operations every host offers: check the token, check that an owner accepts new repositories, check that a name is free. | `name`, `webAddress`, `apiAddress` | `verifyToken`, `ownerAccepts`, `nameFree` |
-| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository, the push mirror and the branch protection rule. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `createRepository`, `addPushMirror`, `requestSync`, `protectBranch`, `findProtection`, `changeProtection` |
+| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository, the push mirror and the branch protection rule. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `createRepository`, `addPushMirror`, `requestSync`, `enableBranchCleanup`, `protectBranch`, `findProtection`, `changeProtection` |
 | `GitHubClient` | Git Host (GitHub) | Hides the GitHub API and its token; creates the empty repository. | none beyond `GitHost` (uses `Configuration`) | `GitHubClient`, `createEmptyRepository` |
 | `LocalProjectBuilder` | Local Project, Remote | Creates the project directory, its git repository and its credential-free remotes. | none | `build` |
 | `FrameworkInstaller` | Framework, Framework Setup, Template | Adds the framework submodule, installs skills and hooks once, copies the templates without overwriting, and excludes `.claude`, `.agents` and `AGENTS.md` from git through `.git/info/exclude`. | none | `install`, `excludeFromGit` |
@@ -342,6 +343,7 @@ Repository "0..*" --> "1" Visibility
 | `GiteaClient.createRepository(request, license) : GiteaRepository` | [SD-001] `createRepository(request, license)`; P3, P4 |
 | `GiteaClient.addPushMirror(source, target) : PushMirror` | [SD-001] `addPushMirror(giteaRepository, gitHubRepository)`; P6 |
 | `GiteaClient.requestSync(mirror) : void` | [SD-001] `requestSync(pushMirror)`; P6 |
+| `GiteaClient.enableBranchCleanup(repository) : GiteaRepository` | [SD-001] `enableBranchCleanup(giteaRepository)`; P6b |
 | `GiteaClient.protectBranch(repository, rule) : ProtectionRule` | [SD-001] `protectBranch(giteaRepository, protectionRule)`; P6a; also `--protect` for an existing repository |
 | `GiteaClient.findProtection(repository, name) : ProtectionRule` | `--protect`: reads the rule of that name |
 | `GiteaClient.changeProtection(repository, rule) : ProtectionRule` | `--protect`: changes a differing rule after a yes |

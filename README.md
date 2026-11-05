@@ -285,6 +285,7 @@ Plan:
   Gitea repository  : create (public) with the AGPL-3.0 license (default: GitHub and a public project) https://git.example.org/Team/my-app
   GitHub repository : create (public), empty https://github.com/acme/my-app
   Push mirror       : Gitea -> GitHub every 10m0s
+  Branch cleanup    : turn on on Gitea: delete a pull request branch after merge, by default
   Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); status checks: TirSystem/git-workflows: *; protected files: none
   Local project     : create ./my-app (new directory), git on main, no commit
   Local origin      : will use SSH (the SSH test passed)
@@ -300,15 +301,19 @@ Without `--apply` that is all that happens. With `--apply` the script asks
 1. the GitHub repository (empty), if chosen;
 2. the Gitea repository (with the license that applies: `PROJECT_LICENSE`, or AGPL-3.0 for a public project with GitHub);
 3. the push mirror Gitea -> GitHub, and a request for its first sync;
-4. the branch protection rule on the Gitea repository (no direct push to
+4. the repository setting "Delete pull request branch after merge by default",
+   turned on (Gitea's create request has no field for it, so one edit request
+   follows; a refused request is a warning and the run goes on; turn it off in
+   the repository settings under Pull Requests if you do not want it);
+5. the branch protection rule on the Gitea repository (no direct push to
    `main`; see [Branch protection](#configenv-branch-protection-optional));
-5. the local directory, `git init` on `main`, the `origin` remote (the only
+6. the local directory, `git init` on `main`, the `origin` remote (the only
    remote: a push to it reaches GitHub through the mirror) and, if the Gitea
    repository holds the license commit, that history;
-6. the framework as the submodule `framework`;
-7. the framework's skills and git hooks, and the plan gate if chosen;
-8. `AGENTS.md` and `docs/artifact-registry.md` from the framework's templates;
-9. `/.claude`, `/.agents` and `/AGENTS.md` added to the new project's
+7. the framework as the submodule `framework`;
+8. the framework's skills and git hooks, and the plan gate if chosen;
+9. `AGENTS.md` and `docs/artifact-registry.md` from the framework's templates;
+10. `/.claude`, `/.agents` and `/AGENTS.md` added to the new project's
    `.git/info/exclude`, so git does not list them (see
    [The files git ignores](#the-files-git-ignores-in-the-new-project)).
 

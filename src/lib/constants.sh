@@ -50,7 +50,7 @@ readonly ENV_FILE_NAME=".env"
 # root. They go into .git/info/exclude of the new project.
 readonly FRAMEWORK_EXCLUDES=(/.claude /.agents /AGENTS.md)
 readonly PLAN_STEPS=("GitHub repository" "Gitea repository" "Push mirror"
-  "Branch protection" "Local project" "Framework" "Skills and hooks" "Templates" "Git excludes" "Project .env")
+  "Branch cleanup" "Branch protection" "Local project" "Framework" "Skills and hooks" "Templates" "Git excludes" "Project .env")
 # shellcheck disable=SC2034  # read through namerefs (parse_env_file)
 readonly CONFIG_KEYS=(GITHUB_API_URL GITHUB_WEB_URL GITEA_URL GITEA_API_URL
   GITEA_SSH_PORT MIRROR_INTERVAL FRAMEWORK_REPO

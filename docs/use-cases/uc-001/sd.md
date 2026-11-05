@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | The Gitea token key is TOKEN_FOR_GITEA_REPO (MIL-019) | [1b56a6d] |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
+| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | pending |
 
 ---
 
@@ -145,6 +145,11 @@ opt githubOwner present
   deactivate GT
 end
 
+PC -> GT : enableBranchCleanup(giteaRepository)
+activate GT
+GT --> PC : giteaRepository
+deactivate GT
+
 PC -> GT : protectBranch(giteaRepository, protectionRule)
 activate GT
 GT --> PC : protectionRule
@@ -206,6 +211,7 @@ destroy SR
 | P4 LicenseFile when a license applies, otherwise empty | `createRepository(request, license)`; `license` is the one the `ProjectRequest` carries (`PROJECT_LICENSE`, or AGPL-3.0 when GitHub was chosen and the project is public), and is absent for `none` |
 | P2 GitHub credentials known before the first request | `collect(configuration, GITHUB_PAT, GITHUB_USER)` inside `opt githubOwner present` |
 | P5 empty GitHubRepository when chosen | `createEmptyRepository(request)` |
+| P6b Delete pull request branch after merge turned on for a created Gitea repository | `enableBranchCleanup(giteaRepository)` |
 | P6a ProtectionRule on a created Gitea repository, never a direct push | `protectBranch(giteaRepository, protectionRule)` |
 | P6 PushMirror and first sync | `addPushMirror(...)` and `requestSync(pushMirror)` |
 | P7 LocalProject created, history from Gitea when not empty | `build(directory, ...)` |
