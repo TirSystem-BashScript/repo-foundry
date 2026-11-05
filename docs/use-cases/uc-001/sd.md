@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
-| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | pending |
+| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
 
 ---
 
@@ -239,3 +239,4 @@ destroy SR
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
 [796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
+[308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f

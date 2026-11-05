@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [14b519e] |
 
 ---
 
@@ -82,3 +82,4 @@ No token value is printed, put on a command line or written anywhere new. No new
 [MIL-024]: ./mil-024-require-signed-commits.md
 [MIL-025]: ./mil-025-block-merge-rules.md
 [MIL-026]: ./mil-026-release-0-4-0.md
+[14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
