@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Deprecated | Jens Tirsvad Nielsen | S02 | Added phase MIL-025 (proposed dates 2027-02-24 to 2027-02-25): block-merge settings in the branch protection rule | [6fc0836] |
 | 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-026 (proposed dates 2027-03-01 to 2027-03-02): release 0.4.0 | [3edc44e] |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-027 (proposed dates 2027-03-03 to 2027-03-05): require signed commits by default | pending |
 
 ---
 
@@ -55,6 +55,7 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Require Signed Commits | [MIL-024] | 2027-02-22 to 2027-02-23 | 2027-02-23 | S01 | US-001 | The branch protection rule can require signed commits, off by default | |
 | Block Merge Rules | [MIL-025] | 2027-02-24 to 2027-02-25 | 2027-02-25 | S01 | US-001 | The branch protection rule blocks a merge on rejected reviews, review requests, an outdated branch and for administrators | |
 | Release 0.4.0 | [MIL-026] | 2027-03-01 to 2027-03-02 | 2027-03-02 | S01 | US-001 | Version 0.4.0 released on Gitea with its changelog entry | |
+| Signed Commits By Default | [MIL-027] | 2027-03-03 to 2027-03-05 | 2027-03-05 | S01 | US-001 | The branch protection rule requires signed commits unless `config.env` says otherwise | |
 
 ```plantuml
 @startgantt
@@ -111,6 +112,8 @@ Project starts 2026-10-05
 [Block Merge Rules Go/No-Go] happens 2027-02-25
 [Release 0.4.0] starts 2027-03-01 and ends 2027-03-02
 [Release 0.4.0 Go/No-Go] happens 2027-03-02
+[Signed Commits By Default] starts 2027-03-03 and ends 2027-03-05
+[Signed Commits By Default Go/No-Go] happens 2027-03-05
 @endgantt
 ```
 
@@ -148,11 +151,12 @@ Project starts 2026-10-05
 | The branch protection rule can require signed commits | [MIL-024] |
 | The branch protection rule blocks a merge on rejected reviews, review requests, an outdated branch and for administrators | [MIL-025] |
 | Version 0.4.0 released | [MIL-026] |
+| The branch protection rule requires signed commits by default | [MIL-027] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026 → MIL-027
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -202,6 +206,7 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-024]: ./milestones/mil-024-require-signed-commits.md
 [MIL-025]: ./milestones/mil-025-block-merge-rules.md
 [MIL-026]: ./milestones/mil-026-release-0-4-0.md
+[MIL-027]: ./milestones/mil-027-signed-commits-by-default.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
