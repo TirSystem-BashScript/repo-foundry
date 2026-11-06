@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 7320e01bd9c4 -->
+<!-- translation of GettingStarted.md, source sha256 1fe40c0e670a -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -49,7 +49,7 @@ Repositori Gitea baharu mempunyai tetapan "Delete pull request branch after merg
 
 Repositori Gitea baharu mendapat peraturan perlindungan branch: tiada push terus ke `main`, setiap perubahan datang melalui pull request. Penggabungan juga disekat apabila ada ulasan yang ditolak, permintaan ulasan rasmi, apabila pull request sudah lapuk, dan untuk pentadbir; tiada kunci yang mematikannya. Commit pertama projek baharu mengikut laluan yang sama: push satu branch dan buka pull request.
 
-Peraturan ditetapkan dengan empat kunci pilihan dalam `config.env` (corak glob, senarai dipisahkan dengan `;`): `PROTECTED_BRANCH_PATTERN` (lalai `main`), `PROTECTED_FILE_PATTERNS` (lalai tiada), `PROTECTED_STATUS_CHECKS` (lalai `TirSystem/git-workflows: *`) dan `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` atau `false`, lalai `false`; lihat [Menandatangani commit](SshSigning.ms)). Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+Peraturan ditetapkan dengan empat kunci pilihan dalam `config.env` (corak glob, senarai dipisahkan dengan `;`): `PROTECTED_BRANCH_PATTERN` (lalai `main`), `PROTECTED_FILE_PATTERNS` (lalai tiada), `PROTECTED_STATUS_CHECKS` (lalai `TirSystem/git-workflows: *`) dan `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` atau `false`, lalai `true`; `false` jika anda tidak boleh menandatangani; lihat [Menandatangani commit](SshSigning.ms)). Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 Untuk memberi repositori sedia ada peraturan yang sama:
 

@@ -27,7 +27,7 @@ readonly DEFAULT_BRANCH="main"
 readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
 readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
 readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: *"
-readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="false"
+readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="true"
 # The block-merge settings of every rule (MIL-025): all on, no key turns one off.
 readonly PROTECTION_BLOCK_KEYS=(block_on_rejected_reviews block_on_official_review_requests
   block_on_outdated_branch block_admin_merge_override)
