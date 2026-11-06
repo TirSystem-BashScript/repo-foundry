@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
 | 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
 
 ---
 
@@ -96,6 +96,7 @@
 | 3 | A project detail set in `config.env` (the key is present, even if empty where an empty value is allowed) is not asked; only the confirmations stay interactive |
 | 3, 5, 7 | GitHub is optional; without it no GitHub repository or mirror is created and the GitHub credentials are not required |
 | 6 | The license that applies is added to the Gitea repository when it is created, so that repository is not empty: `PROJECT_LICENSE` if set (a Gitea license key such as `MIT`, or `none`), otherwise AGPL-3.0 when GitHub is chosen and the project is public, otherwise none. It is independent of the GitHub choice when set, and it is never asked |
+| 6a | `--list-licenses` prints the key of every license the Gitea server offers, one per line, so that the user can choose `PROJECT_LICENSE`: it reads the license list only (one `GET`), needs the Gitea token only, creates and changes nothing, and cannot be combined with `--apply` or `--protect` |
 | 7a | The setting is turned on only for a repository this run created, with one `PATCH` that carries one field, `default_delete_branch_after_merge`; the GitHub repository is not changed |
 | 7b | The rule never allows a direct push and no key turns it on; the three patterns are glob patterns (https://github.com/gobwas/glob) sent as given; an empty `PROTECTED_STATUS_CHECKS` switches the status check off; `PROTECTED_REQUIRE_SIGNED_COMMITS` is `true` or `false` (default `true`) and, when `true`, the rule requires signed commits. The four block-merge settings are always on and no key turns them off; the required approvals are not set. The rule is made after the repository and its mirror, and only for a repository this run created |
 | 7b | `--protect OWNER/NAME` gives an existing Gitea repository the same rule: a dry run without `--apply`; a missing rule is created; an existing rule that differs is changed only after a yes; rules of other names are never touched; it needs the Gitea token only |
@@ -122,3 +123,4 @@
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
 [5c0caed]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/5c0caed9b42d93457aa118e2ebd420b8d566f0ad
+[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed

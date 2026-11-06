@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
 | 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
 
 ---
 
@@ -66,6 +66,7 @@ abstract class GitHost <<facade>> {
 class GiteaClient <<facade>> {
   +GiteaClient(configuration : Configuration)
   +hasLicense(key : String) : Boolean
+  +listLicenses() : String[]
   +createRepository(request : ProjectRequest, license : String [0..1]) : GiteaRepository
   +addPushMirror(source : GiteaRepository, target : GitHubRepository) : PushMirror
   -requestSync(mirror : PushMirror) : void
@@ -265,7 +266,7 @@ Repository "0..*" --> "1" Visibility
 | `ToolChecker` | none (system concept `ToolCheck`) | Detects the required and optional tools. | none | `check` |
 | `Preflight` | none (system concept `PreflightResult`) | Runs the read-only checks of both hosts before anything is created. | none | `check` |
 | `GitHost` | Git Host | The operations every host offers: check the token, check that an owner accepts new repositories, check that a name is free. | `name`, `webAddress`, `apiAddress` | `verifyToken`, `ownerAccepts`, `nameFree` |
-| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository, the push mirror and the branch protection rule. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `createRepository`, `addPushMirror`, `requestSync`, `enableBranchCleanup`, `protectBranch`, `findProtection`, `changeProtection` |
+| `GiteaClient` | Git Host (Gitea) | Hides the Gitea API and its token; creates the repository, the push mirror and the branch protection rule. | none beyond `GitHost` (uses `Configuration`) | `GiteaClient`, `hasLicense`, `listLicenses`, `createRepository`, `addPushMirror`, `requestSync`, `enableBranchCleanup`, `protectBranch`, `findProtection`, `changeProtection` |
 | `GitHubClient` | Git Host (GitHub) | Hides the GitHub API and its token; creates the empty repository. | none beyond `GitHost` (uses `Configuration`) | `GitHubClient`, `createEmptyRepository` |
 | `LocalProjectBuilder` | Local Project, Remote | Creates the project directory, its git repository and its credential-free remotes. | none | `build` |
 | `FrameworkInstaller` | Framework, Framework Setup, Template | Adds the framework submodule, installs skills and hooks once, copies the templates without overwriting, and excludes `.claude`, `.agents` and `AGENTS.md` from git through `.git/info/exclude`. | none | `install`, `excludeFromGit` |
@@ -310,6 +311,7 @@ Repository "0..*" --> "1" Visibility
 | `GitHost.ownerAccepts(owner) : Boolean` | [SD-001] `ownerAccepts(giteaOwner)` and `ownerAccepts(githubOwner)`; P2 |
 | `GitHost.nameFree(name) : Boolean` | [SD-001] `nameFree(name)` to either client; P2 |
 | `GiteaClient.hasLicense(key) : Boolean` | [SD-001] `hasLicense(license)`; P2 |
+| `GiteaClient.listLicenses() : String[]` | `--list-licenses`: reads the license keys of the server, the same request as `hasLicense` |
 | `GiteaClient.createRepository(request, license) : GiteaRepository` | [SD-001] `createRepository(request, license)`; P3, P4 |
 | `GiteaClient.addPushMirror(source, target) : PushMirror` | [SD-001] `addPushMirror(giteaRepository, gitHubRepository)`; P6 |
 | `GiteaClient.requestSync(mirror) : void` | [SD-001] `requestSync(pushMirror)`; P6 |
@@ -377,3 +379,4 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
+[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed

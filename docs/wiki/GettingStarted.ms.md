@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 1fe40c0e670a -->
+<!-- translation of GettingStarted.md, source sha256 2b192ec2ec79 -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -59,6 +59,16 @@ src/create-project.sh --protect OWNER/NAME --apply   # mencipta atau menukar per
 ```
 
 Peraturan sedia ada yang berbeza hanya ditukar selepas jawapan ya.
+
+## Lesen
+
+Lesen bagi projek baharu ialah `PROJECT_LICENSE` dalam `config.env` (pilihan): kunci lesen Gitea seperti `AGPL-3.0` atau `MIT`, atau `none` untuk tiada lesen. Untuk melihat kunci yang ditawarkan pelayan Gitea anda:
+
+```bash
+src/create-project.sh --list-licenses     # satu kunci lesen setiap baris; hanya membaca
+```
+
+Pelayan Maintainer menawarkan 30 kunci; ia disenaraikan sebagai ulasan dalam `config.env.example`.
 
 ## Gunakan sebagai arahan
 

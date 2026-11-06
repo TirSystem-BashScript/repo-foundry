@@ -84,6 +84,8 @@ HTTP_ERROR=""
 HTTP_CURL_STATUS=0
 REPLY=""
 IS_APPLY=0
+# --list-licenses: the run only prints the license keys of the Gitea server.
+IS_LIST_LICENSES=0
 # OWNER/NAME given to --protect: the run only protects that repository.
 PROTECT_TARGET=""
 IS_CREATION_STARTED=0

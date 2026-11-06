@@ -56,6 +56,16 @@ src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the ru
 
 An existing rule that differs is changed only after a yes.
 
+## License
+
+The license of a new project is `PROJECT_LICENSE` in `config.env` (optional): a Gitea license key such as `AGPL-3.0` or `MIT`, or `none` for no license. To see the keys your Gitea server offers:
+
+```bash
+src/create-project.sh --list-licenses     # one license key per line; reads only
+```
+
+The Maintainer's server offers 30 keys; they are listed as a comment in `config.env.example`.
+
 ## Run it as a command
 
 To start the script with `repo-foundry` from any folder, link it into a folder on your `PATH`. Run this once, from the root of your checkout:

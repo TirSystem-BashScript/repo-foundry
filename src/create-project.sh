@@ -26,6 +26,7 @@
 # Usage
 #   create-project.sh [--apply] [--config FILE] [--env FILE]
 #   create-project.sh --protect OWNER/NAME [--apply] [--config FILE] [--env FILE]
+#   create-project.sh --list-licenses [--config FILE] [--env FILE]
 #   create-project.sh --help | --version
 #
 # Options
@@ -36,6 +37,10 @@
 #                   direct push; status checks; protected files). A dry run
 #                   without --apply; an existing rule that differs is changed
 #                   only after a yes
+#   --list-licenses print the license key of every license the Gitea server
+#                   offers, one per line, for PROJECT_LICENSE in config.env;
+#                   it only reads and cannot be combined with --apply or
+#                   --protect
 #   --config FILE   service addresses (default: config.env in the project root)
 #   --env FILE      credentials (default: .env in the project root); optional:
 #                   a credential it does not provide is asked, not echoed
@@ -214,6 +219,10 @@ main() {
   setup_temp_dir
   load_configuration
   collect_credentials TOKEN_FOR_GITEA_REPO
+  if ((IS_LIST_LICENSES)); then
+    list_licenses
+    return 0
+  fi
   if [[ -n $PROTECT_TARGET ]]; then
     protect_existing_repository "$PROTECT_TARGET"
     return 0
