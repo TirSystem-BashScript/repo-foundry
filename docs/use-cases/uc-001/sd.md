@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
-| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
 
 ---
 
