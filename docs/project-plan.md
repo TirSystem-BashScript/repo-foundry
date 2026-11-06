@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-026 (proposed dates 2027-03-01 to 2027-03-02): release 0.4.0 | [3edc44e] |
 | 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-027 (proposed dates 2027-03-03 to 2027-03-05): require signed commits by default | [14b519e] |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-028 (proposed dates 2027-03-08 to 2027-03-09): release 0.5.0 | [e961872] |
 
 ---
 
@@ -56,6 +56,7 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Block Merge Rules | [MIL-025] | 2027-02-24 to 2027-02-25 | 2027-02-25 | S01 | US-001 | The branch protection rule blocks a merge on rejected reviews, review requests, an outdated branch and for administrators | |
 | Release 0.4.0 | [MIL-026] | 2027-03-01 to 2027-03-02 | 2027-03-02 | S01 | US-001 | Version 0.4.0 released on Gitea with its changelog entry | |
 | Signed Commits By Default | [MIL-027] | 2027-03-03 to 2027-03-05 | 2027-03-05 | S01 | US-001 | The branch protection rule requires signed commits unless `config.env` says otherwise | |
+| Release 0.5.0 | [MIL-028] | 2027-03-08 to 2027-03-09 | 2027-03-09 | S01 | US-001 | Version 0.5.0 released on Gitea with its changelog entry | |
 
 ```plantuml
 @startgantt
@@ -114,6 +115,8 @@ Project starts 2026-10-05
 [Release 0.4.0 Go/No-Go] happens 2027-03-02
 [Signed Commits By Default] starts 2027-03-03 and ends 2027-03-05
 [Signed Commits By Default Go/No-Go] happens 2027-03-05
+[Release 0.5.0] starts 2027-03-08 and ends 2027-03-09
+[Release 0.5.0 Go/No-Go] happens 2027-03-09
 @endgantt
 ```
 
@@ -152,11 +155,12 @@ Project starts 2026-10-05
 | The branch protection rule blocks a merge on rejected reviews, review requests, an outdated branch and for administrators | [MIL-025] |
 | Version 0.4.0 released | [MIL-026] |
 | The branch protection rule requires signed commits by default | [MIL-027] |
+| Version 0.5.0 released | [MIL-028] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026 → MIL-027
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026 → MIL-027 → MIL-028
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -207,6 +211,7 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-025]: ./milestones/mil-025-block-merge-rules.md
 [MIL-026]: ./milestones/mil-026-release-0-4-0.md
 [MIL-027]: ./milestones/mil-027-signed-commits-by-default.md
+[MIL-028]: ./milestones/mil-028-release-0-5-0.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
@@ -227,3 +232,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [6fc0836]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6fc0836e34c3ced5a557840e751869e33b01caef
 [3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
+[e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
