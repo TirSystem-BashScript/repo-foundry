@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: check_gitea_organization, check_gitea_license, inspect_repository, preflight_gitea, check_github_organization, preflight_github, test_gitea_ssh, decide_existing_repositories, run_preflight
+# Provides: check_gitea_organization, fetch_gitea_licenses, check_gitea_license, list_licenses, inspect_repository, preflight_gitea, check_github_organization, preflight_github, test_gitea_ssh, decide_existing_repositories, run_preflight
 
 check_gitea_organization() {
   local org="$1" login="$2"
@@ -20,11 +20,28 @@ check_gitea_organization() {
   fi
 }
 
-check_gitea_license() {
+# fetch_gitea_licenses: read the license list of the Gitea server into the
+# body file; the one request that the license check and --list-licenses share.
+fetch_gitea_licenses() {
   api_call gitea GET /licenses
   expect_status "cannot list the licenses of the Gitea server" 200
+}
+
+check_gitea_license() {
+  fetch_gitea_licenses
   json_has_value "$HTTP_BODY_FILE" key "${PROJECT[license]}" ||
     die "the Gitea server does not offer the ${PROJECT[license]} license"
+}
+
+# list_licenses: --list-licenses. Print the key of every license the Gitea
+# server offers, one per line. It only reads.
+list_licenses() {
+  local keys
+  fetch_gitea_licenses
+  keys="$(json_values "$HTTP_BODY_FILE" key)"
+  [[ -n $keys ]] || die "the Gitea server offers no licenses"
+  printf '%s
+' "$keys"
 }
 
 # inspect_repository HOST: record in STATE[HOST_repo] whether the repository

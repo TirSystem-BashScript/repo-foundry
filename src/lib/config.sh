@@ -293,8 +293,12 @@ confirm_folder_files() {
 load_configuration() {
   locate_config_file config.env --config CONFIG_FILE CONFIG_ORIGIN
   locate_config_file .env --env ENV_FILE ENV_ORIGIN optional
-  say "Config file     : $CONFIG_FILE ($(origin_words "$CONFIG_ORIGIN"))"
-  say "Credentials file: ${ENV_FILE:-(none)} ($(origin_words "$ENV_ORIGIN"))"
+  # --list-licenses prints a list for other programs: the two lines go to
+  # stderr then, so that stdout holds the license keys only.
+  {
+    say "Config file     : $CONFIG_FILE ($(origin_words "$CONFIG_ORIGIN"))"
+    say "Credentials file: ${ENV_FILE:-(none)} ($(origin_words "$ENV_ORIGIN"))"
+  } >&"$((IS_LIST_LICENSES ? 2 : 1))"
   parse_env_file "$CONFIG_FILE" CONFIG_KEYS CONFIG
   validate_config
   confirm_folder_files
