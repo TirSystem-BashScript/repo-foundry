@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
-| 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
+| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
 
 ---
 
