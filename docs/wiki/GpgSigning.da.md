@@ -1,4 +1,4 @@
-<!-- translation of GpgSigning.md, source sha256 9847249f0b97 -->
+<!-- translation of GpgSigning.md, source sha256 5cee63cf586e -->
 
 > Dette er en oversættelse af [`GpgSigning`](GpgSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres
 
@@ -41,13 +41,18 @@ gpg --armor --export 0123456789ABCDEF
 
 ![Trin 2: formularen Manage GPG Keys med feltet Content og knappen Add Key](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-1-add-key.png)
 
-Nøglen skal stå som **Verified Key** med din e-mailadresse under **Matched Identities**. Gitea sammenligner nøglens e-mailadresse med en adresse på din konto, som du har bekræftet. Står den som ikke verificeret, så tjek, at nøglens e-mailadresse er bekræftet under **Settings, Account**. Viser Gitea en knap **Verify**, så klik på den og signér det token, Gitea viser:
+Nøglen skal stå som **Verified Key** med din e-mailadresse under **Matched Identities**, som på billedet herunder. Gitea sammenligner nøglens e-mailadresse med en adresse på din konto, som du har bekræftet (**Settings, Account**). Er nøglen ikke verificeret, har den intet **Verified Key**-mærke og en blå knap **Verify** ved siden af. Verificér den som en SSH-nøgle; formularen er den, der vises i trin 2 i [Signering af commits](SshSigning.da):
+
+1. Klik på den blå knap **Verify** ved siden af nøglen.
+2. Kopiér det **Token**, Gitea viser. Gør de næste to trin uden at forlade siden: tokenet skifter, hvis du åbner formularen igen.
+3. Signér tokenet med den hemmelige nøgle, i en terminal på den maskine, der har nøglen:
 
 ```bash
 echo -n 'TOKENET-FRA-GITEA' | gpg -a --default-key 0123456789ABCDEF --detach-sig
 ```
 
-Indsæt hele den blok, kommandoen skriver, i feltet og bekræft.
+4. Indsæt hele den blok, kommandoen skriver, fra `-----BEGIN PGP SIGNATURE-----` til `-----END PGP SIGNATURE-----`, i feltet til signaturen, og klik på den blå knap **Verify** under det.
+5. Gitea viser **GPG key … has been verified**, og nøglen står som **Verified Key**.
 
 ![Trin 2: GPG-nøglen vist som Verified Key, med den matchede identitet og nøgle-id'et](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-2-verified-key.png)
 
