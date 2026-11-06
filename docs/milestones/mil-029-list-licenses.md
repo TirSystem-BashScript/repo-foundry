@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [b7406aa] |
 
 ---
 
@@ -82,3 +82,4 @@ No new credential and no new host.
 [US-001]: ../user-stories.md
 [MIL-022]: ./mil-022-protect-existing-repository.md
 [MIL-028]: ./mil-028-release-0-5-0.md
+[b7406aa]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b7406aae0247f021b4489a5ce275d09c9538519d

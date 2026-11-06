@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | pending |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | [b7406aa] |
 
 ---
 
@@ -82,3 +82,4 @@ Go — every criterion of the checklist passes and the changed documents agree w
 [PP-001]: ../../project-plan.md
 [TM-001]: ../traceability-matrix.md
 [RC-035]: ./rc-035-release-0-3-5.md
+[b7406aa]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b7406aae0247f021b4489a5ce275d09c9538519d
