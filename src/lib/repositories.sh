@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: repo_body, settle_timed_out_create, create_repository
+# Provides: repo_body, settle_timed_out_create, create_repository, configure_branch_cleanup
 
 # repo_body HOST: the JSON body that creates the repository on HOST.
 repo_body() {
@@ -73,4 +73,29 @@ create_repository() {
   fi
   expect_status "cannot create the $label" 201
   finish_step "$label" "created" "$(repo_url "$host")"
+}
+
+# configure_branch_cleanup: turn on "Delete pull request branch after merge by
+# default" on a Gitea repository this run created (MIL-018). Gitea's create
+# request has no field for it, so one edit request follows. A refused request
+# is a warning, not the end of the run: the repository is complete without it.
+configure_branch_cleanup() {
+  local label="Branch cleanup" hint="(set it in the repository settings under Pull Requests)"
+  if is_reused gitea; then
+    finish_step "$label" "not changed" "(the repository is reused)"
+    return 0
+  fi
+  begin_step "$label"
+  if ! try_api_call gitea PATCH "/repos/${PROJECT[gitea_owner]}/${PROJECT[name]}" \
+    '{"default_delete_branch_after_merge":true}'; then
+    warn "could not turn on branch cleanup after merge: $HTTP_ERROR"
+    finish_step "$label" "not set" "$hint"
+    return 0
+  fi
+  if [[ $HTTP_STATUS != 200 ]]; then
+    warn "could not turn on branch cleanup after merge: $(describe_http_status "$HTTP_STATUS")$(server_message_note)"
+    finish_step "$label" "not set" "$hint"
+    return 0
+  fi
+  finish_step "$label" "on" "(a pull request branch is deleted after merge)"
 }
