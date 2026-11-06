@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-027 (proposed dates 2027-03-03 to 2027-03-05): require signed commits by default | [14b519e] |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-028 (proposed dates 2027-03-08 to 2027-03-09): release 0.5.0 | pending |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Added phase MIL-028 (proposed dates 2027-03-08 to 2027-03-09): release 0.5.0 | [e961872] |
 
 ---
 
@@ -232,3 +232,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [6fc0836]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/6fc0836e34c3ced5a557840e751869e33b01caef
 [3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
+[e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4

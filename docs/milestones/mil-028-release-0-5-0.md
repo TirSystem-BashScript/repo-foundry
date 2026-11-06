@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [e961872] |
 
 ---
 
@@ -76,3 +76,4 @@ The entry keeps the Added and Changed groups of `## [Unreleased]`, in the order 
 [MIL-018]: ./mil-018-delete-branch-after-merge.md
 [MIL-026]: ./mil-026-release-0-4-0.md
 [MIL-027]: ./mil-027-signed-commits-by-default.md
+[e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
