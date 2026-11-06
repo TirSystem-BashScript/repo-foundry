@@ -1,4 +1,4 @@
-<!-- translation of GpgSigning.md, source sha256 9847249f0b97 -->
+<!-- translation of GpgSigning.md, source sha256 5cee63cf586e -->
 
 > Ini ialah terjemahan [`GpgSigning`](GpgSigning). Halaman Inggeris ialah rujukan utama, dan perubahan di sini akan ditimpa apabila wiki diterbitkan semula
 
@@ -41,13 +41,18 @@ Dalam Gitea buka tetapan anda, **SSH / GPG Keys**, klik **Add Key** di sebelah *
 
 ![Langkah 2: borang Manage GPG Keys dengan medan Content dan butang Add Key](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-1-add-key.png)
 
-Kunci itu mesti ditunjukkan sebagai **Verified Key** dengan alamat e-mel anda di bawah **Matched Identities**. Gitea memadankan alamat e-mel kunci dengan alamat pada akaun anda yang telah anda sahkan. Jika kunci itu tidak disahkan, semak bahawa alamat e-mel kunci itu disahkan di **Settings, Account**. Jika Gitea menunjukkan butang **Verify**, klik padanya dan tandatangani token yang ditunjukkan Gitea:
+Kunci itu mesti ditunjukkan sebagai **Verified Key** dengan alamat e-mel anda di bawah **Matched Identities**, seperti dalam gambar di bawah. Gitea memadankan alamat e-mel kunci dengan alamat pada akaun anda yang telah anda sahkan (**Settings, Account**). Jika kunci itu belum disahkan, ia tiada tanda **Verified Key** dan mempunyai butang biru **Verify** di sebelahnya. Sahkan seperti kunci SSH; borangnya ialah yang ditunjukkan dalam langkah 2 dalam [Menandatangani commit](SshSigning.ms):
+
+1. Klik butang biru **Verify** di sebelah kunci itu.
+2. Salin **Token** yang ditunjukkan Gitea. Lakukan dua langkah seterusnya tanpa meninggalkan halaman: token berubah jika anda membuka borang semula.
+3. Tandatangani token dengan kunci rahsia, dalam terminal pada mesin yang memegang kunci itu:
 
 ```bash
 echo -n 'TOKEN-DARI-GITEA' | gpg -a --default-key 0123456789ABCDEF --detach-sig
 ```
 
-Tampal keseluruhan blok yang dicetak arahan itu ke dalam medan dan sahkan.
+4. Tampal keseluruhan blok yang dicetak arahan itu, dari `-----BEGIN PGP SIGNATURE-----` hingga `-----END PGP SIGNATURE-----`, ke dalam medan tandatangan dan klik butang biru **Verify** di bawahnya.
+5. Gitea menunjukkan **GPG key … has been verified**, dan kunci itu ditunjukkan sebagai **Verified Key**.
 
 ![Langkah 2: kunci GPG ditunjukkan sebagai Verified Key, dengan identiti yang dipadankan dan ID kunci](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-2-verified-key.png)
 

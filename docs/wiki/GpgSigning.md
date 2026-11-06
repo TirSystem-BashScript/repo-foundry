@@ -37,13 +37,18 @@ In Gitea open your settings, **SSH / GPG Keys**, click **Add Key** next to **Man
 
 ![Step 2: the Manage GPG Keys form with the Content field and the Add Key button](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-1-add-key.png)
 
-The key must show **Verified Key** and your e-mail address under **Matched Identities**. Gitea matches the e-mail address of the key to an address on your account that you have confirmed. If it shows an unverified key, check that the e-mail address of the key is confirmed in **Settings, Account**. If Gitea shows a **Verify** button, click it and sign the token that Gitea shows:
+The key must show **Verified Key** and your e-mail address under **Matched Identities**, as in the picture below. Gitea matches the e-mail address of the key to an address on your account that you have confirmed (**Settings, Account**). If the key is not verified, it has no **Verified Key** mark and a blue **Verify** button next to it. Verify it like an SSH key; the form is the one shown in step 2 of [Signing commits](SshSigning):
+
+1. Click the blue **Verify** button next to the key.
+2. Copy the **Token** that Gitea shows. Do the next two steps without leaving the page: the token changes if you open the form again.
+3. Sign the token with the secret key, in a terminal on the machine that holds the key:
 
 ```bash
 echo -n 'THE-TOKEN-FROM-GITEA' | gpg -a --default-key 0123456789ABCDEF --detach-sig
 ```
 
-Paste the whole block that the command prints into the field and confirm.
+4. Paste the whole block that the command prints, from `-----BEGIN PGP SIGNATURE-----` to `-----END PGP SIGNATURE-----`, into the signature field and click the blue **Verify** button below it.
+5. Gitea shows **GPG key … has been verified**, and the key shows **Verified Key**.
 
 ![Step 2: the GPG key shown as Verified Key, with the matched identity and the key ID](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-gpg-2-verified-key.png)
 

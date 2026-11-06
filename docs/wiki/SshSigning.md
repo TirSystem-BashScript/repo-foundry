@@ -34,7 +34,15 @@ git config --global commit.gpgsign true
 
 In Gitea open **Settings**, **SSH / GPG Keys**. The public key you use for pushing is already there; Gitea uses the keys of your account to verify SSH signatures. If you sign with another key, add it here too.
 
-**Verify the key.** Gitea trusts an SSH key for signatures only after you have proved that the key is yours. A key that is not verified shows as *Unverified* in the list, and your commits get no **Verified** badge (the API says `no_gpg_keys_found`). Click **Verify** next to the key: Gitea shows a token and the command to run. It looks like this (use the command that Gitea shows, with your own token and key file):
+**Verify the key.** Gitea trusts an SSH key for signatures only after you have proved that the key is yours. A key that is not verified has no **Verified** mark in the list and a **Verify** button, and your commits get no **Verified** badge (the API says `no_gpg_keys_found`). Do these steps for each key you sign with:
+
+1. In the list of **Manage SSH Keys**, find the key without the **Verified Key** mark and click the blue **Verify** button next to it (marked in red below).
+
+![Step 1: the SSH key list; the second key is not verified and has a Verify button, marked in red](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-1-verify-button.png)
+
+2. Gitea shows a **Token** and the command to run, for Linux and macOS, Windows PowerShell and Windows CMD. Copy the token. The form is open until you click **Cancel**, and the token changes if you open it again, so do steps 3 and 4 without leaving the page.
+
+3. Sign the token with the **private** key that belongs to this public key, in a terminal on your machine (use the command that Gitea shows, with your own token and key file):
 
 ```bash
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
@@ -46,7 +54,13 @@ On Windows, run it in Git Bash, or in PowerShell with the form that Gitea shows 
 cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $env:USERPROFILE\.ssh\id_ed25519"
 ```
 
-The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----`. Paste the whole block into the field in Gitea and confirm.
+The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----` and ends with `-----END SSH SIGNATURE-----`.
+
+4. Paste the whole block, with both lines, into the field **Armored SSH signature** and click the blue **Verify** button below it (marked in red).
+
+![Steps 2 to 4: the token, the commands, the signature field and the Verify button, marked in red](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-2-verify-form.png)
+
+5. Gitea shows the key with **Verified Key**. If it says that the signature is invalid, check that you signed the token of this form with the private key of this key, and that you copied the whole block.
 
 The e-mail address in `git config user.email` must be one of the addresses of your Gitea account, or the commit is shown as unverified.
 

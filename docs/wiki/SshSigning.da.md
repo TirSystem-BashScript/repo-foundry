@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 b323176d1484 -->
+<!-- translation of SshSigning.md, source sha256 9f5a64b1b78a -->
 
 > Dette er en oversættelse af [`SshSigning`](SshSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -38,7 +38,15 @@ git config --global commit.gpgsign true
 
 Åbn **Settings**, **SSH / GPG Keys** i Gitea. Den offentlige nøgle, du pusher med, ligger allerede der; Gitea bruger nøglerne på din konto til at verificere SSH-signaturer. Signerer du med en anden nøgle, så læg den også her.
 
-**Verificér nøglen.** Gitea stoler kun på en SSH-nøgle til signaturer, når du har bevist, at nøglen er din. En nøgle, der ikke er verificeret, står som *Unverified* på listen, og dine commits får intet **Verified**-mærke (API'et siger `no_gpg_keys_found`). Klik **Verify** ved nøglen: Gitea viser et token og den kommando, du skal køre. Den ser sådan ud (brug den kommando, Gitea viser, med dit eget token og din egen nøglefil):
+**Verificér nøglen.** Gitea stoler kun på en SSH-nøgle til signaturer, når du har bevist, at nøglen er din. En nøgle, der ikke er verificeret, har intet **Verified**-mærke på listen og en knap **Verify**, og dine commits får intet **Verified**-mærke (API'et siger `no_gpg_keys_found`). Gør disse trin for hver nøgle, du signerer med:
+
+1. Find nøglen uden mærket **Verified Key** under **Manage SSH Keys**, og klik på den blå knap **Verify** ved siden af den (markeret med rødt herunder).
+
+![Trin 1: SSH-nøglelisten; den anden nøgle er ikke verificeret og har en Verify-knap, markeret med rødt](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-1-verify-button.png)
+
+2. Gitea viser et **Token** og den kommando, du skal køre, til Linux og macOS, Windows PowerShell og Windows CMD. Kopiér tokenet. Formularen er åben, til du klikker **Cancel**, og tokenet skifter, hvis du åbner den igen, så gør trin 3 og 4 uden at forlade siden.
+
+3. Signér tokenet med den **private** nøgle, der hører til den offentlige, i en terminal på din maskine (brug den kommando, Gitea viser, med dit eget token og din egen nøglefil):
 
 ```bash
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
@@ -50,7 +58,13 @@ På Windows kører du den i Git Bash, eller i PowerShell med den form, Gitea vis
 cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $env:USERPROFILE\.ssh\id_ed25519"
 ```
 
-Kommandoen skriver en blok, der starter med `-----BEGIN SSH SIGNATURE-----`. Indsæt hele blokken i feltet i Gitea, og bekræft.
+Kommandoen skriver en blok, der starter med `-----BEGIN SSH SIGNATURE-----` og slutter med `-----END SSH SIGNATURE-----`.
+
+4. Indsæt hele blokken, begge linjer med, i feltet **Armored SSH signature**, og klik på den blå knap **Verify** under det (markeret med rødt).
+
+![Trin 2 til 4: tokenet, kommandoerne, feltet til signaturen og Verify-knappen, markeret med rødt](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-2-verify-form.png)
+
+5. Gitea viser nøglen med **Verified Key**. Siger den, at signaturen er ugyldig, så tjek, at du har signeret formularens token med den private nøgle til netop denne nøgle, og at du har kopieret hele blokken.
 
 Mailadressen i `git config user.email` skal være en af adresserne på din Gitea-konto, ellers vises commit'et som ikke verificeret.
 
