@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 220f268098f2 -->
+<!-- translation of SshSigning.md, source sha256 b323176d1484 -->
 
 > Ini ialah terjemahan [`SshSigning`](SshSigning). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -93,7 +93,7 @@ Push satu branch dan lihat commit itu dalam Gitea: lencana hijau **Verified** be
 ## Catatan
 
 - Commit yang dibuat pada mesin lain, atau oleh alat yang tidak menggunakan konfigurasi git anda, tidak ditandatangani. Sediakan penandatanganan pada setiap mesin tempat anda membuat commit.
-- Gitea menandatangani commit gabungan yang dibuatnya hanya jika pentadbir telah menyediakan kunci penandatanganan untuk instans itu.
+- Gitea menandatangani commit gabungan yang dibuatnya hanya jika pentadbir telah menyediakan kunci penandatanganan untuk instans itu: lihat [Kunci GPG supaya Gitea boleh menandatangani commit gabungan](GpgSigning.ms).
 - Peraturan branch yang memerlukan commit bertandatangan menolak pull request yang mempunyai satu commit tidak bertandatangan. Tandatangani dahulu, jika tidak pull request tidak dapat digabungkan. Repositori yang dicipta oleh Repo Foundry mempunyai peraturan ini melainkan `config.env` menyatakan `PROTECTED_REQUIRE_SIGNED_COMMITS=false`.
 
 ## Penyelesaian masalah

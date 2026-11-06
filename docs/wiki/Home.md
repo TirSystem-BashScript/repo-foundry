@@ -45,6 +45,7 @@ A maintainer or a small team that starts several projects and wants them to look
 | [SSH and tokens](SshAndTokens) | SSH access to Gitea and the two access tokens |
 | [SSH keys with a passphrase](SshPassphrase) | Load a key that has a passphrase into the SSH agent |
 | [Signing commits](SshSigning) | Sign commits with your SSH key so Gitea shows them as Verified |
+| [GPG key for the server](GpgSigning) | For the Gitea administrator: a GPG key so Gitea can sign merge commits |
 | [Access tokens](AccessTokens) | Create the access tokens, step by step with pictures |
 | [Updating the framework](UpdatingTheFramework) | Keep the framework submodule of a project up to date |
 | [Troubleshooting](Troubleshooting) | Common failures and what to do |

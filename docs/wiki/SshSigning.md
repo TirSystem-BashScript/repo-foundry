@@ -89,7 +89,7 @@ Push a branch and look at the commit in Gitea: a green **Verified** badge means 
 ## Notes
 
 - A commit made on another machine, or by a tool that does not use your git configuration, is not signed. Set up signing on every machine where you commit.
-- Gitea signs the merge commits it makes only if the administrator has set up a signing key for the instance.
+- Gitea signs the merge commits it makes only if the administrator has set up a signing key for the instance: see [A GPG key so Gitea can sign merge commits](GpgSigning).
 - A branch rule that requires signed commits rejects a pull request with one unsigned commit. Sign first, or the pull request cannot be merged. A repository made by Repo Foundry has this rule unless `config.env` says `PROTECTED_REQUIRE_SIGNED_COMMITS=false`.
 
 ## Troubleshooting

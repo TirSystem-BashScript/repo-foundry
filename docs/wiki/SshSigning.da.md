@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 220f268098f2 -->
+<!-- translation of SshSigning.md, source sha256 b323176d1484 -->
 
 > Dette er en oversættelse af [`SshSigning`](SshSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -93,7 +93,7 @@ Push en branch og se commit'et i Gitea: et grønt **Verified**-mærke betyder, a
 ## Bemærkninger
 
 - Et commit lavet på en anden maskine eller af et værktøj, der ikke bruger din git-konfiguration, er ikke signeret. Sæt signering op på hver maskine, hvor du committer.
-- Gitea signerer de merge-commits, den selv laver, kun hvis administratoren har sat en signeringsnøgle op for instansen.
+- Gitea signerer de merge-commits, den selv laver, kun hvis administratoren har sat en signeringsnøgle op for instansen: se [En GPG-nøgle, så Gitea kan signere merge commits](GpgSigning.da).
 - En branchregel, der kræver signerede commits, afviser en pull request med ét usigneret commit. Signér først, ellers kan pull requesten ikke merges. Et repository oprettet af Repo Foundry har denne regel, medmindre `config.env` siger `PROTECTED_REQUIRE_SIGNED_COMMITS=false`.
 
 ## Fejlfinding
