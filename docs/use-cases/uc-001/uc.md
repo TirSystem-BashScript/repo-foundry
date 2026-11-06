@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
-| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | pending |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
 
 ---
 
@@ -123,3 +123,4 @@
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
 [5c0caed]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/5c0caed9b42d93457aa118e2ebd420b8d566f0ad
+[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed

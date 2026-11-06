@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
-| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | pending |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
 
 ---
 
@@ -379,3 +379,4 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
+[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed
