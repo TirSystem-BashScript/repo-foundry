@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 b323176d1484 -->
+<!-- translation of SshSigning.md, source sha256 a97eeeddf3ce -->
 
 > Ini ialah terjemahan [`SshSigning`](SshSigning). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -40,6 +40,8 @@ Buka **Settings**, **SSH / GPG Keys** dalam Gitea. Kunci awam yang anda gunakan 
 
 **Sahkan kunci itu.** Gitea mempercayai kunci SSH untuk tandatangan hanya selepas anda membuktikan bahawa kunci itu milik anda. Kunci yang belum disahkan ditunjukkan sebagai *Unverified* dalam senarai, dan commit anda tidak mendapat lencana **Verified** (API menjawab `no_gpg_keys_found`). Klik **Verify** di sebelah kunci itu: Gitea menunjukkan satu token dan arahan yang perlu dijalankan. Ia kelihatan seperti ini (gunakan arahan yang ditunjukkan Gitea, dengan token dan fail kunci anda sendiri):
 
+![Senarai kunci SSH dalam tetapan Gitea: satu kunci yang disahkan dan satu kunci yang belum disahkan dengan butang Verify](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-1-verify-button.png)
+
 ```bash
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
 ```
@@ -51,6 +53,8 @@ cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $en
 ```
 
 Arahan itu mencetak satu blok yang bermula dengan `-----BEGIN SSH SIGNATURE-----`. Tampal keseluruhan blok itu ke dalam medan dalam Gitea dan sahkan.
+
+![Borang pengesahan dengan token, arahan yang dijalankan dan medan untuk tandatangan](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-2-verify-form.png)
 
 Alamat e-mel dalam `git config user.email` mestilah salah satu alamat akaun Gitea anda, jika tidak commit ditunjukkan sebagai tidak disahkan.
 

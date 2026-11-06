@@ -36,6 +36,8 @@ In Gitea open **Settings**, **SSH / GPG Keys**. The public key you use for pushi
 
 **Verify the key.** Gitea trusts an SSH key for signatures only after you have proved that the key is yours. A key that is not verified shows as *Unverified* in the list, and your commits get no **Verified** badge (the API says `no_gpg_keys_found`). Click **Verify** next to the key: Gitea shows a token and the command to run. It looks like this (use the command that Gitea shows, with your own token and key file):
 
+![The SSH key list in the Gitea settings: a verified key, and a key that is not verified with a Verify button](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-1-verify-button.png)
+
 ```bash
 echo -n 'THE-TOKEN-FROM-GITEA' | ssh-keygen -Y sign -n gitea -f ~/.ssh/id_ed25519
 ```
@@ -47,6 +49,8 @@ cmd /c "<NUL set /p=`"THE-TOKEN-FROM-GITEA`"| ssh-keygen -Y sign -n gitea -f $en
 ```
 
 The command prints a block that starts with `-----BEGIN SSH SIGNATURE-----`. Paste the whole block into the field in Gitea and confirm.
+
+![The verification form with the token, the command to run and the field for the signature](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/raw/branch/main/docs/wiki/img/gitea-ssh-2-verify-form.png)
 
 The e-mail address in `git config user.email` must be one of the addresses of your Gitea account, or the commit is shown as unverified.
 
