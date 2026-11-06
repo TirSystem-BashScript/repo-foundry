@@ -166,7 +166,7 @@ separated by semicolons.
 | `PROTECTED_BRANCH_PATTERN` | the protected branch name pattern | `main` |
 | `PROTECTED_FILE_PATTERNS` | protected file patterns, such as `docs/**;*.lock` | none |
 | `PROTECTED_STATUS_CHECKS` | status check patterns that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: *` |
-| `PROTECTED_REQUIRE_SIGNED_COMMITS` | `true` or `false`: whether every commit of a pull request must carry a verified signature; set it to `true` only when signing is set up on every machine that commits (wiki page `SshSigning`) | `false` |
+| `PROTECTED_REQUIRE_SIGNED_COMMITS` | `true` or `false`: whether every commit of a pull request must carry a verified signature; the default requires it, so signing must be set up on every machine that commits and Gitea needs a signing key for merges made in the web interface (wiki page `SshSigning`); set it to `false` if you cannot sign | `true` |
 
 There is no key that allows a direct push, and none that turns off the four block-merge settings: a merge is blocked on rejected reviews, on official review requests, when the pull request is outdated (its branch is behind the protected branch) and for administrators, who must follow the rule too. The required approvals are left at 0, so one Maintainer can merge. A rule that requires signed commits rejects a pull request with one unsigned commit. The default status check pattern
 matches the checks of the shared workflows that run for every repository of the

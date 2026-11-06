@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | Proposed | Jens Tirsvad Nielsen | S02 | Block-merge settings in the branch protection rule (MIL-025) | [7711391] |
 | 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
 
 ---
 
@@ -49,7 +49,7 @@
 6. The system creates the Gitea repository. If a license applies, the repository is created with its license file and so is not empty; otherwise it is empty. The license that applies is the one set in `config.env` (`PROJECT_LICENSE`; `none` means no license); when none is set it is AGPL-3.0 if the Maintainer chose GitHub and the project is public, and none otherwise. The license is never asked.
 7. Optional: if GitHub was chosen, the system configures the Gitea repository as a push mirror to GitHub and verifies it. A license file in the Gitea repository is pushed to GitHub by the mirror.
 7a. The system turns on the setting "Delete pull request branch after merge by default" on the Gitea repository it created, with one edit request (Gitea's create request has no field for it). A refused request is a warning, not the end of the run. A reused repository is not changed.
-7b. The system sets a branch protection rule on the Gitea repository it created: no direct push to the protected branch (a change arrives by a pull request), status check patterns, protected file patterns and four block-merge settings (rejected reviews, official review requests, an outdated pull request, administrators), the patterns from `config.env` (`PROTECTED_BRANCH_PATTERN`, `PROTECTED_FILE_PATTERNS`, `PROTECTED_STATUS_CHECKS`, `PROTECTED_REQUIRE_SIGNED_COMMITS`). A refused request is a warning, not the end of the run. A reused repository is not changed.
+7b. The system sets a branch protection rule on the Gitea repository it created: no direct push to the protected branch (a change arrives by a pull request), status check patterns, protected file patterns and four block-merge settings (rejected reviews, official review requests, an outdated pull request, administrators), the patterns from `config.env` (`PROTECTED_BRANCH_PATTERN`, `PROTECTED_FILE_PATTERNS`, `PROTECTED_STATUS_CHECKS`, `PROTECTED_REQUIRE_SIGNED_COMMITS`, default `true`: signed commits are required unless it is `false`; this needs signing on every machine that commits and a signing key on the Gitea instance for merges made in the web interface). A refused request is a warning, not the end of the run. A reused repository is not changed.
 8. The system creates the local project with the `origin` remote. It adds no `github` remote: a push to `origin` reaches GitHub through the mirror of step 7.
 9. The system adds the framework submodule and fetches its own submodules (the `qc` checklists), installs its skills and hooks (and the plan gate if chosen) and copies the templates. It then excludes `.claude`, `.agents` and `AGENTS.md` from git. If the Maintainer agrees, it also creates the project's own `.env` with the credentials the project needs.
 10. The system reports a summary of what was created.
@@ -97,7 +97,7 @@
 | 3, 5, 7 | GitHub is optional; without it no GitHub repository or mirror is created and the GitHub credentials are not required |
 | 6 | The license that applies is added to the Gitea repository when it is created, so that repository is not empty: `PROJECT_LICENSE` if set (a Gitea license key such as `MIT`, or `none`), otherwise AGPL-3.0 when GitHub is chosen and the project is public, otherwise none. It is independent of the GitHub choice when set, and it is never asked |
 | 7a | The setting is turned on only for a repository this run created, with one `PATCH` that carries one field, `default_delete_branch_after_merge`; the GitHub repository is not changed |
-| 7b | The rule never allows a direct push and no key turns it on; the three patterns are glob patterns (https://github.com/gobwas/glob) sent as given; an empty `PROTECTED_STATUS_CHECKS` switches the status check off; `PROTECTED_REQUIRE_SIGNED_COMMITS` is `true` or `false` (default `false`) and, when `true`, the rule requires signed commits. The four block-merge settings are always on and no key turns them off; the required approvals are not set. The rule is made after the repository and its mirror, and only for a repository this run created |
+| 7b | The rule never allows a direct push and no key turns it on; the three patterns are glob patterns (https://github.com/gobwas/glob) sent as given; an empty `PROTECTED_STATUS_CHECKS` switches the status check off; `PROTECTED_REQUIRE_SIGNED_COMMITS` is `true` or `false` (default `true`) and, when `true`, the rule requires signed commits. The four block-merge settings are always on and no key turns them off; the required approvals are not set. The rule is made after the repository and its mirror, and only for a repository this run created |
 | 7b | `--protect OWNER/NAME` gives an existing Gitea repository the same rule: a dry run without `--apply`; a missing rule is created; an existing rule that differs is changed only after a yes; rules of other names are never touched; it needs the Gitea token only |
 | 7 | The mirror direction is Gitea to GitHub; the GitHub repository stays empty and receives its content from the mirror |
 | 8 | `origin` is the only remote, with or without GitHub, and a remote already in the directory, such as a `github` remote made by an earlier version, is never removed or replaced. `origin` uses HTTPS derived from `GITEA_URL`, or SSH when the SSH test in step 4 passed; when the Gitea repository is not empty (GitHub chosen) the local project is created by fetching it, not by an unrelated `git init` history |
@@ -121,3 +121,4 @@
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
+[5c0caed]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/5c0caed9b42d93457aa118e2ebd420b8d566f0ad

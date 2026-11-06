@@ -1,4 +1,4 @@
-<!-- translation of SshSigning.md, source sha256 92815584a40c -->
+<!-- translation of SshSigning.md, source sha256 b323176d1484 -->
 
 > Dette er en oversættelse af [`SshSigning`](SshSigning). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -8,7 +8,7 @@
 
 Et signeret commit bærer en signatur, der er lavet med din private nøgle. Gitea tjekker den mod de offentlige nøgler på din konto og markerer commit'et **Verified**. Det viser, at commit'et virkelig kommer fra dig. Du kan signere med den SSH-nøgle, du allerede bruger til Gitea; du behøver ikke GPG.
 
-Repo Foundry signerer ikke noget og kræver ikke signerede commits. Denne side er til den dag, du selv vil signere, eller dit projekt kræver det.
+Repo Foundry signerer ikke noget, men den branchregel, det opretter, kræver som standard signerede commits. Sæt `PROTECTED_REQUIRE_SIGNED_COMMITS=false` i `config.env`, hvis du ikke kan signere. Denne side er til opsætning af signering.
 
 ## Hvad du skal bruge
 
@@ -93,8 +93,8 @@ Push en branch og se commit'et i Gitea: et grønt **Verified**-mærke betyder, a
 ## Bemærkninger
 
 - Et commit lavet på en anden maskine eller af et værktøj, der ikke bruger din git-konfiguration, er ikke signeret. Sæt signering op på hver maskine, hvor du committer.
-- Gitea signerer de merge-commits, den selv laver, kun hvis administratoren har sat en signeringsnøgle op for instansen.
-- En branchregel, der kræver signerede commits, afviser en pull request med ét usigneret commit. Signér først, og slå så reglen til.
+- Gitea signerer de merge-commits, den selv laver, kun hvis administratoren har sat en signeringsnøgle op for instansen: se [En GPG-nøgle, så Gitea kan signere merge commits](GpgSigning.da).
+- En branchregel, der kræver signerede commits, afviser en pull request med ét usigneret commit. Signér først, ellers kan pull requesten ikke merges. Et repository oprettet af Repo Foundry har denne regel, medmindre `config.env` siger `PROTECTED_REQUIRE_SIGNED_COMMITS=false`.
 
 ## Fejlfinding
 

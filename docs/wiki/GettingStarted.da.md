@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 7320e01bd9c4 -->
+<!-- translation of GettingStarted.md, source sha256 1fe40c0e670a -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -49,7 +49,7 @@ Et nyt Gitea-repository har indstillingen "Delete pull request branch after merg
 
 Et nyt Gitea-repository får en regel for beskyttet branch: ingen direkte push til `main`, hver ændring kommer via en pull request. En merge blokeres også ved afviste reviews, ved officielle review-anmodninger, når pull requesten er forældet, og for administratorer; ingen nøgle slår det fra. Det nye projekts første commit går samme vej: push en branch og åbn en pull request.
 
-Reglen sættes med fire valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen), `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`) og `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` eller `false`, standard `false`; se [Signering af commits](SshSigning.da)). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+Reglen sættes med fire valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen), `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`) og `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` eller `false`, standard `true`; `false` hvis du ikke kan signere; se [Signering af commits](SshSigning.da)). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 Sådan giver du et eksisterende repository samme regel:
 

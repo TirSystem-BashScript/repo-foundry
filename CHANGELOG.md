@@ -17,6 +17,10 @@ file.
 
 - A new Gitea repository has "Delete pull request branch after merge by default" turned on, so a merged pull request branch is deleted without a manual step. A reused repository is not changed, and a refused request is a warning.
 
+### Changed
+
+- The branch protection rule of a new Gitea repository, and of `--protect`, now requires signed commits by default (`PROTECTED_REQUIRE_SIGNED_COMMITS` defaults to `true`). Signing must be set up on every machine that commits, and Gitea needs a signing key for merges made in the web interface. Set `PROTECTED_REQUIRE_SIGNED_COMMITS=false` in `config.env` to turn it off.
+
 ## [0.4.0] - 2026-11-05
 
 ### Added
