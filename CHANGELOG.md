@@ -13,6 +13,8 @@ file.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-06
+
 ### Added
 
 - A new Gitea repository has "Delete pull request branch after merge by default" turned on, so a merged pull request branch is deleted without a manual step. A reused repository is not changed, and a refused request is a warning.
