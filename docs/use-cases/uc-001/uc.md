@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-05 | Proposed | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
-| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | pending |
+| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
 
 ---
 
@@ -121,3 +121,4 @@
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
+[5c0caed]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/5c0caed9b42d93457aa118e2ebd420b8d566f0ad
