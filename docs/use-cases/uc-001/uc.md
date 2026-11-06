@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
-| 2026-11-06 | Proposed | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
+| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
 
 ---
 
