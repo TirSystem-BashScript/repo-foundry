@@ -205,6 +205,9 @@ A detail that is set is used and not asked; the summary marks it with
   AGPL-3.0 is applied only if GitHub is used **and** the project is public;
   a private project, or one without GitHub, gets no license. The Gitea server
   must offer the license, or the run stops before anything is created.
+  `src/create-project.sh --list-licenses` prints the keys that the server
+  offers; [`config.env.example`](config.env.example) lists those of the
+  Maintainer's server.
 - Only these nine details can be set. The confirmations stay questions that
   default to no: create now, reusing an existing repository, an existing
   directory, `core.hooksPath` and replacing a template file.
@@ -341,6 +344,22 @@ what would be done.
 
 The exit status is 0 when the rule is as wanted at the end, and not 0 when a
 request is refused (the message names the cause), or when you answer no.
+
+### List the licenses of the Gitea server
+
+```bash
+src/create-project.sh --list-licenses     # one license key per line
+```
+
+`--list-licenses` prints the key of every license the Gitea server of
+[`config.env`](#configenv-service-addresses) offers, one per line, so that you
+can choose a value for `PROJECT_LICENSE`. It reads the Gitea token only, sends
+one `GET` request, and creates and changes nothing: no repository, mirror or
+directory, and no GitHub request. It needs no `--apply` and cannot be combined
+with `--apply` or `--protect` (a usage error, before any request). The two
+lines that name the files in use go to stderr, so stdout holds the keys only.
+The exit status is not 0 when the server refuses the request or offers no
+license; the message names the cause.
 
 ### Choices
 
@@ -586,7 +605,7 @@ file. The files are loaded from that directory only, by a fixed path.
 | `credentials.sh` | asking for a credential that `.env` does not provide |
 | `project.sh` | the project details: asking for them and showing them |
 | `hosts.sh` | names, links and remote addresses of the repositories |
-| `preflight.sh` | read-only checks of both hosts |
+| `preflight.sh` | read-only checks of both hosts, and `--list-licenses` |
 | `steps.sh` | the outcome of each step and the final report |
 | `envfile.sh` | the new project's own `.env`: created private, ignored by git, never replaced without a yes |
 | `plan.sh` | printing what the script is about to do |

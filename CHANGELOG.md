@@ -13,6 +13,10 @@ file.
 
 ## [Unreleased]
 
+### Added
+
+- `create-project.sh --list-licenses` prints the key of every license the Gitea server offers, one per line, for the optional `PROJECT_LICENSE` key of `config.env`. It only reads, needs the Gitea token only, and cannot be combined with `--apply` or `--protect`. `config.env.example` lists the keys of the Maintainer's Gitea server.
+
 ## [0.5.0] - 2026-11-06
 
 ### Added

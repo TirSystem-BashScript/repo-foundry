@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 1fe40c0e670a -->
+<!-- translation of GettingStarted.md, source sha256 2b192ec2ec79 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -59,6 +59,16 @@ src/create-project.sh --protect OWNER/NAME --apply   # opretter eller ændrer re
 ```
 
 En eksisterende regel, der afviger, ændres kun efter et ja.
+
+## Licens
+
+Licensen på et nyt projekt er `PROJECT_LICENSE` i `config.env` (valgfri): en Gitea-licensnøgle som `AGPL-3.0` eller `MIT`, eller `none` for ingen licens. Sådan ser du de nøgler, din Gitea-server tilbyder:
+
+```bash
+src/create-project.sh --list-licenses     # én licensnøgle pr. linje; læser kun
+```
+
+Maintainerens server tilbyder 30 nøgler; de står som kommentar i `config.env.example`.
 
 ## Brug det som en kommando
 
