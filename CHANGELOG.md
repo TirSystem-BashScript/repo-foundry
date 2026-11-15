@@ -16,6 +16,12 @@ file.
 ### Added
 
 - `create-project.sh --list-licenses` prints the key of every license the Gitea server offers, one per line, for the optional `PROJECT_LICENSE` key of `config.env`. It only reads, needs the Gitea token only, and cannot be combined with `--apply` or `--protect`. `config.env.example` lists the keys of the Maintainer's Gitea server.
+- The optional `config.env` key `PROJECT_NAME_STYLE` (`kebab-case`, the default, or `any`) sets the style of the project name, which is also the name of its repository and, by default, of its folder. `config.env.example`, the README and the wiki page `GettingStarted` describe it.
+
+### Changed
+
+- The project name is now `kebab-case` by default: lowercase letters and digits in words joined by single hyphens, such as `my-app`. A name that is typed and does not follow the rule is refused with the kebab-case form (`My_App` gives `my-app`) and asked again. This refuses names that were valid before: a `PROJECT_NAME` in `config.env` that is not kebab-case now stops the run before any request. To keep it, set `PROJECT_NAME_STYLE=any` in `config.env`, or choose a kebab-case name. The name of an existing repository (`--protect OWNER/NAME`) is never checked.
+- The branch protection is now two rules, because Gitea applies one rule per branch. The main rule (`PROTECTED_BRANCH_PATTERN`, default `main`) forbids a direct push and keeps the protected file patterns, signed commits and the four block-merge settings. The new workflow rule (`PROTECTED_WORKFLOW_PATTERN`, default `release/**`, empty for none) carries the status checks and the same four block-merge settings, so `main` no longer requires them. The default of `PROTECTED_STATUS_CHECKS` is now the three checks that run on a pull request, `TirSystem/git-workflows: Validate / *`, `TirSystem/git-workflows: Release / *` and `TirSystem/git-workflows: OpenGrep / *`, instead of `TirSystem/git-workflows: *`. Two patterns that match a common branch stop the run before any request. `--protect OWNER/NAME` creates or, after a yes, corrects both rules, including a rule with the old default, and turns on "Delete pull request branch after merge by default" when it is off.
 
 ## [0.5.0] - 2026-11-06
 

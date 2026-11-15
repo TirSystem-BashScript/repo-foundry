@@ -6,10 +6,12 @@
 #
 # Provides: prompt_value, prompt_secret, prompt_choice, prompt_yes_no
 
-# prompt_value LABEL DEFAULT VALIDATOR HINT: ask until VALIDATOR accepts the
-# answer; the accepted answer is returned in REPLY.
+# prompt_value LABEL DEFAULT VALIDATOR HINT [SUGGESTER]: ask until VALIDATOR
+# accepts the answer; the accepted answer is returned in REPLY. A refusal
+# also prints what SUGGESTER makes of the answer, when it makes something.
 prompt_value() {
-  local label="$1" default="$2" validator="$3" hint="$4" answer
+  local label="$1" default="$2" validator="$3" hint="$4" suggester="${5:-}"
+  local answer suggestion
   while true; do
     if [[ -n $default ]]; then
       printf '%s [%s]: ' "$label" "$default" >&2
@@ -24,6 +26,10 @@ prompt_value() {
       return 0
     fi
     warn "invalid $label: $hint"
+    if [[ -n $suggester ]]; then
+      suggestion="$("$suggester" "$answer")"
+      [[ -z $suggestion ]] || warn "$label suggestion: $suggestion"
+    fi
   done
 }
 

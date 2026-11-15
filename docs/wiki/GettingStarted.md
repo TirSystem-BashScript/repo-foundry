@@ -43,9 +43,9 @@ A new Gitea repository has the setting "Delete pull request branch after merge b
 
 ## Branch protection
 
-A new Gitea repository gets a branch protection rule: no direct push to `main`, every change arrives by a pull request. A merge is also blocked on rejected reviews, on official review requests, when the pull request is outdated, and for administrators; no key turns these off. The first commit of the new project goes the same way: push a branch and open a pull request.
+A new Gitea repository gets two branch protection rules. The main rule forbids a direct push to `main`: every change arrives by a pull request. Both rules block a merge on rejected reviews, on official review requests, when the pull request is outdated, and for administrators; no key turns these off. The workflow rule, on `release/**`, also requires the status checks. Gitea applies one rule per branch, so the two patterns must not match a common branch. The first commit of the new project goes the same way: push a branch and open a pull request.
 
-The rule is set with four optional keys in `config.env` (glob patterns, lists separated by `;`): `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_FILE_PATTERNS` (default none), `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: *`) and `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` or `false`, default `true`; `false` if you cannot sign; see [Signing commits](SshSigning)). See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+The rule is set with five optional keys in `config.env` (glob patterns, lists separated by `;`): `PROTECTED_BRANCH_PATTERN` (default `main`), `PROTECTED_WORKFLOW_PATTERN` (default `release/**`, empty for no workflow rule), `PROTECTED_FILE_PATTERNS` (default none), `PROTECTED_STATUS_CHECKS` (default `TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *`) and `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` or `false`, default `true`; `false` if you cannot sign; see [Signing commits](SshSigning)). See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 To give an existing repository the same rule:
 
@@ -55,6 +55,12 @@ src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the ru
 ```
 
 An existing rule that differs is changed only after a yes.
+
+## Project name
+
+The name of a project is also the name of its Gitea and GitHub repository and, by default, of its folder. It is `kebab-case` unless you say otherwise: lowercase letters and digits in words joined by single hyphens, such as `my-app`. A name such as `My_App` is refused, the kebab-case form (`my-app`) is proposed, and you are asked again.
+
+To keep another casing, set `PROJECT_NAME_STYLE=any` in `config.env` (optional; `kebab-case` is the default). The repository-name rules of the hosts then apply: letters, digits, `.`, `_` and `-`. A `PROJECT_NAME` in `config.env` that is not kebab-case stops the run unless the style is `any`. The name of an existing repository (`--protect OWNER/NAME`) is never checked. See the [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-project-details-optional).
 
 ## License
 

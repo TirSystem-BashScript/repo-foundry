@@ -12,9 +12,10 @@
 #   submodule, the framework's skills and git hooks (and the plan gate if
 #   chosen) and its templates. The license of the Gitea repository is
 #   PROJECT_LICENSE in config.env (none means no license); without it AGPL-3.0
-#   applies only when GitHub is chosen and the project is public. After a yes
-#   (default no) it also writes the new project's own .env with the credentials
-#   the project needs. No commit is made in the new project.
+#   applies only when GitHub is chosen and the project is public. The project
+#   name is kebab-case unless PROJECT_NAME_STYLE=any is set in config.env.
+#   After a yes (default no) it also writes the new project's own .env with
+#   the credentials the project needs. No commit is made in the new project.
 #
 # Dry run by default
 #   Without --apply the script only reads from GitHub and Gitea (GET
@@ -52,11 +53,17 @@
 #               the optional GITEA_SSH_PORT (default 10022), MIRROR_INTERVAL
 #               (default 10m0s) and FRAMEWORK_REPO (default
 #               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME) and the
-#               optional PROTECTED_BRANCH_PATTERN (default main),
+#               optional PROTECTED_BRANCH_PATTERN (default main, the rule that
+#               forbids a direct push), PROTECTED_WORKFLOW_PATTERN (default
+#               release/**, the rule with the status checks and the block-merge
+#               settings; empty for none; it must not overlap the first),
 #               PROTECTED_FILE_PATTERNS (default none) and
-#               PROTECTED_STATUS_CHECKS (default "TirSystem/git-workflows: *"),
-#               glob patterns; the two lists are separated by semicolons
-#   .env        GITHUB_PAT, GITHUB_USER (required only when GitHub is chosen),
+#               PROTECTED_STATUS_CHECKS (default "TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *"),
+#               glob patterns; the two lists are separated by semicolons, and
+#               the optional PROJECT_NAME_STYLE (kebab-case, the default, or
+#               any): the style of the project name, its folder and its
+#               repository
+#   .env       GITHUB_PAT, GITHUB_USER (required only when GitHub is chosen),
 #               TOKEN_FOR_GITEA_REPO (always required; GITEA_TOKEN is its older
 #               name); each is asked when missing. TOKEN_FOR_GITEA_ISSUES and
 #               TOKEN_FOR_GITEA_WIKI and TOKEN_FOR_GITEA_RELEASE are optional

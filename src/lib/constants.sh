@@ -16,6 +16,10 @@ readonly MAX_DESCRIPTION_LENGTH=350
 readonly HTTP_TIMEOUT_SECONDS=240
 readonly DEFAULT_MIRROR_INTERVAL="10m0s"
 readonly DEFAULT_SSH_PORT=10022
+# The style of a project name (MIL-031): kebab-case unless config.env says "any".
+readonly DEFAULT_PROJECT_NAME_STYLE="kebab-case"
+readonly PROJECT_NAME_STYLES=("$DEFAULT_PROJECT_NAME_STYLE" any)
+readonly MAX_REPO_NAME_LENGTH=100
 readonly DEFAULT_FRAMEWORK_REPO="TirSystem/SQA-QC-Framework"
 readonly AGPL_LICENSE_KEY="AGPL-3.0"
 readonly NO_LICENSE_WORD="none"
@@ -25,8 +29,9 @@ readonly DEFAULT_BRANCH="main"
 # semicolons. The default status check pattern matches the checks of the
 # shared workflows that run for every repository of the organisation.
 readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
+readonly DEFAULT_PROTECTED_WORKFLOW_PATTERN="release/**"
 readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
-readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: *"
+readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *"
 readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="true"
 # The block-merge settings of every rule (MIL-025): all on, no key turns one off.
 readonly PROTECTION_BLOCK_KEYS=(block_on_rejected_reviews block_on_official_review_requests
@@ -34,6 +39,7 @@ readonly PROTECTION_BLOCK_KEYS=(block_on_rejected_reviews block_on_official_revi
 # What the prompts and the preset keys in config.env both tell the Maintainer
 # when a value is refused.
 readonly HINT_REPO_NAME="use letters, digits, '.', '_' or '-' (at most 100), not ending in .git"
+readonly HINT_KEBAB_NAME="use lowercase letters and digits in words joined by single '-' (at most $MAX_REPO_NAME_LENGTH), such as my-app"
 readonly HINT_DESCRIPTION="at most $MAX_DESCRIPTION_LENGTH characters and no control characters"
 readonly HINT_GITEA_OWNER="use letters, digits, '.', '_' or '-' (at most 39)"
 readonly HINT_GITHUB_OWNER="use letters, digits or '-' (at most 39)"
@@ -54,9 +60,9 @@ readonly PLAN_STEPS=("GitHub repository" "Gitea repository" "Push mirror"
 # shellcheck disable=SC2034  # read through namerefs (parse_env_file)
 readonly CONFIG_KEYS=(GITHUB_API_URL GITHUB_WEB_URL GITEA_URL GITEA_API_URL
   GITEA_SSH_PORT MIRROR_INTERVAL FRAMEWORK_REPO
-  PROJECT_NAME PROJECT_DESCRIPTION PROJECT_VISIBILITY GITEA_OWNER USE_GITHUB
+  PROJECT_NAME PROJECT_NAME_STYLE PROJECT_DESCRIPTION PROJECT_VISIBILITY GITEA_OWNER USE_GITHUB
   GITHUB_OWNER PROJECT_DIRECTORY ENABLE_PLAN_GATE PROJECT_LICENSE
-  PROTECTED_BRANCH_PATTERN PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS
+  PROTECTED_BRANCH_PATTERN PROTECTED_WORKFLOW_PATTERN PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS
   PROTECTED_REQUIRE_SIGNED_COMMITS)
 # The Gitea tokens use the names of the framework: TOKEN_FOR_GITEA_REPO is the
 # one used here; TOKEN_FOR_GITEA_ISSUES, TOKEN_FOR_GITEA_WIKI and

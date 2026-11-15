@@ -17,7 +17,7 @@ local_plan_note() {
 }
 
 print_plan() {
-  local gitea_action github_action origin_note
+  local gitea_action github_action origin_note kind
   say ""
   say "Plan:"
   if ((STATE[reuse_gitea])); then
@@ -45,7 +45,9 @@ print_plan() {
     say "$(printf '  %-18s: %s' "Branch protection" "not changed (the Gitea repository is reused)")"
   else
     say "$(printf '  %-18s: %s' "Branch cleanup" "turn on on Gitea: delete a pull request branch after merge, by default")"
-    say "$(printf '  %-18s: %s' "Branch protection" "create on Gitea: $(protection_summary)")"
+    while read -r kind; do
+      say "$(printf '  %-18s: %s' "Branch protection" "create on Gitea: $(protection_summary "$kind")")"
+    done < <(protection_kinds)
   fi
   if ((STATE[is_ssh_ok])); then
     origin_note="SSH (the SSH test passed)"

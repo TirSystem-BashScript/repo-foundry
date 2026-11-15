@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | Require signed commits by default in the branch protection rule (MIL-027) | [5c0caed] |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is kebab-case by default; PROJECT_NAME_STYLE=any keeps the old rules (MIL-031) | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Step 7b sets two protection rules, the main rule and the workflow rule (MIL-032) | [df7c80c] |
 
 ---
 
@@ -27,7 +27,7 @@
   - S03 — the published procedure is documented and reusable
 - **Preconditions:**
   - `config.env` exists and is valid. `.env` may be missing or hold only some credentials; a credential it does not provide is asked.
-  - `config.env` may preset any of the project details of step 3, and may set the project license (`PROJECT_LICENSE`).
+  - `config.env` may preset any of the project details of step 3, may set the project license (`PROJECT_LICENSE`), and may set the style of the project name (`PROJECT_NAME_STYLE`: `kebab-case`, the default, or `any`).
   - `git` and `curl` are installed.
   - The Maintainer has a Gitea token, a GitHub PAT and a GitHub account name (only when GitHub is chosen) and SSH access to Gitea on port 10022.
 - **Postconditions (success guarantee):**
@@ -43,13 +43,13 @@
 
 1. The Maintainer starts the project creation.
 2. The system loads and validates the configuration and credentials and checks that the required tools exist. A credential that `.env` does not provide is asked, without echo; the GitHub credentials are asked once GitHub is chosen.
-3. The Maintainer provides the repository name, description, visibility, the Gitea owner, whether to also create a GitHub repository (and if so its owner), the local directory, and whether to enable the plan gate. A detail that is set in `config.env` is not asked.
+3. The Maintainer provides the repository name, description, visibility, the Gitea owner, whether to also create a GitHub repository (and if so its owner), the local directory, and whether to enable the plan gate. A detail that is set in `config.env` is not asked. The repository name follows the project name style: kebab-case unless `config.env` says `any`.
 4. The system checks that the tokens needed for the chosen hosts work, that the owners accept new repositories, that the name is free on those hosts, that Gitea offers the license that applies (if any), and whether SSH to Gitea works.
 5. Optional: if the Maintainer chose GitHub, the system creates the empty GitHub repository.
 6. The system creates the Gitea repository. If a license applies, the repository is created with its license file and so is not empty; otherwise it is empty. The license that applies is the one set in `config.env` (`PROJECT_LICENSE`; `none` means no license); when none is set it is AGPL-3.0 if the Maintainer chose GitHub and the project is public, and none otherwise. The license is never asked.
 7. Optional: if GitHub was chosen, the system configures the Gitea repository as a push mirror to GitHub and verifies it. A license file in the Gitea repository is pushed to GitHub by the mirror.
 7a. The system turns on the setting "Delete pull request branch after merge by default" on the Gitea repository it created, with one edit request (Gitea's create request has no field for it). A refused request is a warning, not the end of the run. A reused repository is not changed.
-7b. The system sets a branch protection rule on the Gitea repository it created: no direct push to the protected branch (a change arrives by a pull request), status check patterns, protected file patterns and four block-merge settings (rejected reviews, official review requests, an outdated pull request, administrators), the patterns from `config.env` (`PROTECTED_BRANCH_PATTERN`, `PROTECTED_FILE_PATTERNS`, `PROTECTED_STATUS_CHECKS`, `PROTECTED_REQUIRE_SIGNED_COMMITS`, default `true`: signed commits are required unless it is `false`; this needs signing on every machine that commits and a signing key on the Gitea instance for merges made in the web interface). A refused request is a warning, not the end of the run. A reused repository is not changed.
+7b. The system sets two branch protection rules on the Gitea repository it created. The main rule (`PROTECTED_BRANCH_PATTERN`) forbids a direct push to the protected branch (a change arrives by a pull request) and carries the protected file patterns, the signed-commits setting and the four block-merge settings (rejected reviews, official review requests, an outdated pull request, administrators). The workflow rule (`PROTECTED_WORKFLOW_PATTERN`, default `release/**`, none when empty) carries the status check patterns and the same four block-merge settings. The patterns come from `config.env` (`PROTECTED_BRANCH_PATTERN`, `PROTECTED_WORKFLOW_PATTERN`, `PROTECTED_FILE_PATTERNS`, `PROTECTED_STATUS_CHECKS`, `PROTECTED_REQUIRE_SIGNED_COMMITS`, default `true`: signed commits are required unless it is `false`; this needs signing on every machine that commits and a signing key on the Gitea instance for merges made in the web interface). A refused request is a warning, not the end of the run. A reused repository is not changed.
 8. The system creates the local project with the `origin` remote. It adds no `github` remote: a push to `origin` reaches GitHub through the mirror of step 7.
 9. The system adds the framework submodule and fetches its own submodules (the `qc` checklists), installs its skills and hooks (and the plan gate if chosen) and copies the templates. It then excludes `.claude`, `.agents` and `AGENTS.md` from git. If the Maintainer agrees, it also creates the project's own `.env` with the credentials the project needs.
 10. The system reports a summary of what was created.
@@ -63,7 +63,9 @@
 - 3a. A project detail is set in `config.env`:
   1. The system uses it and does not ask for it; the summary says it came from the configuration.
 - 3b. A configured project detail is invalid:
-  1. The system stops before any request and names the key; it does not ask for the value instead.
+  1. The system stops before any request and names the key; it does not ask for the value instead. A `PROJECT_NAME` that is not kebab-case, with the style kebab-case, is such a detail: the message names `PROJECT_NAME` and `PROJECT_NAME_STYLE=any` as the way to keep it. A `PROJECT_NAME_STYLE` that is empty or is neither `kebab-case` nor `any` stops the run in the same way.
+- 3c. The Maintainer types a repository name that does not follow the project name style:
+  1. The system refuses it with the rule and, for the style kebab-case, the kebab-case form of what was typed (`My_App` gives `my-app`), and asks again.
 - 4a. A token is invalid, an owner does not accept the repository, or the name is taken:
   1. The system stops before creating anything and says which check failed. The GitHub token is only checked when GitHub was chosen.
 - 4c. A license applies and the Gitea server does not offer it:
@@ -94,6 +96,7 @@
 | 9 | The project's `.env` is the only place a token is written. It is created only after a yes (default no), holds only the keys the project needs (`TOKEN_FOR_GITEA_REPO`; `GITHUB_PAT` and `GITHUB_USER` when GitHub was chosen), is readable by its owner only, is excluded from git without changing a tracked file, and is never replaced without a yes |
 | 3 | The GitHub owner and the Gitea owner are chosen separately; `GITHUB_USER` is only the authenticating account |
 | 3 | A project detail set in `config.env` (the key is present, even if empty where an empty value is allowed) is not asked; only the confirmations stay interactive |
+| 3 | The project name, the project folder and the git repository carry one name, and by default it is kebab-case: lowercase letters and digits in words joined by single hyphens, at most 100 characters (`^[a-z0-9]+(-[a-z0-9]+)*$`). `PROJECT_NAME_STYLE=any` in `config.env` (never in `.env`) keeps the repository-name rules of Gitea and GitHub: letters, digits, `.`, `_` and `-`, at most 100 characters, not ending in `.git`. The style applies to the name that is asked and to `PROJECT_NAME`; the name of an existing repository (`--protect OWNER/NAME`) is never checked against it |
 | 3, 5, 7 | GitHub is optional; without it no GitHub repository or mirror is created and the GitHub credentials are not required |
 | 6 | The license that applies is added to the Gitea repository when it is created, so that repository is not empty: `PROJECT_LICENSE` if set (a Gitea license key such as `MIT`, or `none`), otherwise AGPL-3.0 when GitHub is chosen and the project is public, otherwise none. It is independent of the GitHub choice when set, and it is never asked |
 | 6a | `--list-licenses` prints the key of every license the Gitea server offers, one per line, so that the user can choose `PROJECT_LICENSE`: it reads the license list only (one `GET`), needs the Gitea token only, creates and changes nothing, and cannot be combined with `--apply` or `--protect` |
@@ -122,5 +125,4 @@
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
-[5c0caed]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/5c0caed9b42d93457aa118e2ebd420b8d566f0ad
-[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

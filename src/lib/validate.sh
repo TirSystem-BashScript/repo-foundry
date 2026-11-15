@@ -4,12 +4,33 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: is_valid_repository_path, is_valid_protected_branch, is_valid_protected_list, is_valid_framework_repo, is_valid_repo_name, is_valid_gitea_owner, is_valid_github_owner, is_valid_description, is_valid_directory, is_valid_base_url, is_valid_request_url, is_valid_token, is_valid_port, is_valid_interval, normalize_url
+# Provides: is_valid_repository_path, is_valid_protected_branch, patterns_overlap, is_valid_protected_list, is_valid_framework_repo, is_valid_repo_name, is_valid_kebab_name, suggest_kebab_name, is_valid_gitea_owner, is_valid_github_owner, is_valid_description, is_valid_directory, is_valid_base_url, is_valid_request_url, is_valid_token, is_valid_port, is_valid_interval, normalize_url
 
 is_valid_repo_name() {
   local name="$1"
   [[ $name =~ ^[A-Za-z0-9._-]{1,100}$ ]] || return 1
   [[ $name != . && $name != .. && $name != *.git ]]
+}
+
+# kebab-case: lowercase letters and digits in words joined by single hyphens
+# (MIL-031). A kebab-case name is always a valid repository name.
+is_valid_kebab_name() {
+  local LC_ALL=C
+  [[ $1 =~ ^[a-z0-9]+(-[a-z0-9]+)*$ && ${#1} -le $MAX_REPO_NAME_LENGTH ]]
+}
+
+# suggest_kebab_name NAME: the kebab-case form of NAME, printed (empty when
+# NAME holds no letter or digit): lowercased, every other run of characters
+# one hyphen, no hyphen at either end, cut at the length limit.
+suggest_kebab_name() {
+  local LC_ALL=C name="${1,,}"
+  name="${name//[^a-z0-9]/-}"
+  while [[ $name == *--* ]]; do
+    name="${name//--/-}"
+  done
+  name="${name:0:$MAX_REPO_NAME_LENGTH}"
+  name="${name#-}"
+  printf '%s' "${name%-}"
 }
 
 is_valid_gitea_owner() {
@@ -62,6 +83,19 @@ is_valid_repository_path() {
 # A branch pattern of the protection rule: one non-empty glob pattern.
 is_valid_protected_branch() {
   [[ -n $1 && $1 != *";"* ]] && ! has_control_character "$1"
+}
+
+# patterns_overlap A B: whether two branch glob patterns can match a common
+# branch. A best effort: one pattern, read as a shell glob with ** as *, matches
+# the other, or the two are equal. Gitea's * stops at a slash, so a few pairs
+# that cannot overlap may be refused; a pair that overlaps is never accepted.
+patterns_overlap() {
+  local first="$1" second="$2" glob_first glob_second
+  [[ $first == "$second" ]] && return 0
+  glob_first="${first//\*\*/*}"
+  glob_second="${second//\*\*/*}"
+  # shellcheck disable=SC2053  # the right side is a glob on purpose
+  [[ $first == $glob_second || $second == $glob_first ]]
 }
 
 # A semicolon separated list of glob patterns, none of them empty. An empty

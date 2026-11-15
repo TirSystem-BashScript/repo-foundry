@@ -44,7 +44,7 @@ license_note() {
 # Ask for each project detail, except those set in config.env.
 collect_project_details() {
   preset_detail PROJECT_NAME name ||
-    prompt_value "Repository name" "" is_valid_repo_name "$HINT_REPO_NAME"
+    prompt_value "Repository name" "" is_valid_project_name "$(project_name_hint)" suggest_project_name
   PROJECT[name]="$REPLY"
   preset_detail PROJECT_DESCRIPTION description ||
     prompt_value "Description (optional)" "" is_valid_description "$HINT_DESCRIPTION"
