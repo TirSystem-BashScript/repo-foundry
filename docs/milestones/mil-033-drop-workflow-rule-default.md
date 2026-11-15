@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [9b53535] |
 
 ---
 
@@ -73,3 +73,4 @@
 [US-001]: ../user-stories.md
 [MIL-021]: ./mil-021-protect-default-branch.md
 [MIL-032]: ./mil-032-narrow-status-checks.md
+[9b53535]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/9b5353592fd518472b96b50817d3b7c390daefc4

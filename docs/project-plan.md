@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-032 (proposed dates 2027-03-22 to 2027-03-23): split the protection into a `main` rule and a workflow rule, narrow the status checks | [df7c80c] |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-033 (proposed date 2027-03-24): the workflow protection rule is opt-in, no default pattern | pending |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-033 (proposed date 2027-03-24): the workflow protection rule is opt-in, no default pattern | [9b53535] |
 
 ---
 
@@ -260,3 +260,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
 [b7406aa]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b7406aae0247f021b4489a5ce275d09c9538519d
 [df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850
+[9b53535]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/9b5353592fd518472b96b50817d3b7c390daefc4
