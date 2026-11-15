@@ -168,7 +168,9 @@ test_overlapping_patterns_stop_before_any_request_and_name_both_keys() {
 
 test_an_empty_list_of_status_checks_switches_the_check_off() {
   setup_hosts
-  printf 'PROTECTED_STATUS_CHECKS=\n' >>"$WORK/config.env"
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+PROTECTED_STATUS_CHECKS=
+' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
   assert_contains "check off" "$(post_body 2)" '"enable_status_check":false,"status_check_contexts":[]'
