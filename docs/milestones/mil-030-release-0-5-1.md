@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-07 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-07 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [df7c80c] |
 
 ---
 
@@ -78,3 +78,4 @@ The framework submodule points to `v0.20.0` (the pointer is committed; the skill
 [US-001]: ../user-stories.md
 [MIL-028]: ./mil-028-release-0-5-0.md
 [MIL-029]: ./mil-029-list-licenses.md
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

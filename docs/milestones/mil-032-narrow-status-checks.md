@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [df7c80c] |
 
 ---
 
@@ -89,3 +89,4 @@ A Gitea branch is governed by one protection rule only: the first rule whose pat
 [MIL-021]: ./mil-021-protect-default-branch.md
 [MIL-022]: ./mil-022-protect-existing-repository.md
 [MIL-031]: ./mil-031-kebab-case-project-name.md
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

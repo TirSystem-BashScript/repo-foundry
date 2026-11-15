@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-031 (proposed dates 2027-03-17 to 2027-03-19): kebab-case project names by default | pending |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-032 (proposed dates 2027-03-22 to 2027-03-23): split the protection into a `main` rule and a workflow rule, narrow the status checks | pending |
+| 2026-11-14 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-031 (proposed dates 2027-03-17 to 2027-03-19): kebab-case project names by default | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-032 (proposed dates 2027-03-22 to 2027-03-23): split the protection into a `main` rule and a workflow rule, narrow the status checks | [df7c80c] |
 
 ---
 
@@ -254,3 +254,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
 [b7406aa]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b7406aae0247f021b4489a5ce275d09c9538519d
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

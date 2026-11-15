@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go for UC-001 and SD-001, Go-with-conditions for DCD-001 and DCD-002<br>The condition (F1) is met: ProjectNameStyle is recorded in DICT-001, so the verdict for DCD-001 and DCD-002 is Go | pending |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go for UC-001 and SD-001, Go-with-conditions for DCD-001 and DCD-002<br>The condition (F1) is met: ProjectNameStyle is recorded in DICT-001, so the verdict for DCD-001 and DCD-002 is Go | [df7c80c] |
 
 ---
 
@@ -137,3 +137,4 @@ The review is not independent: the AI drafted the documents and reviewed them. S
 [QC-DICT-001]: ../../../framework/qc/artifacts/qc-dictionary.md
 [RC-021]: ./rc-021-dcd.md
 [RC-032]: ./rc-032-exclude-framework-files.md
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

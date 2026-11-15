@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is checked against the name style; no message changes (MIL-031) | pending |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | The protection step is a loop over the main rule and the workflow rule (MIL-032) | pending |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is checked against the name style; no message changes (MIL-031) | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | The protection step is a loop over the main rule and the workflow rule (MIL-032) | [df7c80c] |
 
 ---
 
@@ -240,3 +240,4 @@ destroy SR
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

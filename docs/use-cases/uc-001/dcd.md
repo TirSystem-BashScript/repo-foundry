@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | Configuration holds the project name style (kebab-case or any); the name is checked against it (MIL-031) | pending |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Two protection rules: Configuration holds the workflow pattern, ProtectionRule has a kind (MIL-032) | pending |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | Configuration holds the project name style (kebab-case or any); the name is checked against it (MIL-031) | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Two protection rules: Configuration holds the workflow pattern, ProtectionRule has a kind (MIL-032) | [df7c80c] |
 
 ---
 
@@ -388,3 +388,4 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

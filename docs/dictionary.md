@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Framework Setup and Template: the folders that hold the skills and the copy of AGENTS.md are ignored by git (MIL-009) | [08cb484] |
-| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | The enumeration `ProjectNameStyle` is named as an IT-only type, with `Visibility` (MIL-031) | pending |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | The enumeration `ProjectNameStyle` is named as an IT-only type, with `Visibility` (MIL-031) | [df7c80c] |
 
 ---
 
@@ -72,3 +72,4 @@ Maps each Product Owner (PO) term to its professional IT term. PO language: Engl
 [DCD-001]: ./use-cases/uc-001/dcd.md
 [DCD-002]: ./dcd.md
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

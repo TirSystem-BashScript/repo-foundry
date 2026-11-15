@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is kebab-case by default; PROJECT_NAME_STYLE=any keeps the old rules (MIL-031) | pending |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Step 7b sets two protection rules, the main rule and the workflow rule (MIL-032) | pending |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is kebab-case by default; PROJECT_NAME_STYLE=any keeps the old rules (MIL-031) | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Step 7b sets two protection rules, the main rule and the workflow rule (MIL-032) | [df7c80c] |
 
 ---
 
@@ -125,3 +125,4 @@
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
 [308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

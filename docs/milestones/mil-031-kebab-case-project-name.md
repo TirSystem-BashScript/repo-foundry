@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version | [df7c80c] |
 
 ---
 
@@ -88,3 +88,4 @@ A project's name, its folder and its git repository carry one name, and by defau
 [MIL-004]: ./mil-004-configurable-details.md
 [MIL-029]: ./mil-029-list-licenses.md
 [MIL-030]: ./mil-030-release-0-5-1.md
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850

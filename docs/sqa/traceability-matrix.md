@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-031 (kebab-case project names) and review RC-056<br>Added review RC-057 (use case and design documents of MIL-031) to UC-001, SD-001, DCD-001, DCD-002 and DICT-001 | pending |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-032 (split protection rules) and review RC-058 | pending |
+| 2026-11-14 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-031 (kebab-case project names) and review RC-056<br>Added review RC-057 (use case and design documents of MIL-031) to UC-001, SD-001, DCD-001, DCD-002 and DICT-001 | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-032 (split protection rules) and review RC-058 | [df7c80c] |
 
 ---
 
@@ -209,3 +209,4 @@ updated whenever an artifact instance is created or reviewed.
 [3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
+[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850
