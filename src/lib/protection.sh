@@ -73,12 +73,12 @@ protection_kinds() {
 
 # protection_body KIND create|edit: the JSON body of a rule from config.env.
 # The edit request does not carry the rule name. enable_push is always false.
-# The main rule has no status check and no block-merge setting; the workflow
-# rule has them and no signed-commits or protected-file setting. Every field is
+# Both rules carry the four block-merge settings; the main rule has no status
+# check, the workflow rule has them and no signed-commits or protected-file setting. Every field is
 # sent, so that an edit also clears what an older rule had.
 protection_body() {
   local kind="$1" mode="$2" items=() item contexts="" enabled=false name="" blocks="" key
-  local signed=false files="" block=false
+  local signed=false files="" block=true
   if [[ $kind == main ]]; then
     signed="${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
     files="$(json_escape "${CONFIG[PROTECTED_FILE_PATTERNS]}")"
@@ -90,7 +90,6 @@ protection_body() {
     if [[ -n $contexts ]]; then
       enabled=true
     fi
-    block=true
   fi
   if [[ $mode == create ]]; then
     name="\"rule_name\":\"$(json_escape "$(protection_pattern "$kind")")\","
@@ -146,14 +145,13 @@ protection_state() {
 
 # protection_wanted KIND: the same lines for the rule in config.env.
 protection_wanted() {
-  local kind="$1" enabled=false key checks="" files="" signed=false block=false
+  local kind="$1" enabled=false key checks="" files="" signed=false block=true
   if [[ $kind == main ]]; then
     files="${CONFIG[PROTECTED_FILE_PATTERNS]}"
     signed="${CONFIG[PROTECTED_REQUIRE_SIGNED_COMMITS]}"
   else
     checks="${CONFIG[PROTECTED_STATUS_CHECKS]}"
     [[ -n $checks ]] && enabled=true
-    block=true
   fi
   printf 'enable_push: false\nenable_status_check: %s\nstatus_check_contexts: %s\nprotected_file_patterns: %s\nrequire_signed_commits: %s\n' \
     "$enabled" "$checks" "$files" "$signed"

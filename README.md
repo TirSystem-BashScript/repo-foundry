@@ -157,8 +157,8 @@ password, query string or fragment. A credential key in this file is rejected.
 
 A new Gitea repository gets two branch protection rules. The main rule
 forbids a direct push to the protected branch: every change arrives by a pull
-request. The workflow rule, on `release/**` by default, requires the status
-checks and carries the four block-merge settings. Gitea applies one rule per
+request. It also carries the four block-merge settings. The workflow rule, on `release/**` by default, requires the status
+checks and carries the same four settings. Gitea applies one rule per
 branch, so the two patterns must not match a common branch. The rules are set
 after the repository and its mirror exist. The values are glob patterns ([syntax](https://github.com/gobwas/glob)); the two lists are
 separated by semicolons.

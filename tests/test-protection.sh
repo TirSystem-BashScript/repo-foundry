@@ -51,7 +51,7 @@ ROUTES
 }
 
 readonly RULE_DIFFERENT='{"rule_name":"main","enable_push":true,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":false}'
-readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}'
+readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
 readonly RULE_WORKFLOW_AS_WANTED='{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
 
 # count_calls METHOD: how many requests with METHOD went to the stub.
@@ -79,7 +79,7 @@ test_a_new_gitea_repository_gets_the_main_and_the_workflow_rule_after_the_mirror
 test_the_default_rule_bodies_split_the_push_rule_from_the_workflow_rule() {
   setup_hosts
   prot_apply "$ANSWERS_GITHUB"$'y\n'
-  assert_eq "the main rule" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "the main rule" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 1)"
   assert_eq "the workflow rule" '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
 }
 
@@ -119,7 +119,7 @@ PROTECTED_STATUS_CHECKS=Quality / quality (pull_request);Validate*
 EOF
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
-  assert_eq "the main rule" '{"rule_name":"trunk","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "the main rule" '{"rule_name":"trunk","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 1)"
   assert_eq "the workflow rule" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
 }
 
@@ -222,7 +222,7 @@ test_the_four_block_merge_settings_are_always_on() {
 '
   for key in block_on_rejected_reviews block_on_official_review_requests block_on_outdated_branch block_admin_merge_override; do
     assert_contains "$key on" "$(post_body 2)" "\"$key\":true"
-    assert_contains "$key off on the main rule" "$(post_body 1)" "\"$key\":false"
+    assert_contains "$key on the main rule" "$(post_body 1)" "\"$key\":true"
   done
   assert_not_contains "approvals not sent" "$(cat "$WORK/curl.bodies")" "required_approvals"
   assert_contains "plan names the blocks" "$OUT" "merge blocked on rejected reviews, review requests, an outdated branch and for administrators"
@@ -288,7 +288,7 @@ test_protect_creates_a_missing_rule_with_the_body_of_a_new_repository() {
   assert_status "apply" 0 "$STATUS"
   assert_eq "one POST" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
   assert_eq "no PATCH" "0" "$(count_calls PATCH)"
-  assert_eq "same body as for a new repository" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "same body as for a new repository" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 1)"
   assert_contains "done" "$OUT" "The rule 'main' was created"
 }
 
@@ -297,7 +297,7 @@ test_protect_creates_both_missing_rules_main_first() {
   prot_run "" --apply
   assert_status "apply" 0 "$STATUS"
   assert_eq "two POSTs" "2" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
-  assert_eq "the main rule first" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "the main rule first" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 1)"
   assert_eq "then the workflow rule" '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
   assert_contains "done" "$OUT" "The rule 'release/**' was created"
 }
