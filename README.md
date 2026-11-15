@@ -155,9 +155,9 @@ password, query string or fragment. A credential key in this file is rejected.
 
 ### `config.env` (branch protection, optional)
 
-A new Gitea repository gets two branch protection rules. The main rule
+A new Gitea repository gets a branch protection rule, and a second one when `PROTECTED_WORKFLOW_PATTERN` is set. The main rule
 forbids a direct push to the protected branch: every change arrives by a pull
-request. It also carries the four block-merge settings. The workflow rule, on `release/**` by default, requires the status
+request. It also carries the four block-merge settings. The workflow rule, made only when `PROTECTED_WORKFLOW_PATTERN` is set (for example `release/**`), requires the status
 checks and carries the same four settings. Gitea applies one rule per
 branch, so the two patterns must not match a common branch. The rules are set
 after the repository and its mirror exist. The values are glob patterns ([syntax](https://github.com/gobwas/glob)); the two lists are
@@ -166,7 +166,7 @@ separated by semicolons.
 | Key | Meaning | Default |
 | --- | --- | --- |
 | `PROTECTED_BRANCH_PATTERN` | the branch of the main rule: no direct push, protected files and signed commits | `main` |
-| `PROTECTED_WORKFLOW_PATTERN` | the branch of the workflow rule: status checks and the four block-merge settings; empty makes no workflow rule; must not overlap `PROTECTED_BRANCH_PATTERN` | `release/**` |
+| `PROTECTED_WORKFLOW_PATTERN` | the branch of the workflow rule: status checks and the four block-merge settings; empty or absent makes no workflow rule; must not overlap `PROTECTED_BRANCH_PATTERN` | none |
 | `PROTECTED_FILE_PATTERNS` | protected file patterns of the main rule, such as `docs/**;*.lock` | none |
 | `PROTECTED_STATUS_CHECKS` | status check patterns of the workflow rule that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *` |
 | `PROTECTED_REQUIRE_SIGNED_COMMITS` | `true` or `false`: whether every commit of a pull request must carry a verified signature; the default requires it, so signing must be set up on every machine that commits and Gitea needs a signing key for merges made in the web interface (wiki page `SshSigning`); set it to `false` if you cannot sign | `true` |
@@ -308,7 +308,6 @@ Plan:
   Push mirror       : Gitea -> GitHub every 10m0s
   Branch cleanup    : turn on on Gitea: delete a pull request branch after merge, by default
   Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); protected files: none; signed commits required
-  Branch protection : create on Gitea: rule 'release/**': no direct push; status checks: TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *; merge blocked on rejected reviews, review requests, an outdated branch and for administrators
   Local project     : create ./my-app (new directory), git on main, no commit
   Local origin      : will use SSH (the SSH test passed)
   Framework         : add ssh://git@git.example.org:10022/Team/SQA-QC-Framework.git as a submodule

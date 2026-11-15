@@ -55,8 +55,8 @@
 #               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME) and the
 #               optional PROTECTED_BRANCH_PATTERN (default main, the rule that
 #               forbids a direct push), PROTECTED_WORKFLOW_PATTERN (default
-#               release/**, the rule with the status checks and the block-merge
-#               settings; empty for none; it must not overlap the first),
+#               none; a pattern such as release/** adds a rule with the status
+#               checks and the block-merge settings; it must not overlap the first),
 #               PROTECTED_FILE_PATTERNS (default none) and
 #               PROTECTED_STATUS_CHECKS (default "TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *"),
 #               glob patterns; the two lists are separated by semicolons, and
