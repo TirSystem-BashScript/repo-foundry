@@ -7,6 +7,7 @@
 # shellcheck disable=SC2016  # snippet and fixture text is literal on purpose
 
 readonly PROTECTION_CALL="POST https://git.example.test/api/v1/repos/TirSystem/my-app/branch_protections"
+readonly WORKFLOW_RULE_URL="https://git.example.test/api/v1/repos/TirSystem/my-app/branch_protections/release%2F%2A%2A"
 readonly PROTECTION_RULE_URL="https://git.example.test/api/v1/repos/TirSystem/my-app/branch_protections/main"
 
 prot_apply() {
@@ -24,15 +25,25 @@ prot_run() {
   run_cli "$input" --protect TirSystem/my-app --config "$WORK/config.env" --env "$WORK/.env" "$@"
 }
 
+# post_body N: the body of the Nth rule request of a new repository.
+post_body() {
+  grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | grep -v -e '^--$' -e '^POST ' | sed -n "${1}p"
+}
+
 # protect_fixtures: only the Gitea token (no GitHub credential) and routes for
-# an existing repository whose rule answers with the given status and body.
+# an existing repository whose main rule answers with the given status and body
+# (arguments 1 and 2) and whose workflow rule answers with arguments 3 and 4
+# (default: as wanted). PROTECT_CLEANUP is the repository's branch cleanup.
 protect_fixtures() {
   rm -f "$WORK/curl.calls" "$WORK/curl.bodies" "$WORK/curl.args" "$WORK/curl.config"
   write_fixtures
   printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
   write_curl_stub
   write_routes <<ROUTES
-GET|/api/v1/repos/TirSystem/my-app|200|{"name":"my-app"}
+GET|/api/v1/repos/TirSystem/my-app|200|{"name":"my-app","default_delete_branch_after_merge":${PROTECT_CLEANUP:-true}}
+PATCH|/api/v1/repos/TirSystem/my-app|200|{"name":"my-app"}
+GET|/api/v1/repos/TirSystem/my-app/branch_protections/release%2F%2A%2A|${3:-200}|${4:-$RULE_WORKFLOW_AS_WANTED}
+PATCH|/api/v1/repos/TirSystem/my-app/branch_protections/release%2F%2A%2A|200|{"rule_name":"release/**"}
 GET|/api/v1/repos/TirSystem/my-app/branch_protections/main|$1|$2
 POST|/api/v1/repos/TirSystem/my-app/branch_protections|201|{"rule_name":"main"}
 PATCH|/api/v1/repos/TirSystem/my-app/branch_protections/main|200|{"rule_name":"main"}
@@ -40,7 +51,8 @@ ROUTES
 }
 
 readonly RULE_DIFFERENT='{"rule_name":"main","enable_push":true,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":false}'
-readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
+readonly RULE_AS_WANTED='{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}'
+readonly RULE_WORKFLOW_AS_WANTED='{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
 
 # count_calls METHOD: how many requests with METHOD went to the stub.
 count_calls() {
@@ -54,29 +66,29 @@ count_writes() {
 
 # ------------------------------------------------ a new repository (MIL-021)
 
-test_a_new_gitea_repository_gets_one_protection_rule_after_the_mirror() {
+test_a_new_gitea_repository_gets_the_main_and_the_workflow_rule_after_the_mirror() {
   setup_hosts
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
-  assert_eq "one rule request" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
+  assert_eq "two rule requests" "2" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
   assert_before "the rule after the mirror" "$(position "$MIRROR_CALL")" "$(position "$PROTECTION_CALL")"
   assert_before "the rule after the first sync" "$(position "$SYNC_CALL")" "$(position "$PROTECTION_CALL")"
-  assert_contains "step reported" "$OUT" "Branch protection : created (no direct push to main)"
+  assert_contains "step reported" "$OUT" "Branch protection : created (no direct push to main; status checks on release/**)"
 }
 
-test_the_default_rule_body_forbids_direct_push() {
+test_the_default_rule_bodies_split_the_push_rule_from_the_workflow_rule() {
   setup_hosts
   prot_apply "$ANSWERS_GITHUB"$'y\n'
-  local body
-  body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$body"
+  assert_eq "the main rule" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "the workflow rule" '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
 }
 
 test_the_plan_names_the_rule_for_a_created_repository_only() {
   setup_hosts
   prot_dry "$ANSWERS_GITHUB"
   assert_status "dry run" 0 "$STATUS"
-  assert_contains "plan line" "$OUT" "Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); status checks: TirSystem/git-workflows: *; protected files: none"
+  assert_contains "plan line" "$OUT" "Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); protected files: none; signed commits required"
+  assert_contains "workflow plan line" "$OUT" "Branch protection : create on Gitea: rule 'release/**': no direct push; status checks: TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *; merge blocked on rejected reviews"
   assert_not_contains "a dry run only reads" "$(calls)" "branch_protections"
   setup_hosts
   prepend_route 'GET|/api/v1/repos/TirSystem/my-app|200|{"empty":true}'
@@ -97,18 +109,42 @@ test_a_reused_repository_and_github_get_no_protection_request() {
   assert_not_contains "nothing for GitHub" "$(calls | grep api.github.com)" "protect"
 }
 
-test_the_keys_of_config_env_set_the_rule() {
+test_the_keys_of_config_env_set_the_rules() {
   setup_hosts
   cat >>"$WORK/config.env" <<'EOF'
-PROTECTED_BRANCH_PATTERN=release/*
+PROTECTED_BRANCH_PATTERN=trunk
+PROTECTED_WORKFLOW_PATTERN=release/*
 PROTECTED_FILE_PATTERNS=docs/**; *.lock
 PROTECTED_STATUS_CHECKS=Quality / quality (pull_request);Validate*
 EOF
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
-  local body
-  body="$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
-  assert_eq "the whole body" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$body"
+  assert_eq "the main rule" '{"rule_name":"trunk","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"docs/**; *.lock","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "the workflow rule" '{"rule_name":"release/*","enable_push":false,"enable_status_check":true,"status_check_contexts":["Quality / quality (pull_request)","Validate*"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
+}
+
+test_an_empty_workflow_pattern_makes_no_second_rule() {
+  setup_hosts
+  printf 'PROTECTED_WORKFLOW_PATTERN=\n' >>"$WORK/config.env"
+  prot_apply "$ANSWERS_GITHUB"$'y\n'
+  assert_status "apply" 0 "$STATUS"
+  assert_eq "one rule request" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
+  assert_contains "reported" "$OUT" "Branch protection : created (no direct push to main)"
+  assert_not_contains "the plan names no workflow rule" "$OUT" "status checks:"
+}
+
+test_overlapping_patterns_stop_before_any_request_and_name_both_keys() {
+  local pair
+  for pair in 'main main' 'main **' 'release/** release/v1' 'trunk *'; do
+    setup_hosts
+    printf 'PROTECTED_BRANCH_PATTERN=%s\nPROTECTED_WORKFLOW_PATTERN=%s\n' "${pair% *}" "${pair#* }" >>"$WORK/config.env"
+    prot_dry "$ANSWERS_GITHUB"
+    assert_status "refused: $pair" 1 "$STATUS"
+    assert_contains "names both keys: $pair" "$ERR" "PROTECTED_BRANCH_PATTERN and PROTECTED_WORKFLOW_PATTERN"
+    assert_eq "no request: $pair" "" "$(calls)"
+    remove_workdir
+    new_workdir
+  done
 }
 
 test_an_empty_list_of_status_checks_switches_the_check_off() {
@@ -116,7 +152,7 @@ test_an_empty_list_of_status_checks_switches_the_check_off() {
   printf 'PROTECTED_STATUS_CHECKS=\n' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
-  assert_contains "check off" "$(cat "$WORK/curl.bodies")" '"enable_status_check":false,"status_check_contexts":[]'
+  assert_contains "check off" "$(post_body 2)" '"enable_status_check":false,"status_check_contexts":[]'
   assert_contains "plan says none" "$OUT" "status checks: none"
 }
 
@@ -131,7 +167,7 @@ test_no_key_can_turn_direct_push_on() {
 
 test_an_invalid_protection_value_stops_before_any_request_and_names_the_key() {
   local line key
-  for line in 'PROTECTED_BRANCH_PATTERN=' 'PROTECTED_BRANCH_PATTERN=a;b' \
+  for line in 'PROTECTED_BRANCH_PATTERN=' 'PROTECTED_BRANCH_PATTERN=a;b' 'PROTECTED_WORKFLOW_PATTERN=a;b' \
     'PROTECTED_FILE_PATTERNS=a;;b' 'PROTECTED_FILE_PATTERNS=a;' \
     'PROTECTED_STATUS_CHECKS=;a' 'PROTECTED_STATUS_CHECKS=a; ;b' \
     'PROTECTED_REQUIRE_SIGNED_COMMITS=yes' 'PROTECTED_REQUIRE_SIGNED_COMMITS='; do
@@ -153,7 +189,7 @@ test_signed_commits_are_required_unless_the_key_says_false() {
   assert_contains "plan says so" "$OUT" "signed commits required"
   prot_apply "$ANSWERS_GITHUB"$'y
 '
-  assert_contains "on by default" "$(cat "$WORK/curl.bodies")" '"require_signed_commits":true'
+  assert_contains "on by default" "$(post_body 1)" '"require_signed_commits":true'
   remove_workdir
   new_workdir
   setup_hosts
@@ -164,7 +200,7 @@ test_signed_commits_are_required_unless_the_key_says_false() {
   prot_apply "$ANSWERS_GITHUB"$'y
 '
   assert_status "apply" 0 "$STATUS"
-  assert_contains "off" "$(cat "$WORK/curl.bodies")" '"require_signed_commits":false'
+  assert_contains "off" "$(post_body 1)" '"require_signed_commits":false'
 }
 
 test_protect_compares_the_signed_commits_setting() {
@@ -185,7 +221,8 @@ test_the_four_block_merge_settings_are_always_on() {
   prot_apply "$ANSWERS_GITHUB"$'y
 '
   for key in block_on_rejected_reviews block_on_official_review_requests block_on_outdated_branch block_admin_merge_override; do
-    assert_contains "$key on" "$(cat "$WORK/curl.bodies")" "\"$key\":true"
+    assert_contains "$key on" "$(post_body 2)" "\"$key\":true"
+    assert_contains "$key off on the main rule" "$(post_body 1)" "\"$key\":false"
   done
   assert_not_contains "approvals not sent" "$(cat "$WORK/curl.bodies")" "required_approvals"
   assert_contains "plan names the blocks" "$OUT" "merge blocked on rejected reviews, review requests, an outdated branch and for administrators"
@@ -201,12 +238,13 @@ test_no_key_can_turn_a_block_merge_setting_off() {
 }
 
 test_protect_changes_a_rule_where_a_block_setting_is_off_only_after_a_yes() {
-  protect_fixtures 200 '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":false,"block_admin_merge_override":true}'
+  protect_fixtures 200 "$RULE_AS_WANTED" 200 '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":false,"block_admin_merge_override":true}'
   prot_run $'y
 ' --apply
   assert_status "yes" 0 "$STATUS"
   assert_contains "difference shown" "$OUT" "block_on_outdated_branch: false"
-  assert_eq "one PATCH" "1" "$(calls | grep -c -x -F "PATCH $PROTECTION_RULE_URL")"
+  assert_eq "one PATCH" "1" "$(calls | grep -c -x -F "PATCH $WORKFLOW_RULE_URL")"
+  assert_eq "no PATCH of the main rule" "0" "$(calls | grep -c -x -F "PATCH $PROTECTION_RULE_URL")"
 }
 
 test_a_refused_rule_is_a_warning_and_the_run_goes_on() {
@@ -216,7 +254,7 @@ test_a_refused_rule_is_a_warning_and_the_run_goes_on() {
     prepend_route "POST|/api/v1/repos/TirSystem/my-app/branch_protections|$code|{\"message\":\"nope\"}"
     prot_apply "$ANSWERS_GITHUB"$'y\n'
     assert_status "run ends well ($code)" 0 "$STATUS"
-    assert_contains "warning ($code)" "$ERR" "could not set the branch protection rule"
+    assert_contains "warning ($code)" "$ERR" "could not set the main branch protection rule"
     assert_contains "settings hint ($code)" "$OUT" "Branch protection : not set (set it in the repository settings under Branches)"
     assert_contains "the mirror is made ($code)" "$OUT" "Push mirror       : created"
     assert_contains "the local project is made ($code)" "$OUT" "Local project"
@@ -250,10 +288,48 @@ test_protect_creates_a_missing_rule_with_the_body_of_a_new_repository() {
   assert_status "apply" 0 "$STATUS"
   assert_eq "one POST" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
   assert_eq "no PATCH" "0" "$(count_calls PATCH)"
-  assert_eq "same body as for a new repository" \
-    '{"rule_name":"main","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' \
-    "$(grep -A1 "^$PROTECTION_CALL" "$WORK/curl.bodies" | tail -n 1)"
+  assert_eq "same body as for a new repository" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
   assert_contains "done" "$OUT" "The rule 'main' was created"
+}
+
+test_protect_creates_both_missing_rules_main_first() {
+  protect_fixtures 404 '{"message":"not found"}' 404 '{"message":"not found"}'
+  prot_run "" --apply
+  assert_status "apply" 0 "$STATUS"
+  assert_eq "two POSTs" "2" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
+  assert_eq "the main rule first" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":false,"block_on_official_review_requests":false,"block_on_outdated_branch":false,"block_admin_merge_override":false}' "$(post_body 1)"
+  assert_eq "then the workflow rule" '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
+  assert_contains "done" "$OUT" "The rule 'release/**' was created"
+}
+
+test_protect_corrects_a_workflow_rule_that_has_the_old_default_check() {
+  protect_fixtures 200 "$RULE_AS_WANTED" 200 '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}'
+  prot_run ""
+  assert_contains "differs" "$OUT" "the rule 'release/**' differs"
+  assert_eq "a dry run writes nothing" "0" "$(count_writes)"
+  prot_run $'y\n' --apply
+  assert_status "yes" 0 "$STATUS"
+  assert_eq "one PATCH" "1" "$(calls | grep -c -x -F "PATCH $WORKFLOW_RULE_URL")"
+  assert_contains "the three checks" "$(grep -A1 "^PATCH " "$WORK/curl.bodies")" "$(printf '%s' '["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"]')"
+}
+
+test_protect_turns_branch_cleanup_on_only_after_a_yes() {
+  PROTECT_CLEANUP=false protect_fixtures 200 "$RULE_AS_WANTED"
+  prot_run ""
+  assert_contains "says it is off" "$OUT" "branch cleanup after merge is off"
+  assert_eq "a dry run writes nothing" "0" "$(count_writes)"
+  PROTECT_CLEANUP=false protect_fixtures 200 "$RULE_AS_WANTED"
+  prot_run $'y\n' --apply
+  assert_status "yes" 0 "$STATUS"
+  assert_eq "one PATCH of the repository" "1" "$(calls | grep -c -x -F "PATCH https://git.example.test/api/v1/repos/TirSystem/my-app")"
+  assert_contains "the body" "$(cat "$WORK/curl.bodies")" '{"default_delete_branch_after_merge":true}'
+  PROTECT_CLEANUP=false protect_fixtures 200 "$RULE_AS_WANTED"
+  prot_run $'n\n' --apply
+  assert_status "no" 1 "$STATUS"
+  assert_eq "no write after a no" "0" "$(count_writes)"
+  protect_fixtures 200 "$RULE_AS_WANTED"
+  prot_run "" --apply
+  assert_contains "already on" "$OUT" "branch cleanup after merge is already on"
 }
 
 test_protect_shows_the_difference_and_changes_nothing_in_a_dry_run() {
@@ -277,7 +353,7 @@ test_protect_changes_an_existing_rule_only_after_a_yes() {
   protect_fixtures 200 "$RULE_DIFFERENT"
   prot_run $'n\n' --apply
   assert_status "no" 1 "$STATUS"
-  assert_contains "says so" "$ERR" "the rule was not changed"
+  assert_contains "says so" "$ERR" "the rule 'main' was not changed"
   assert_eq "no PATCH after a no" "0" "$(count_calls PATCH)"
 }
 
@@ -291,10 +367,10 @@ test_protect_does_nothing_when_the_rule_is_as_wanted() {
 
 test_protect_touches_only_the_rule_it_was_asked_for() {
   protect_fixtures 404 '{"message":"not found"}'
-  printf 'PROTECTED_BRANCH_PATTERN=release/*\n' >>"$WORK/config.env"
+  printf 'PROTECTED_BRANCH_PATTERN=trunk\n' >>"$WORK/config.env"
   prot_run "" --apply
   assert_status "apply" 0 "$STATUS"
-  assert_contains "encoded rule name read" "$(calls)" "GET https://git.example.test/api/v1/repos/TirSystem/my-app/branch_protections/release%2F%2A"
+  assert_contains "encoded rule name read" "$(calls)" "GET https://git.example.test/api/v1/repos/TirSystem/my-app/branch_protections/trunk"
   assert_not_contains "no other rule" "$(calls)" "branch_protections/main"
   assert_not_contains "never deletes" "$(calls)" "DELETE"
 }
@@ -354,4 +430,9 @@ test_url_encode_leaves_safe_characters_and_encodes_the_rest() {
 test_split_patterns_keeps_empty_items_for_the_validator() {
   run_lib "" 'split_patterns "a; b ;;c" items; printf "[%s]" "${items[@]}"'
   assert_eq "items" "[a][b][][c]" "$OUT"
+}
+
+test_patterns_overlap_finds_a_common_branch() {
+  run_lib "" 'for pair in "main main" "main **" "release/** release/v1" "main release/**" "trunk release/*"; do patterns_overlap "${pair% *}" "${pair#* }" && printf "y" || printf "n"; done'
+  assert_eq "overlap" "yyynn" "$OUT"
 }

@@ -155,17 +155,20 @@ password, query string or fragment. A credential key in this file is rejected.
 
 ### `config.env` (branch protection, optional)
 
-A new Gitea repository gets a branch protection rule: nothing is pushed
-straight to the protected branch, every change arrives by a pull request. The
-rule is set after the repository and its mirror exist. The three values are
-glob patterns ([syntax](https://github.com/gobwas/glob)); the two lists are
+A new Gitea repository gets two branch protection rules. The main rule
+forbids a direct push to the protected branch: every change arrives by a pull
+request. The workflow rule, on `release/**` by default, requires the status
+checks and carries the four block-merge settings. Gitea applies one rule per
+branch, so the two patterns must not match a common branch. The rules are set
+after the repository and its mirror exist. The values are glob patterns ([syntax](https://github.com/gobwas/glob)); the two lists are
 separated by semicolons.
 
 | Key | Meaning | Default |
 | --- | --- | --- |
-| `PROTECTED_BRANCH_PATTERN` | the protected branch name pattern | `main` |
-| `PROTECTED_FILE_PATTERNS` | protected file patterns, such as `docs/**;*.lock` | none |
-| `PROTECTED_STATUS_CHECKS` | status check patterns that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: *` |
+| `PROTECTED_BRANCH_PATTERN` | the branch of the main rule: no direct push, protected files and signed commits | `main` |
+| `PROTECTED_WORKFLOW_PATTERN` | the branch of the workflow rule: status checks and the four block-merge settings; empty makes no workflow rule; must not overlap `PROTECTED_BRANCH_PATTERN` | `release/**` |
+| `PROTECTED_FILE_PATTERNS` | protected file patterns of the main rule, such as `docs/**;*.lock` | none |
+| `PROTECTED_STATUS_CHECKS` | status check patterns of the workflow rule that must pass before a merge; empty switches the status check off | `TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *` |
 | `PROTECTED_REQUIRE_SIGNED_COMMITS` | `true` or `false`: whether every commit of a pull request must carry a verified signature; the default requires it, so signing must be set up on every machine that commits and Gitea needs a signing key for merges made in the web interface (wiki page `SshSigning`); set it to `false` if you cannot sign | `true` |
 
 There is no key that allows a direct push, and none that turns off the four block-merge settings: a merge is blocked on rejected reviews, on official review requests, when the pull request is outdated (its branch is behind the protected branch) and for administrators, who must follow the rule too. The required approvals are left at 0, so one Maintainer can merge. A rule that requires signed commits rejects a pull request with one unsigned commit. The default status check pattern
@@ -183,7 +186,7 @@ A detail that is set is used and not asked; the summary marks it with
 
 | Key | Detail | Accepted value |
 | --- | --- | --- |
-| `PROJECT_NAME` | repository name | letters, digits, `.`, `_`, `-`; at most 100; not ending in `.git` |
+| `PROJECT_NAME` | repository name | `kebab-case` by default: lowercase letters and digits in words joined by single `-`, at most 100, such as `my-app`; with `PROJECT_NAME_STYLE=any`: letters, digits, `.`, `_`, `-`, at most 100, not ending in `.git` |
 | `PROJECT_DESCRIPTION` | description | at most 350 characters; may be empty |
 | `PROJECT_VISIBILITY` | visibility | `private` or `public` |
 | `GITEA_OWNER` | Gitea user or organization | letters, digits, `.`, `_`, `-`; at most 39 |
@@ -200,6 +203,20 @@ A detail that is set is used and not asked; the summary marks it with
   key. The script never falls back to asking for it.
 - `USE_GITHUB=no` skips the GitHub owner and every GitHub step; a
   `GITHUB_OWNER` set at the same time is ignored, with a warning.
+- The name of a project, its folder and its repository is `kebab-case` by
+  default. A name that is typed and does not follow the rule (`My_App`) is
+  refused with the rule and the kebab-case form (`my-app`), and asked again. A
+  `PROJECT_NAME` in `config.env` that is not kebab-case stops the run before any
+  request and names `PROJECT_NAME_STYLE=any` as the way to keep it. The
+  optional key `PROJECT_NAME_STYLE` chooses the style: `kebab-case` (the
+  default, also when the key is absent) or `any` (the repository-name rules of
+  Gitea and GitHub: letters, digits, `.`, `_`, `-`, at most 100, not ending in
+  `.git`). It is a setting, not a detail: it is never asked, its value is
+  checked like the other keys (any letter case, stored in lower case), and
+  like them it is accepted in `config.env` only. The name of an existing
+  repository, such as the one given to `--protect OWNER/NAME`, is never
+  checked against it. An existing `config.env` with a `PROJECT_NAME` that is
+  not kebab-case needs `PROJECT_NAME_STYLE=any`, or a new name.
 - `PROJECT_LICENSE` is never asked. When set, that license is put on the Gitea
   repository with or without GitHub, and `none` means no license. When absent,
   AGPL-3.0 is applied only if GitHub is used **and** the project is public;
@@ -208,7 +225,8 @@ A detail that is set is used and not asked; the summary marks it with
   `src/create-project.sh --list-licenses` prints the keys that the server
   offers; [`config.env.example`](config.env.example) lists those of the
   Maintainer's server.
-- Only these nine details can be set. The confirmations stay questions that
+- Only these nine details can be set (and the setting `PROJECT_NAME_STYLE`
+  above). The confirmations stay questions that
   default to no: create now, reusing an existing repository, an existing
   directory, `core.hooksPath` and replacing a template file.
 - These keys are accepted in `config.env` only, never in `.env`.
@@ -289,7 +307,8 @@ Plan:
   GitHub repository : create (public), empty https://github.com/acme/my-app
   Push mirror       : Gitea -> GitHub every 10m0s
   Branch cleanup    : turn on on Gitea: delete a pull request branch after merge, by default
-  Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); status checks: TirSystem/git-workflows: *; protected files: none
+  Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); protected files: none; signed commits required
+  Branch protection : create on Gitea: rule 'release/**': no direct push; status checks: TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *; merge blocked on rejected reviews, review requests, an outdated branch and for administrators
   Local project     : create ./my-app (new directory), git on main, no commit
   Local origin      : will use SSH (the SSH test passed)
   Framework         : add ssh://git@git.example.org:10022/Team/SQA-QC-Framework.git as a submodule
@@ -327,19 +346,23 @@ hooks refuse commits on `main`, and the Gitea rule refuses a push to it.
 
 ```bash
 src/create-project.sh --protect OWNER/NAME           # dry run: reads, changes nothing
-src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the rule
+src/create-project.sh --protect OWNER/NAME --apply   # creates or changes the rules
 ```
 
-`--protect` gives an existing Gitea repository the rule of
-[`config.env`](#configenv-branch-protection-optional) and does nothing else: it
+`--protect` gives an existing Gitea repository the two rules of
+[`config.env`](#configenv-branch-protection-optional) (the main rule and the
+workflow rule) and turns on "Delete pull request branch after merge by default"
+and does nothing else: it
 asks for the Gitea token only, creates no repository, mirror or directory and
 makes no GitHub request. The dry run reads the repository and the rule and says
 what would be done.
 
-- No rule of that name: with `--apply` it is created.
-- A rule that differs: the differences are shown, and the rule is changed only
-  after a yes (default no).
+- No rule of that pattern: with `--apply` it is created.
+- A rule that differs, such as one that still has the old status check
+  `TirSystem/git-workflows: *`: the differences are shown, and the rule is
+  changed only after a yes (default no).
 - A rule that is as wanted: nothing is sent.
+- Branch cleanup after merge that is off: turned on only after a yes.
 - Rules of other names are never changed or deleted.
 
 The exit status is 0 when the rule is as wanted at the end, and not 0 when a

@@ -101,6 +101,9 @@ test_usage_errors() {
   assert_status "help" 0 "$STATUS"
   assert_contains "help shows usage" "$OUT" "Usage"
   assert_contains "help shows exit codes" "$OUT" "Exit codes"
+  assert_contains "help names the name style key" "$OUT" "PROJECT_NAME_STYLE"
+  run_cli "" --bogus
+  assert_contains "the usage text names the name style key" "$ERR" "PROJECT_NAME_STYLE=any"
   run_cli "" --version
   assert_status "version" 0 "$STATUS"
   assert_contains "version output" "$OUT" "RepoFoundry 0.5.0"

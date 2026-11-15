@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 2b192ec2ec79 -->
+<!-- translation of GettingStarted.md, source sha256 6f58bcedcf67 -->
 
 > Dette er en oversættelse af [`GettingStarted`](GettingStarted). Den engelske side er autoritativ, og ændringer her bliver overskrevet, næste gang wikien publiceres.
 
@@ -47,9 +47,9 @@ Et nyt Gitea-repository har indstillingen "Delete pull request branch after merg
 
 ## Beskyttelse af branch
 
-Et nyt Gitea-repository får en regel for beskyttet branch: ingen direkte push til `main`, hver ændring kommer via en pull request. En merge blokeres også ved afviste reviews, ved officielle review-anmodninger, når pull requesten er forældet, og for administratorer; ingen nøgle slår det fra. Det nye projekts første commit går samme vej: push en branch og åbn en pull request.
+Et nyt Gitea-repository får to regler for beskyttet branch. Hovedreglen forbyder direkte push til `main`: hver ændring kommer via en pull request. Workflow-reglen, på `release/**`, kræver status checks og blokerer en merge ved afviste reviews, ved officielle review-anmodninger, når pull requesten er forældet, og for administratorer; ingen nøgle slår det fra. Gitea anvender én regel pr. branch, så de to mønstre må ikke ramme samme branch. Det nye projekts første commit går samme vej: push en branch og åbn en pull request.
 
-Reglen sættes med fire valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_FILE_PATTERNS` (standard ingen), `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: *`) og `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` eller `false`, standard `true`; `false` hvis du ikke kan signere; se [Signering af commits](SshSigning.da)). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+Reglen sættes med fem valgfrie nøgler i `config.env` (glob-mønstre, lister adskilt af `;`): `PROTECTED_BRANCH_PATTERN` (standard `main`), `PROTECTED_WORKFLOW_PATTERN` (standard `release/**`, tom for ingen workflow-regel), `PROTECTED_FILE_PATTERNS` (standard ingen), `PROTECTED_STATUS_CHECKS` (standard `TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *`) og `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` eller `false`, standard `true`; `false` hvis du ikke kan signere; se [Signering af commits](SshSigning.da)). Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 Sådan giver du et eksisterende repository samme regel:
 
@@ -59,6 +59,12 @@ src/create-project.sh --protect OWNER/NAME --apply   # opretter eller ændrer re
 ```
 
 En eksisterende regel, der afviger, ændres kun efter et ja.
+
+## Projektnavn
+
+Et projekts navn er også navnet på dets Gitea- og GitHub-repository og som standard på dets mappe. Det er `kebab-case`, medmindre du siger andet: små bogstaver og cifre i ord, der er forbundet med enkelte bindestreger, for eksempel `my-app`. Et navn som `My_App` afvises, kebab-case-formen (`my-app`) foreslås, og du bliver spurgt igen.
+
+Vil du beholde en anden skrivemåde, så sæt `PROJECT_NAME_STYLE=any` i `config.env` (valgfri; `kebab-case` er standard). Så gælder værternes regler for repository-navne: bogstaver, cifre, `.`, `_` og `-`. Et `PROJECT_NAME` i `config.env`, der ikke er kebab-case, stopper kørslen, medmindre stilen er `any`. Navnet på et eksisterende repository (`--protect OWNER/NAME`) kontrolleres aldrig. Se [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-project-details-optional).
 
 ## Licens
 

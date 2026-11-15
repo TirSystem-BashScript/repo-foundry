@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | US-001 |
-| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [MIL-029] |
+| CrossReference | [BC-001], [UCD-001], [UC-002], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [MIL-029], [MIL-030] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-028 added to CrossReference | [e961872] |
 | 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | MIL-029 added to CrossReference | [b7406aa] |
+| 2026-11-07 | Proposed | Jens Tirsvad Nielsen | S02 | MIL-030 added to CrossReference | pending |
 
 ---
 
@@ -189,6 +189,7 @@ Valuable, Negotiable, Estimable, Small and Testable hold for each story. Indepen
 [MIL-027]: ./milestones/mil-027-signed-commits-by-default.md
 [MIL-028]: ./milestones/mil-028-release-0-5-0.md
 [MIL-029]: ./milestones/mil-029-list-licenses.md
+[MIL-030]: ./milestones/mil-030-release-0-5-1.md
 [PP-001]: ./project-plan.md
 [d1120f7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/d1120f7da03f41e6af8b5f35d860eee5bfd5f015
 [7823687]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7823687baf39c26161876c59382eaa3f8683940e

@@ -1,4 +1,4 @@
-<!-- translation of GettingStarted.md, source sha256 2b192ec2ec79 -->
+<!-- translation of GettingStarted.md, source sha256 6f58bcedcf67 -->
 
 > Ini ialah terjemahan [`GettingStarted`](GettingStarted). Halaman bahasa Inggeris ialah teks yang sah, dan perubahan di sini akan ditimpa pada penerbitan wiki yang seterusnya.
 
@@ -47,9 +47,9 @@ Repositori Gitea baharu mempunyai tetapan "Delete pull request branch after merg
 
 ## Perlindungan branch
 
-Repositori Gitea baharu mendapat peraturan perlindungan branch: tiada push terus ke `main`, setiap perubahan datang melalui pull request. Penggabungan juga disekat apabila ada ulasan yang ditolak, permintaan ulasan rasmi, apabila pull request sudah lapuk, dan untuk pentadbir; tiada kunci yang mematikannya. Commit pertama projek baharu mengikut laluan yang sama: push satu branch dan buka pull request.
+Repositori Gitea baharu mendapat dua peraturan perlindungan branch. Peraturan utama melarang push terus ke `main`: setiap perubahan datang melalui pull request. Peraturan workflow, pada `release/**`, memerlukan semakan status dan penggabungan disekat apabila ada ulasan yang ditolak, permintaan ulasan rasmi, apabila pull request sudah lapuk, dan untuk pentadbir; tiada kunci yang mematikannya. Gitea menggunakan satu peraturan bagi setiap branch, jadi kedua-dua corak tidak boleh sepadan dengan branch yang sama. Commit pertama projek baharu mengikut laluan yang sama: push satu branch dan buka pull request.
 
-Peraturan ditetapkan dengan empat kunci pilihan dalam `config.env` (corak glob, senarai dipisahkan dengan `;`): `PROTECTED_BRANCH_PATTERN` (lalai `main`), `PROTECTED_FILE_PATTERNS` (lalai tiada), `PROTECTED_STATUS_CHECKS` (lalai `TirSystem/git-workflows: *`) dan `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` atau `false`, lalai `true`; `false` jika anda tidak boleh menandatangani; lihat [Menandatangani commit](SshSigning.ms)). Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
+Peraturan ditetapkan dengan lima kunci pilihan dalam `config.env` (corak glob, senarai dipisahkan dengan `;`): `PROTECTED_BRANCH_PATTERN` (lalai `main`), `PROTECTED_WORKFLOW_PATTERN` (lalai `release/**`, kosong bermakna tiada peraturan workflow), `PROTECTED_FILE_PATTERNS` (lalai tiada), `PROTECTED_STATUS_CHECKS` (lalai `TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *`) dan `PROTECTED_REQUIRE_SIGNED_COMMITS` (`true` atau `false`, lalai `true`; `false` jika anda tidak boleh menandatangani; lihat [Menandatangani commit](SshSigning.ms)). Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-branch-protection-optional).
 
 Untuk memberi repositori sedia ada peraturan yang sama:
 
@@ -59,6 +59,12 @@ src/create-project.sh --protect OWNER/NAME --apply   # mencipta atau menukar per
 ```
 
 Peraturan sedia ada yang berbeza hanya ditukar selepas jawapan ya.
+
+## Nama projek
+
+Nama sesebuah projek juga ialah nama repositori Gitea dan GitHub-nya dan, secara lalai, nama folder-nya. Nama itu ialah `kebab-case` melainkan anda menyatakan sebaliknya: huruf kecil dan digit dalam perkataan yang disambung dengan satu sempang, seperti `my-app`. Nama seperti `My_App` ditolak, bentuk kebab-case (`my-app`) dicadangkan, dan anda ditanya sekali lagi.
+
+Untuk mengekalkan gaya huruf lain, tetapkan `PROJECT_NAME_STYLE=any` dalam `config.env` (pilihan; `kebab-case` ialah nilai lalai). Peraturan nama repositori pada hos kemudian terpakai: huruf, digit, `.`, `_` dan `-`. `PROJECT_NAME` dalam `config.env` yang bukan kebab-case menghentikan larian melainkan gayanya `any`. Nama repositori yang sedia ada (`--protect OWNER/NAME`) tidak pernah disemak. Lihat [README](https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/src/branch/main/README.md#configenv-project-details-optional).
 
 ## Lesen
 

@@ -13,6 +13,8 @@ Usage: ${0##*/} [--apply] [--config FILE] [--env FILE]
        ${0##*/} --list-licenses [--config FILE] [--env FILE]
        Without --config and --env, ./config.env and ./.env in the current folder
        are read, then the ones in the checkout.
+       The project name is kebab-case (such as my-app) unless config.env sets
+       PROJECT_NAME_STYLE=any.
        ${0##*/} --help | --version
 EOF
 }

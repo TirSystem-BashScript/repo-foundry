@@ -56,6 +56,36 @@ validate_credentials"
   assert_status "bad token rejected" 1 "$STATUS"
 }
 
+test_kebab_name_length_limit() {
+  run_lib "" 'if is_valid_kebab_name "$(printf "a%.0s" $(seq 1 100))"; then echo yes; else echo no; fi'
+  assert_eq "100 characters" "yes" "$OUT"
+  run_lib "" 'if is_valid_kebab_name "$(printf "a%.0s" $(seq 1 101))"; then echo yes; else echo no; fi'
+  assert_eq "101 characters" "no" "$OUT"
+}
+
+test_suggest_kebab_name() {
+  local value expected
+  while IFS='|' read -r value expected; do
+    run_lib "" "suggest_kebab_name '$value'"
+    assert_eq "suggestion for '$value'" "$expected" "$OUT"
+  done <<'EOF'
+My_App|my-app
+app_1|app-1
+App|app
+-app|app
+app-|app
+app--x|app-x
+My Great.App|my-great-app
+my-app|my-app
+___|
+EOF
+  # Cut at the limit, and no hyphen is left at the end by the cut.
+  run_lib "" 'suggest_kebab_name "$(printf "a%.0s" $(seq 1 99))_bcd"'
+  assert_eq "cut before a trailing hyphen" "$(printf 'a%.0s' $(seq 1 99))" "$OUT"
+  run_lib "" 'is_valid_kebab_name "$(suggest_kebab_name "Any Name_1.0")" && echo yes'
+  assert_eq "a suggestion is a valid kebab name" "yes" "$OUT"
+}
+
 test_config_validation() {
   local case_name url expected
   while IFS='|' read -r case_name url expected; do
@@ -116,6 +146,17 @@ is_valid_repo_name|bad name|no
 is_valid_repo_name|..|no
 is_valid_repo_name|x.git|no
 is_valid_repo_name||no
+is_valid_kebab_name|my-app|yes
+is_valid_kebab_name|app2|yes
+is_valid_kebab_name|a|yes
+is_valid_kebab_name|My_App|no
+is_valid_kebab_name|app_1|no
+is_valid_kebab_name|App|no
+is_valid_kebab_name|-app|no
+is_valid_kebab_name|app-|no
+is_valid_kebab_name|app--x|no
+is_valid_kebab_name|my.app|no
+is_valid_kebab_name||no
 is_valid_gitea_owner|Tirsvad|yes
 is_valid_gitea_owner|-lead|no
 is_valid_github_owner|octo-user|yes
@@ -164,6 +205,27 @@ echo parsed"
   run_lib "" "parse_env_file \"$REPO_ROOT/.env.example\" CREDENTIAL_KEYS CREDENTIALS
 echo parsed"
   assert_contains ".env.example parses" "$OUT" "parsed"
+}
+
+test_example_documents_the_project_name_style_commented_out() {
+  local example="$REPO_ROOT/config.env.example" value
+  assert_contains "the key is documented" "$(<"$example")" "#PROJECT_NAME_STYLE=kebab-case"
+  check
+  if grep -qE '^PROJECT_NAME_STYLE=' "$example"; then
+    fail "PROJECT_NAME_STYLE must stay commented out in config.env.example"
+  fi
+  assert_contains "both values are named" "$(<"$example")" "Values: kebab-case or any. Default: kebab-case."
+  # Switched on with either value, the example is still a valid config file.
+  for value in kebab-case any; do
+    sed -e 's|^GITEA_URL=.*|GITEA_URL=https://git.example.test/|' \
+      -e 's|^GITEA_API_URL=.*|GITEA_API_URL=https://git.example.test/api/v1|' \
+      -e "s|^#PROJECT_NAME_STYLE=.*|PROJECT_NAME_STYLE=$value|" \
+      "$example" >"$WORK/example.env"
+    run_lib "" "parse_env_file \"$WORK/example.env\" CONFIG_KEYS CONFIG
+validate_config
+echo parsed"
+    assert_contains "the example is valid with PROJECT_NAME_STYLE=$value" "$OUT" "parsed"
+  done
 }
 
 test_env_is_ignored_by_git() {

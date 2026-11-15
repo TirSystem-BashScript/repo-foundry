@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-29 | Proposed | Jens Tirsvad Nielsen | S02 | Branch protection rule of a new Gitea repository and --protect (MIL-021, MIL-022) | [796b191] |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | The project name is checked against the name style; no message changes (MIL-031) | pending |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | The protection step is a loop over the main rule and the workflow rule (MIL-032) | pending |
 
 ---
 
@@ -76,7 +76,7 @@ destroy TC
 
 ### Responsibility Check
 
-`ProjectCreator` only sequences three calls; parsing and validation sit in `ConfigLoader`, asking for a missing credential in `CredentialCollector`, tool detection in `ToolChecker`. No object receives every message. Project details preset in `config.env` are read and validated by `ConfigLoader` as part of `configuration`; the second sequence is unchanged, because `provideProjectDetails` receives the same arguments whether they were asked or preset.
+`ProjectCreator` only sequences three calls; parsing and validation sit in `ConfigLoader`, asking for a missing credential in `CredentialCollector`, tool detection in `ToolChecker`. No object receives every message. Project details preset in `config.env` are read and validated by `ConfigLoader` as part of `configuration`; the second sequence is unchanged, because `provideProjectDetails` receives the same arguments whether they were asked or preset. The project name style (`projectNameStyle` of `Configuration`, kebab-case by default) is read and validated in the same way, and a preset `name` is checked against it there; a `name` that is asked is checked against it when it is typed, before `provideProjectDetails`, so the `name` that reaches `PreflightResult` already follows the style and no message is added.
 
 ## Sequence: provideProjectDetails
 
@@ -150,10 +150,12 @@ activate GT
 GT --> PC : giteaRepository
 deactivate GT
 
-PC -> GT : protectBranch(giteaRepository, protectionRule)
-activate GT
-GT --> PC : protectionRule
-deactivate GT
+loop for each protection rule: the main rule, then the workflow rule when its pattern is set
+  PC -> GT : protectBranch(giteaRepository, protectionRule)
+  activate GT
+  GT --> PC : protectionRule
+  deactivate GT
+end
 
 create LB
 PC -> LB : build(directory, giteaRepository, sshPassed)
@@ -212,7 +214,7 @@ destroy SR
 | P2 GitHub credentials known before the first request | `collect(configuration, GITHUB_PAT, GITHUB_USER)` inside `opt githubOwner present` |
 | P5 empty GitHubRepository when chosen | `createEmptyRepository(request)` |
 | P6b Delete pull request branch after merge turned on for a created Gitea repository | `enableBranchCleanup(giteaRepository)` |
-| P6a ProtectionRule on a created Gitea repository, never a direct push | `protectBranch(giteaRepository, protectionRule)` |
+| P6a Two ProtectionRules on a created Gitea repository: the main rule never allows a direct push, the workflow rule has the status checks | `protectBranch(giteaRepository, protectionRule)`, once per rule |
 | P6 PushMirror and first sync | `addPushMirror(...)` and `requestSync(pushMirror)` |
 | P7 LocalProject created, history from Gitea when not empty | `build(directory, ...)` |
 | P8 origin remote (SSH if the test passed, else HTTPS) | `build(..., sshPassed)` |
@@ -238,5 +240,3 @@ destroy SR
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
 [1b56a6d]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/1b56a6d213022f8c67570d86e61f003f2d21af8d
-[796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
-[308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f

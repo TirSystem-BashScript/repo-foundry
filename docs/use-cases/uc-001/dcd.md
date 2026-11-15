@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | Accepted | Jens Tirsvad Nielsen | S02 | Delete pull request branch after merge by default on a new Gitea repository (MIL-018) | [308022a] |
-| 2026-11-06 | Accepted | Jens Tirsvad Nielsen | S02 | List the licenses of the Gitea server with --list-licenses (MIL-029) | [82c0bee] |
+| 2026-11-14 | Accepted | Jens Tirsvad Nielsen | S02 | Configuration holds the project name style (kebab-case or any); the name is checked against it (MIL-031) | pending |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Two protection rules: Configuration holds the workflow pattern, ProtectionRule has a kind (MIL-032) | pending |
 
 ---
 
@@ -34,6 +34,11 @@ hide empty members
 enum Visibility {
   private
   public
+}
+
+enum ProjectNameStyle {
+  kebab-case
+  any
 }
 
 class ProjectCreator <<controller>> {
@@ -101,10 +106,12 @@ class Configuration {
   -giteaSshPort : Integer
   -mirrorInterval : String
   -protectedBranchPattern : String
+  -protectedWorkflowPattern : String
   -protectedFilePatterns : String
   -protectedStatusChecks : String
   -protectedRequireSignedCommits : Boolean = false
   -frameworkRepo : String
+  -projectNameStyle : ProjectNameStyle = kebab-case
   -presetDetails : Map [0..1]
 }
 class Credential {
@@ -154,6 +161,7 @@ class PushMirror {
   -syncOnCommit : Boolean
 }
 class ProtectionRule {
+  -kind : String
   -branchPattern : String
   -filePatterns : String
   -statusCheckPatterns : String
@@ -252,6 +260,7 @@ InstallResult "0..*" --> "0..*" Template
 
 ProjectRequest "0..*" --> "1" Visibility
 Repository "0..*" --> "1" Visibility
+Configuration "0..*" --> "1" ProjectNameStyle
 @enduml
 ```
 
@@ -260,7 +269,7 @@ Repository "0..*" --> "1" Visibility
 | Class | Refines (Domain Model concept) | Responsibility | Attributes | Operations |
 | --- | --- | --- | --- | --- |
 | `ProjectCreator` | none (controller for the system operations of [OC-001]) | Receives the two system operations, sequences the steps and stops on the first failure. | none | `startProjectCreation`, `provideProjectDetails` |
-| `ConfigLoader` | Configuration | Reads `config.env` and `.env` as plain text and validates every value, preset project details included. | none | `load` |
+| `ConfigLoader` | Configuration | Reads `config.env` and `.env` as plain text and validates every value, preset project details included; a preset name must follow `projectNameStyle`. | none | `load` |
 | `CredentialCollector` | none (system concept) | Asks, without echo, for a credential that `.env` does not provide and validates it like one read from `.env`. | none | `collect` |
 | `EnvFileWriter` | Credentials File | Creates the project's own `.env` with the credentials the project needs: owner-only, excluded from git, never replaced without a yes. | none | `write` |
 | `ToolChecker` | none (system concept `ToolCheck`) | Detects the required and optional tools. | none | `check` |
@@ -272,7 +281,7 @@ Repository "0..*" --> "1" Visibility
 | `FrameworkInstaller` | Framework, Framework Setup, Template | Adds the framework submodule, installs skills and hooks once, copies the templates without overwriting, and excludes `.claude`, `.agents` and `AGENTS.md` from git through `.git/info/exclude`. | none | `install`, `excludeFromGit` |
 | `SummaryReport` | Summary | Composes the report of what was created, skipped or failed. | none | `compose` |
 | `Run` | none (system concept) | Holds the state of one execution. | `isApply` | none |
-| `Configuration` | Configuration | Holds the service addresses, the credentials and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `protectedBranchPattern`, `protectedFilePatterns`, `protectedStatusChecks`, `protectedRequireSignedCommits`, `frameworkRepo`, `presetDetails` | none |
+| `Configuration` | Configuration | Holds the service addresses, the credentials, the style of the project name and any preset project details. | `giteaUrl`, `giteaApiUrl`, `githubWebUrl`, `githubApiUrl`, `giteaSshPort`, `mirrorInterval`, `protectedBranchPattern`, `protectedWorkflowPattern`, `protectedFilePatterns`, `protectedStatusChecks`, `protectedRequireSignedCommits`, `frameworkRepo`, `projectNameStyle`, `presetDetails` | none |
 | `Credential` | Access Token | Holds a secret in memory only; it never becomes part of an address or a message. | `kind`, `value` | none |
 | `ToolCheck` | none (system concept) | Records which tools are present. | `hasGit`, `hasCurl`, `hasJq` | none |
 | `PromptSet` | none (system concept) | The questions still to ask; a detail preset in `config.env` is not in it. | `prompts` | none |
@@ -284,7 +293,7 @@ Repository "0..*" --> "1" Visibility
 | `GitHubRepository` | GitHub Repository | Receives its content from the mirror. | none beyond `Repository` | none |
 | `LicenseFile` | License | The license file in the Gitea repository when a license applies. | `key` | none |
 | `PushMirror` | Mirror | The Gitea to GitHub push mirror. | `interval`, `syncOnCommit` | none |
-| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. | `branchPattern`, `filePatterns`, `statusCheckPatterns`, `requireSignedCommits`, `blockOnRejectedReviews`, `blockOnOfficialReviewRequests`, `blockOnOutdatedBranch`, `blockAdminMergeOverride`, `directPushAllowed` | none |
+| `ProtectionRule` | none (system concept) | The branch protection rule of a Gitea repository: glob patterns for the branch, the protected files and the status checks; a direct push is never allowed. A repository has two rules, the main rule (no direct push, protected files, signed commits) and the workflow rule (status checks, block-merge settings), on patterns that do not overlap. | `kind` (`main` or `workflow`), `branchPattern`, `filePatterns`, `statusCheckPatterns`, `requireSignedCommits`, `blockOnRejectedReviews`, `blockOnOfficialReviewRequests`, `blockOnOutdatedBranch`, `blockAdminMergeOverride`, `directPushAllowed` | none |
 | `LocalProject` | Local Project | The project directory on the Maintainer's machine. | `directory` | none |
 | `Remote` | Remote | A named link to a repository (`origin`), without a credential. | `name`, `address` | none |
 | `Submodule` | Framework | The framework added to the local project. | `name`, `address` | none |
@@ -294,6 +303,7 @@ Repository "0..*" --> "1" Visibility
 | `InstallResult` | none (carries the result of one operation) | Returns the submodule, the hook setup and the templates of `install`, and the paths git already tracks that could not be excluded. | `trackedPaths` | none |
 | `Summary` | Summary | The report returned to the Maintainer; it contains no credential. | `createdItems`, `skippedItems`, `nextSteps` | none |
 | `Visibility` | none (enumeration of a Project and Repository attribute) | The two allowed visibilities. | `private`, `public` | none |
+| `ProjectNameStyle` | none (enumeration of a `Configuration` attribute) | The two allowed styles of the project name: `kebab-case` (the default) and `any` (the repository-name rules of the hosts). | `kebab-case`, `any` | none |
 
 ## Method Traceability
 
@@ -315,9 +325,9 @@ Repository "0..*" --> "1" Visibility
 | `GiteaClient.createRepository(request, license) : GiteaRepository` | [SD-001] `createRepository(request, license)`; P3, P4 |
 | `GiteaClient.addPushMirror(source, target) : PushMirror` | [SD-001] `addPushMirror(giteaRepository, gitHubRepository)`; P6 |
 | `GiteaClient.requestSync(mirror) : void` | [SD-001] `requestSync(pushMirror)`; P6 |
-| `GiteaClient.enableBranchCleanup(repository) : GiteaRepository` | [SD-001] `enableBranchCleanup(giteaRepository)`; P6b |
-| `GiteaClient.protectBranch(repository, rule) : ProtectionRule` | [SD-001] `protectBranch(giteaRepository, protectionRule)`; P6a; also `--protect` for an existing repository |
-| `GiteaClient.findProtection(repository, name) : ProtectionRule` | `--protect`: reads the rule of that name |
+| `GiteaClient.enableBranchCleanup(repository) : GiteaRepository` | [SD-001] `enableBranchCleanup(giteaRepository)`; P6b; also `--protect`, after a yes, when the setting is off |
+| `GiteaClient.protectBranch(repository, rule) : ProtectionRule` | [SD-001] `protectBranch(giteaRepository, protectionRule)`; P6a, called once per rule; also `--protect` for an existing repository |
+| `GiteaClient.findProtection(repository, name) : ProtectionRule` | `--protect`: reads the rule of that pattern, for each of the two rules |
 | `GiteaClient.changeProtection(repository, rule) : ProtectionRule` | `--protect`: changes a differing rule after a yes |
 | `GitHubClient(configuration)` | [SD-001] `new(configuration)` to `GitHubClient` |
 | `GitHubClient.createEmptyRepository(request) : GitHubRepository` | [SD-001] `createEmptyRepository(request)`; P5 |
@@ -378,5 +388,3 @@ SOLID check: no class has more than one reason to change (one host API, one kind
 [796b191]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/796b19100c930f23d2d06dfc677b846397a49d2c
 [8ef17b7]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/8ef17b7bdbf078662c57eb0b33bf1391a8481102
 [7711391]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/7711391b2196befdae93ca486568e59c2bc1074d
-[308022a]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/308022a226a021f93262a323a115d124a158a06f
-[82c0bee]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/82c0bee463d3502bfb5bc42b00ab13717b331aed

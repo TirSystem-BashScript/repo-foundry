@@ -4,7 +4,7 @@
 #
 # Part of create-project.sh: sourced by it, never run on its own.
 #
-# Provides: validate_protection_settings, unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, resolve_legacy_gitea_token, validate_credentials, warn_if_env_unsafe, load_configuration
+# Provides: validate_protection_settings, unquote_value, parse_env_file, parse_env_entry, validate_config, check_preset, check_preset_choice, validate_project_presets, project_name_style, is_valid_project_name, project_name_hint, suggest_project_name, check_project_name_preset, resolve_legacy_gitea_token, validate_credentials, warn_if_env_unsafe, load_configuration
 
 # unquote_value RAW: strip matching quotes (or a trailing " # comment" on an
 # unquoted value) and return the value in REPLY. Fails on unbalanced quotes.
@@ -118,6 +118,15 @@ validate_protection_settings() {
   fi
   is_valid_protected_branch "${CONFIG[PROTECTED_BRANCH_PATTERN]}" ||
     die "PROTECTED_BRANCH_PATTERN in $CONFIG_FILE is not valid: $HINT_PROTECTED_BRANCH"
+  if [[ -z ${CONFIG[PROTECTED_WORKFLOW_PATTERN]+set} ]]; then
+    CONFIG[PROTECTED_WORKFLOW_PATTERN]="$DEFAULT_PROTECTED_WORKFLOW_PATTERN"
+  fi
+  [[ -z ${CONFIG[PROTECTED_WORKFLOW_PATTERN]} ]] || is_valid_protected_branch "${CONFIG[PROTECTED_WORKFLOW_PATTERN]}" ||
+    die "PROTECTED_WORKFLOW_PATTERN in $CONFIG_FILE is not valid: $HINT_PROTECTED_BRANCH"
+  if [[ -n ${CONFIG[PROTECTED_WORKFLOW_PATTERN]} ]] &&
+    patterns_overlap "${CONFIG[PROTECTED_BRANCH_PATTERN]}" "${CONFIG[PROTECTED_WORKFLOW_PATTERN]}"; then
+    die "PROTECTED_BRANCH_PATTERN and PROTECTED_WORKFLOW_PATTERN in $CONFIG_FILE match a common branch: Gitea applies one rule per branch"
+  fi
   for key in PROTECTED_FILE_PATTERNS PROTECTED_STATUS_CHECKS; do
     default="$DEFAULT_PROTECTED_FILE_PATTERNS"
     [[ $key == PROTECTED_STATUS_CHECKS ]] && default="$DEFAULT_PROTECTED_STATUS_CHECKS"
@@ -160,9 +169,53 @@ check_preset_choice() {
     die "$key in $CONFIG_FILE must be one of: $*"
 }
 
+# project_name_style: the style the project name must follow, printed:
+# PROJECT_NAME_STYLE of config.env, or kebab-case when the key is absent.
+project_name_style() {
+  printf '%s' "${CONFIG[PROJECT_NAME_STYLE]:-$DEFAULT_PROJECT_NAME_STYLE}"
+}
+
+# is_valid_project_name NAME: NAME follows the style of the project name.
+is_valid_project_name() {
+  if [[ $(project_name_style) == "$DEFAULT_PROJECT_NAME_STYLE" ]]; then
+    is_valid_kebab_name "$1"
+  else
+    is_valid_repo_name "$1"
+  fi
+}
+
+# project_name_hint: what a refused project name is told, for the style.
+project_name_hint() {
+  if [[ $(project_name_style) == "$DEFAULT_PROJECT_NAME_STYLE" ]]; then
+    printf '%s' "$HINT_KEBAB_NAME"
+  else
+    printf '%s' "$HINT_REPO_NAME"
+  fi
+}
+
+# suggest_project_name NAME: the kebab-case form of NAME, printed when the
+# style is kebab-case; nothing otherwise.
+suggest_project_name() {
+  if [[ $(project_name_style) == "$DEFAULT_PROJECT_NAME_STYLE" ]]; then
+    suggest_kebab_name "$1"
+  fi
+}
+
+# check_project_name_preset: PROJECT_NAME of config.env follows the style;
+# a kebab-case refusal also names the key that keeps another name.
+check_project_name_preset() {
+  local hint
+  hint="$(project_name_hint)"
+  if [[ $(project_name_style) == "$DEFAULT_PROJECT_NAME_STYLE" ]]; then
+    hint+=", or set PROJECT_NAME_STYLE=any in $CONFIG_FILE to keep this name"
+  fi
+  check_preset PROJECT_NAME is_valid_project_name "$hint"
+}
+
 # The optional project details that may be preset in config.env.
 validate_project_presets() {
-  check_preset PROJECT_NAME is_valid_repo_name "$HINT_REPO_NAME"
+  check_preset_choice PROJECT_NAME_STYLE "${PROJECT_NAME_STYLES[@]}"
+  check_project_name_preset
   check_preset PROJECT_DESCRIPTION is_valid_description "$HINT_DESCRIPTION"
   check_preset_choice PROJECT_VISIBILITY private public
   check_preset GITEA_OWNER is_valid_gitea_owner "$HINT_GITEA_OWNER"

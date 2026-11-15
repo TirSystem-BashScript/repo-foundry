@@ -140,6 +140,123 @@ validate_project_presets'
   assert_contains "named" "$ERR" "PROJECT_DESCRIPTION in"
 }
 
+test_project_name_style_key() {
+  local line expected
+  while IFS='|' read -r line expected; do
+    printf '%s
+' "$line" >"$WORK/preset.env"
+    run_lib "" 'parse_env_file "'"$WORK"'/preset.env" CONFIG_KEYS CONFIG
+validate_project_presets
+project_name_style'
+    assert_status "$line accepted" 0 "$STATUS"
+    assert_eq "style for '$line'" "$expected" "$OUT"
+  done <<'EOF'
+# no key|kebab-case
+PROJECT_NAME=my-app|kebab-case
+PROJECT_NAME_STYLE=kebab-case|kebab-case
+PROJECT_NAME_STYLE=any|any
+PROJECT_NAME_STYLE=ANY|any
+PROJECT_NAME_STYLE=Kebab-Case|kebab-case
+EOF
+}
+
+test_project_name_style_invalid_values_are_refused_naming_the_key() {
+  local value message
+  while IFS='|' read -r value message; do
+    printf 'PROJECT_NAME_STYLE=%s
+' "$value" >"$WORK/preset.env"
+    run_lib "" 'parse_env_file "'"$WORK"'/preset.env" CONFIG_KEYS CONFIG
+validate_project_presets'
+    assert_status "style=$value" 1 "$STATUS"
+    assert_contains "style=$value named" "$ERR" "PROJECT_NAME_STYLE in"
+    assert_contains "style=$value says" "$ERR" "$message"
+  done <<'EOF'
+snake_case|must be one of: kebab-case any
+kebab|must be one of: kebab-case any
+|is empty
+EOF
+}
+
+test_project_name_style_is_rejected_in_env() {
+  setup_hosts
+  printf 'PROJECT_NAME_STYLE=any
+' >>"$WORK/.env"
+  run_dry ""
+  assert_status ".env with the style key" 1 "$STATUS"
+  assert_contains "unknown in .env" "$ERR" "unknown key 'PROJECT_NAME_STYLE'"
+}
+
+test_project_name_follows_the_style() {
+  local style name expected line
+  while IFS='|' read -r style name expected; do
+    line=""
+    [[ -z $style ]] || line="PROJECT_NAME_STYLE=$style"
+    printf '%s\n' "$line" >"$WORK/preset.env"
+    run_lib "" 'parse_env_file "'"$WORK"'/preset.env" CONFIG_KEYS CONFIG
+if is_valid_project_name "'"$name"'"; then echo yes; else echo no; fi'
+    assert_eq "style '$style' name '$name'" "$expected" "$OUT"
+  done <<'EOF'
+|my-app|yes
+|My_App|no
+|app.x|no
+|bad name|no
+kebab-case|my-app|yes
+kebab-case|My_App|no
+any|my-app|yes
+any|My_App|yes
+any|my.repo_1|yes
+any|bad name|no
+any|x.git|no
+EOF
+}
+
+test_a_refused_name_gets_the_kebab_case_suggestion_and_is_asked_again() {
+  collect_with "PROJECT_DESCRIPTION=" $'My_App\nmy-app\npublic\nTirSystem\nn\n\nn\n'
+  assert_status "asked again, then accepted" 0 "$STATUS"
+  assert_contains "refused with the rule" "$ERR" "invalid Repository name: use lowercase letters and digits"
+  assert_contains "suggestion" "$ERR" "Repository name suggestion: my-app"
+  assert_contains "the accepted name" "$OUT" "name=my-app"
+  assert_contains "the folder carries the name" "$OUT" "directory=./my-app"
+  collect_with "PROJECT_DESCRIPTION=" $'___\nmy-app\npublic\nTirSystem\nn\n\nn\n'
+  assert_not_contains "no suggestion when nothing is left" "$ERR" "suggestion:"
+}
+
+test_a_kebab_case_name_is_accepted_when_asked() {
+  collect_with "PROJECT_DESCRIPTION=" $'app2\npublic\nTirSystem\nn\n\nn\n'
+  assert_status "accepted" 0 "$STATUS"
+  assert_not_contains "not refused" "$ERR" "invalid Repository name"
+  assert_contains "the name" "$OUT" "name=app2"
+}
+
+test_the_any_style_keeps_the_rules_of_a_repository_name() {
+  collect_with $'PROJECT_NAME_STYLE=any\nPROJECT_DESCRIPTION=' $'My_App\npublic\nTirSystem\nn\n\nn\n'
+  assert_status "accepted" 0 "$STATUS"
+  assert_not_contains "no refusal" "$ERR" "invalid Repository name"
+  assert_contains "the name" "$OUT" "name=My_App"
+  collect_with $'PROJECT_NAME_STYLE=any\nPROJECT_DESCRIPTION=' $'bad name\nMy_App\npublic\nTirSystem\nn\n\nn\n'
+  assert_contains "an invalid name is refused as before" "$ERR" "invalid Repository name: use letters, digits"
+  assert_not_contains "and gets no suggestion" "$ERR" "suggestion:"
+}
+
+test_a_preset_name_must_follow_the_style_and_nothing_is_asked_instead() {
+  setup_hosts
+  printf 'PROJECT_NAME=My_App\n' >>"$WORK/config.env"
+  run_apply ""
+  assert_status "stopped" 1 "$STATUS"
+  assert_contains "key named" "$ERR" "PROJECT_NAME in"
+  assert_contains "the way to keep the name" "$ERR" "PROJECT_NAME_STYLE=any"
+  assert_not_contains "no name asked instead" "$ERR" "Repository name:"
+  assert_eq "no request made" "" "$(calls)"
+  collect_with $'PROJECT_NAME_STYLE=any\nPROJECT_NAME=My_App\nPROJECT_DESCRIPTION=' $'public\nTirSystem\nn\n\nn\n'
+  assert_status "kept with the any style" 0 "$STATUS"
+  assert_contains "the preset name" "$OUT" "name=My_App"
+}
+
+test_names_of_existing_repositories_are_not_checked_against_the_style() {
+  run_lib "" 'if is_valid_repository_path "TirSystem/My_App"; then echo yes; else echo no; fi'
+  assert_eq "an existing repository name" "yes" "$OUT"
+}
+
 test_invalid_value_stops_before_any_request_and_never_asks() {
   setup_hosts
   printf 'PROJECT_NAME=bad name\n' >>"$WORK/config.env"

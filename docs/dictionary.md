@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-07 | Deprecated | Jens Tirsvad Nielsen | S02 | `ConfigFiles` named as a system concept without a PO term | [0ab5006] |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | Framework Setup and Template: the folders that hold the skills and the copy of AGENTS.md are ignored by git (MIL-009) | [08cb484] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Framework Setup and Template: the folders that hold the skills and the copy of AGENTS.md are ignored by git (MIL-009) | [08cb484] |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | S02 | The enumeration `ProjectNameStyle` is named as an IT-only type, with `Visibility` (MIL-031) | pending |
 
 ---
 
@@ -53,10 +53,12 @@ Maps each Product Owner (PO) term to its professional IT term. PO language: Engl
   files chosen for the Configuration, in [OC-002]) appear in the Operation
   Contracts but have no PO term: they are system concepts, not domain concepts, and are not
   in the Domain Model.
-- `InstallResult` and the enumeration `Visibility` appear only in [DCD-001]:
-  `InstallResult` carries the three results of one operation, and `Visibility`
-  is the type of the Project and Repository attribute of the same name. Neither
-  is a domain concept.
+- `InstallResult` and the enumerations `Visibility` and `ProjectNameStyle`
+  appear only in [DCD-001] and [DCD-002]: `InstallResult` carries the three
+  results of one operation, `Visibility` is the type of the Project and
+  Repository attribute of the same name, and `ProjectNameStyle` is the type of
+  the `projectNameStyle` attribute of `Configuration` (`kebab-case` or `any`).
+  None is a domain concept.
 - A new concept in a Domain Model gets a row here in the same change.
 
 ---
@@ -68,5 +70,5 @@ Maps each Product Owner (PO) term to its professional IT term. PO language: Engl
 [DM-002]: ./domain-model.md
 [OC-001]: ./use-cases/uc-001/oc.md
 [DCD-001]: ./use-cases/uc-001/dcd.md
-[0ab5006]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/0ab50068bf9e5be82a801af9dbe5b763eeaf7f31
+[DCD-002]: ./dcd.md
 [08cb484]: https://git.tirsystem.com/TirSystem-BashScript/RepoFoundry/commit/08cb484498bab3d9480decda9df89e9564438185
