@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [MIL-029], [MIL-030], [MIL-031], [MIL-032], [US-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [MIL-029], [MIL-030], [MIL-031], [MIL-032], [MIL-033], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-14 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-031 (proposed dates 2027-03-17 to 2027-03-19): kebab-case project names by default | [df7c80c] |
 | 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-032 (proposed dates 2027-03-22 to 2027-03-23): split the protection into a `main` rule and a workflow rule, narrow the status checks | [df7c80c] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added phase MIL-033 (proposed date 2027-03-24): the workflow protection rule is opt-in, no default pattern | [9b53535] |
 
 ---
 
@@ -61,6 +61,7 @@ Schedule the fifteen phases that deliver RepoFoundry (`create-project.sh` and it
 | Release 0.5.1 | [MIL-030] | 2027-03-15 to 2027-03-16 | 2027-03-16 | S01 | US-001 | Version 0.5.1 released on Gitea with its changelog entry | |
 | Kebab-case Project Names | [MIL-031] | 2027-03-17 to 2027-03-19 | 2027-03-19 | S01 | US-001 | A project name is kebab-case unless `config.env` says otherwise (`PROJECT_NAME_STYLE`) | |
 | Split Protection Rules | [MIL-032] | 2027-03-22 to 2027-03-23 | 2027-03-23 | S01 | US-001 | `main` is protected against a direct push by one rule, and a workflow rule on `release/**` requires the three checks that run on a pull request | |
+| Drop Default Workflow Rule | [MIL-033] | 2027-03-24 | 2027-03-24 | S01 | US-001 | The workflow protection rule is made only when a project sets `PROTECTED_WORKFLOW_PATTERN` | |
 
 ```plantuml
 @startgantt
@@ -129,6 +130,8 @@ Project starts 2026-10-05
 [Kebab-case Project Names Go/No-Go] happens 2027-03-19
 [Split Protection Rules] starts 2027-03-22 and ends 2027-03-23
 [Split Protection Rules Go/No-Go] happens 2027-03-23
+[Drop Default Workflow Rule] starts 2027-03-24 and ends 2027-03-24
+[Drop Default Workflow Rule Go/No-Go] happens 2027-03-24
 @endgantt
 ```
 
@@ -172,11 +175,12 @@ Project starts 2026-10-05
 | Version 0.5.1 released | [MIL-030] |
 | A project name is kebab-case unless `config.env` says otherwise | [MIL-031] |
 | `main` is protected against a direct push, and a workflow rule requires the three checks that run on a pull request | [MIL-032] |
+| The workflow rule is made only when a project asks for it | [MIL-033] |
 
 ## Dependencies
 
 ```
-MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026 → MIL-027 → MIL-028 → MIL-029 → MIL-030 → MIL-031 → MIL-032
+MIL-001 → MIL-002 → MIL-003 → MIL-004 → MIL-005 → MIL-006 → MIL-007 → MIL-008 → MIL-009 → MIL-010 → MIL-011 → MIL-012 → MIL-013 → MIL-014 → MIL-015 → MIL-016 → MIL-017 → MIL-018 → MIL-019 → MIL-020 → MIL-021 → MIL-022 → MIL-023 → MIL-024 → MIL-025 → MIL-026 → MIL-027 → MIL-028 → MIL-029 → MIL-030 → MIL-031 → MIL-032 → MIL-033
 ```
 
 A No-Go moves every later date by the time needed to rework the failed criteria.
@@ -232,6 +236,7 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [MIL-030]: ./milestones/mil-030-release-0-5-1.md
 [MIL-031]: ./milestones/mil-031-kebab-case-project-name.md
 [MIL-032]: ./milestones/mil-032-narrow-status-checks.md
+[MIL-033]: ./milestones/mil-033-drop-workflow-rule-default.md
 [US-001]: ./user-stories.md
 [UC-001]: ./use-cases/uc-001/uc.md
 [SSD-001]: ./use-cases/uc-001/ssd.md
@@ -255,3 +260,4 @@ A No-Go moves every later date by the time needed to rework the failed criteria.
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
 [b7406aa]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/b7406aae0247f021b4489a5ce275d09c9538519d
 [df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850
+[9b53535]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/9b5353592fd518472b96b50817d3b7c390daefc4

@@ -38,6 +38,8 @@ protect_fixtures() {
   rm -f "$WORK/curl.calls" "$WORK/curl.bodies" "$WORK/curl.args" "$WORK/curl.config"
   write_fixtures
   printf 'TOKEN_FOR_GITEA_REPO=%s\n' "$FAKE_GITEA_TOKEN" >"$WORK/.env"
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+' >>"$WORK/config.env"
   write_curl_stub
   write_routes <<ROUTES
 GET|/api/v1/repos/TirSystem/my-app|200|{"name":"my-app","default_delete_branch_after_merge":${PROTECT_CLEANUP:-true}}
@@ -68,6 +70,8 @@ count_writes() {
 
 test_a_new_gitea_repository_gets_the_main_and_the_workflow_rule_after_the_mirror() {
   setup_hosts
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
   assert_eq "two rule requests" "2" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
@@ -76,8 +80,21 @@ test_a_new_gitea_repository_gets_the_main_and_the_workflow_rule_after_the_mirror
   assert_contains "step reported" "$OUT" "Branch protection : created (no direct push to main; status checks on release/**)"
 }
 
+test_without_a_workflow_pattern_only_the_main_rule_is_made() {
+  setup_hosts
+  prot_apply "$ANSWERS_GITHUB"$'y
+'
+  assert_status "apply" 0 "$STATUS"
+  assert_eq "one rule request" "1" "$(calls | grep -c -x -F "$PROTECTION_CALL")"
+  assert_contains "the main rule" "$(post_body 1)" '"rule_name":"main"'
+  assert_not_contains "no status check" "$(post_body 1)" '"enable_status_check":true'
+  assert_not_contains "no workflow rule" "$OUT" "release/**"
+}
+
 test_the_default_rule_bodies_split_the_push_rule_from_the_workflow_rule() {
   setup_hosts
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_eq "the main rule" '{"rule_name":"main","enable_push":false,"enable_status_check":false,"status_check_contexts":[],"protected_file_patterns":"","require_signed_commits":true,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 1)"
   assert_eq "the workflow rule" '{"rule_name":"release/**","enable_push":false,"enable_status_check":true,"status_check_contexts":["TirSystem/git-workflows: Validate / *","TirSystem/git-workflows: Release / *","TirSystem/git-workflows: OpenGrep / *"],"protected_file_patterns":"","require_signed_commits":false,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"block_on_outdated_branch":true,"block_admin_merge_override":true}' "$(post_body 2)"
@@ -85,6 +102,8 @@ test_the_default_rule_bodies_split_the_push_rule_from_the_workflow_rule() {
 
 test_the_plan_names_the_rule_for_a_created_repository_only() {
   setup_hosts
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+' >>"$WORK/config.env"
   prot_dry "$ANSWERS_GITHUB"
   assert_status "dry run" 0 "$STATUS"
   assert_contains "plan line" "$OUT" "Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); protected files: none; signed commits required"
@@ -149,7 +168,9 @@ test_overlapping_patterns_stop_before_any_request_and_name_both_keys() {
 
 test_an_empty_list_of_status_checks_switches_the_check_off() {
   setup_hosts
-  printf 'PROTECTED_STATUS_CHECKS=\n' >>"$WORK/config.env"
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+PROTECTED_STATUS_CHECKS=
+' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y\n'
   assert_status "apply" 0 "$STATUS"
   assert_contains "check off" "$(post_body 2)" '"enable_status_check":false,"status_check_contexts":[]'
@@ -218,6 +239,8 @@ test_protect_compares_the_signed_commits_setting() {
 test_the_four_block_merge_settings_are_always_on() {
   local key
   setup_hosts
+  printf 'PROTECTED_WORKFLOW_PATTERN=release/**
+' >>"$WORK/config.env"
   prot_apply "$ANSWERS_GITHUB"$'y
 '
   for key in block_on_rejected_reviews block_on_official_review_requests block_on_outdated_branch block_admin_merge_override; do

@@ -6,8 +6,8 @@
 # Part of create-project.sh: sourced by it, never run on its own.
 #
 # Two rules (MIL-032): the main rule never allows a direct push to the protected
-# branch, so every change arrives by a pull request; the workflow rule (default
-# pattern release/**) adds the status checks and the block-merge settings. Gitea
+# branch, so every change arrives by a pull request; the workflow rule (only when
+# PROTECTED_WORKFLOW_PATTERN is set, for example release/**) adds the status checks and the block-merge settings. Gitea
 # applies one rule per branch, so the two patterns must not overlap. The branch names, the protected file patterns and
 # the status check names are glob patterns (https://github.com/gobwas/glob);
 # they are sent as given, never expanded here.

@@ -29,7 +29,7 @@ readonly DEFAULT_BRANCH="main"
 # semicolons. The default status check pattern matches the checks of the
 # shared workflows that run for every repository of the organisation.
 readonly DEFAULT_PROTECTED_BRANCH_PATTERN="main"
-readonly DEFAULT_PROTECTED_WORKFLOW_PATTERN="release/**"
+readonly DEFAULT_PROTECTED_WORKFLOW_PATTERN=""
 readonly DEFAULT_PROTECTED_FILE_PATTERNS=""
 readonly DEFAULT_PROTECTED_STATUS_CHECKS="TirSystem/git-workflows: Validate / *;TirSystem/git-workflows: Release / *;TirSystem/git-workflows: OpenGrep / *"
 readonly DEFAULT_PROTECTED_REQUIRE_SIGNED="true"
