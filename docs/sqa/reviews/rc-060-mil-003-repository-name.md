@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-20 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | pending |
+| 2026-11-20 | Accepted | Jens Tirsvad Nielsen | S02 | Initial version: Go | [495cad3] |
 
 ---
 
@@ -64,3 +64,4 @@ Go: criterion 2 passes and nothing else changed. The review is not independent: 
 [RC-017]: ./rc-017-e2e-security-review.md
 [RC-031]: ./rc-031-gitea-only-remote.md
 [TM-001]: ../traceability-matrix.md
+[495cad3]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/495cad365cc3a9d6a4f4920ea0d2d995f93f1bd6

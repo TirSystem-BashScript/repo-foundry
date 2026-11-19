@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-033 (workflow rule opt-in) and review RC-059 | [9b53535] |
-| 2026-11-20 | Proposed | Jens Tirsvad Nielsen | S02 | Added review RC-060 to MIL-003 (lowercase framework repository name) | pending |
+| 2026-11-20 | Proposed | Jens Tirsvad Nielsen | S02 | Added review RC-060 to MIL-003 (lowercase framework repository name) | [495cad3] |
 
 ---
 
@@ -214,3 +214,4 @@ updated whenever an artifact instance is created or reviewed.
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
 [9b53535]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/9b5353592fd518472b96b50817d3b7c390daefc4
+[495cad3]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/495cad365cc3a9d6a4f4920ea0d2d995f93f1bd6
