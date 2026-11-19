@@ -31,7 +31,7 @@ files_with_secret() {
   grep -rlF -e "$FAKE_GITEA_TOKEN" -e "$FAKE_GITHUB_PAT" "$1" 2>/dev/null || true
 }
 
-readonly SSH_FRAMEWORK_URL="ssh://git@git.example.test:10022/TirSystem/SQA-QC-Framework.git"
+readonly SSH_FRAMEWORK_URL="ssh://git@git.example.test:10022/TirSystem/sqa-qc-framework.git"
 
 # ----------------------------------------------------- directory and remotes
 
@@ -419,8 +419,8 @@ test_without_ssh_the_framework_steps_are_skipped_after_a_yes() {
 
 test_a_failed_submodule_gives_an_actionable_message() {
   setup_hosts
-  find "$WORK/remote/TirSystem/SQA-QC-Framework.git" \( -type f -o -type l \) -delete
-  find "$WORK/remote/TirSystem/SQA-QC-Framework.git" -depth -type d -exec rmdir {} +
+  find "$WORK/remote/TirSystem/sqa-qc-framework.git" \( -type f -o -type l \) -delete
+  find "$WORK/remote/TirSystem/sqa-qc-framework.git" -depth -type d -exec rmdir {} +
   local dir="$WORK/project"
   local_answers "$dir" y n
   run_apply "$LOCAL_ANSWERS"$'y\n'
@@ -435,7 +435,7 @@ test_a_failed_submodule_gives_an_actionable_message() {
 test_the_framework_repository_is_configurable() {
   setup_hosts
   mkdir -p "$WORK/remote/Other"
-  cp -R "$WORK/remote/TirSystem/SQA-QC-Framework.git" "$WORK/remote/Other/Framework.git"
+  cp -R "$WORK/remote/TirSystem/sqa-qc-framework.git" "$WORK/remote/Other/Framework.git"
   printf 'FRAMEWORK_REPO=Other/Framework\n' >>"$WORK/config.env"
   local dir="$WORK/project"
   local_answers "$dir" y n

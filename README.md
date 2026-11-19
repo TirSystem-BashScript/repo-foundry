@@ -6,7 +6,7 @@ RepoFoundry (`src/create-project.sh`) sets up a new project in one run:
 - optionally an empty **GitHub** repository that receives everything through a
   **push mirror from Gitea to GitHub**,
 - and a **local project** with one credential-free remote, `origin` (Gitea), and the
-  [SQA-QC-Framework](https://git.tirsystem.com/TirSystem/SQA-QC-Framework)
+  [SQA-QC-Framework](https://git.tirsystem.com/TirSystem/sqa-qc-framework)
   added as a git submodule, with its skills, git hooks (and optionally the plan
   gate) and templates installed. The files it installs (`.claude`, `.agents` and
   `AGENTS.md`) are excluded from git in the new project.
@@ -148,7 +148,7 @@ chmod 600 .env                       # Linux and macOS
 | `GITEA_API_URL` | Gitea REST API base URL | `GITEA_URL` + `/api/v1` |
 | `GITEA_SSH_PORT` | SSH port of the Gitea server | `10022` |
 | `MIRROR_INTERVAL` | how often Gitea pushes to GitHub, e.g. `10m0s` | `10m0s` |
-| `FRAMEWORK_REPO` | `OWNER/NAME` of the framework on Gitea | `TirSystem/SQA-QC-Framework` |
+| `FRAMEWORK_REPO` | `OWNER/NAME` of the framework on Gitea | `TirSystem/sqa-qc-framework` |
 
 Every URL must start with `https://` and must not contain a user name,
 password, query string or fragment. A credential key in this file is rejected.
@@ -310,7 +310,7 @@ Plan:
   Branch protection : create on Gitea: rule 'main': no direct push (use a pull request); protected files: none; signed commits required
   Local project     : create ./my-app (new directory), git on main, no commit
   Local origin      : will use SSH (the SSH test passed)
-  Framework         : add ssh://git@git.example.org:10022/Team/SQA-QC-Framework.git as a submodule
+  Framework         : add ssh://git@git.example.org:10022/Team/sqa-qc-framework.git as a submodule
   Skills and hooks  : install once; plan gate no
   Templates         : AGENTS.md and docs/artifact-registry.md (you are asked before a file is replaced)
   Git excludes      : /.claude /.agents /AGENTS.md go into .git/info/exclude (no tracked file changes)
@@ -440,7 +440,7 @@ project by adding them to its `.git/info/exclude`:
 ## SSH access to Gitea
 
 The framework submodule is fetched over SSH on port **10022**
-(`ssh://git@<gitea host>:10022/TirSystem/SQA-QC-Framework.git`). Before you run
+(`ssh://git@<gitea host>:10022/TirSystem/sqa-qc-framework.git`). Before you run
 the script:
 
 1. Add your SSH public key to your Gitea account.

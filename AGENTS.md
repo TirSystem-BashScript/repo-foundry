@@ -85,7 +85,7 @@ to be open.
 
 | Repository | Owns | Consumed by | Pinned or released as |
 | --- | --- | --- | --- |
-| `TirSystem/SQA-QC-Checklists` | the QC checklists (`qc/artifacts/`, `qc/code/`) | `sqa-qc-framework` | a commit, pinned as the `qc/` submodule |
+| `TirSystem/sqa-qc-checklists` | the QC checklists (`qc/artifacts/`, `qc/code/`) | `sqa-qc-framework` | a commit, pinned as the `qc/` submodule |
 | `TirSystem/sqa-qc-framework` | the skills, process documents, catalog, templates (`templates/ci/`) and scripts | every project, as the `framework/` submodule | a release tag (`v0.5.2`, ...) |
 | `TirSystem/git-workflows` | the shared workflows (`quality-checks`, `release`), the scoped workflows (`publish-wiki`, `sync-github-metadata`) and the scripts they call (`tools/`) | every repository of the organisation, by `uses:` and `ref:` | a release tag and a moving major tag (`v1`), made by its release workflow |
 | `TirSystem/sqa-and-qc` | the SQA and AI project management: project artifacts, review records, the traceability matrix | itself | the pull request that merges it |
