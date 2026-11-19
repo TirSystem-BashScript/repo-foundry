@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-032 (split protection rules) and review RC-058 | [df7c80c] |
 | 2026-11-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added MIL-033 (workflow rule opt-in) and review RC-059 | [9b53535] |
+| 2026-11-20 | Proposed | Jens Tirsvad Nielsen | S02 | Added review RC-060 to MIL-003 (lowercase framework repository name) | pending |
 
 ---
 
@@ -29,7 +29,7 @@ updated whenever an artifact instance is created or reviewed.
 | [PP-001] | PP | [BC-001], [SA-001] | [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009], [MIL-010], [MIL-011], [MIL-012], [MIL-013], [MIL-014], [MIL-015], [MIL-016], [MIL-017], [MIL-018], [MIL-019], [MIL-020], [MIL-021], [MIL-022], [MIL-023], [MIL-024], [MIL-025], [MIL-026], [MIL-027], [MIL-028], [MIL-029], [MIL-030], [MIL-031], [MIL-032], [MIL-033] | [RC-012], [RC-018], [RC-020], [RC-022], [RC-031], [RC-032], [RC-033], [RC-034], [RC-035], [RC-036], [RC-037], [RC-039], [RC-040], [RC-041], [RC-042], [RC-043], [RC-044], [RC-045], [RC-046], [RC-047], [RC-048], [RC-049], [RC-050], [RC-051], [RC-052], [RC-053], [RC-054], [RC-055] |
 | [MIL-001] | MIL | [BC-001], [PP-001] | [US-001] | [RC-011], [RC-016] |
 | [MIL-002] | MIL | [BC-001], [PP-001] | [US-001] | [RC-014], [RC-017] |
-| [MIL-003] | MIL | [BC-001], [PP-001] | [US-001] | [RC-015], [RC-017], [RC-031] |
+| [MIL-003] | MIL | [BC-001], [PP-001] | [US-001] | [RC-015], [RC-017], [RC-031], [RC-060] |
 | [MIL-004] | MIL | [BC-001], [PP-001] | [US-001] | [RC-018], [RC-019] |
 | [MIL-005] | MIL | [BC-001], [PP-001] | [US-001] | [RC-020] |
 | [MIL-006] | MIL | [BC-001], [PP-001] | [US-001] | [RC-022] |
@@ -162,6 +162,7 @@ updated whenever an artifact instance is created or reviewed.
 [RC-056]: ./reviews/rc-056-kebab-case-project-name.md
 [RC-058]: ./reviews/rc-058-split-protection-rules.md
 [RC-059]: ./reviews/rc-059-drop-workflow-rule-default.md
+[RC-060]: ./reviews/rc-060-mil-003-repository-name.md
 [RC-057]: ./reviews/rc-057-kebab-case-design.md
 [DCD-001]: ../use-cases/uc-001/dcd.md
 [DCD-002]: ../dcd.md
@@ -212,5 +213,4 @@ updated whenever an artifact instance is created or reviewed.
 [3edc44e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/3edc44e7fee8a7570b47c9f08a6953c268d9eb9b
 [14b519e]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/14b519ecad7a44c6e6cc8a2cb344ae532cfcf887
 [e961872]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/e961872aa0968b3f058166e7213a5ee69ff6c1c4
-[df7c80c]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/df7c80c33815d9c4c900e6bedc21018e5155f850
 [9b53535]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/9b5353592fd518472b96b50817d3b7c390daefc4

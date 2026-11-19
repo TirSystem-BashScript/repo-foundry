@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | Criterion 1 and task 1: origin is the only remote (MIL-008) | [039a28c] |
-| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in criterion 2 and task 2 | [794ffa8] |
+| 2026-10-08 | Deprecated | Jens Tirsvad Nielsen | S02 | Criterion 1 and task 1: origin is the only remote (MIL-008) | [039a28c] |
+| 2026-11-19 | Accepted | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in criterion 2 and task 2 | [794ffa8] |
 
 ---
 
