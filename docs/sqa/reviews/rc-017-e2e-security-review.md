@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-06 | Proposed | Jens Tirsvad Nielsen | S02 | Run A repeated with a `write:user` token: passes; criterion 7 now Pass; only the README review remains | [ef87e73] |
-| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in the Run B evidence and criterion 2 | pending |
+| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in the Run B evidence and criterion 2 | [794ffa8] |
 
 ---
 
@@ -107,3 +107,4 @@ Go-with-conditions — No open security finding, both the organization-owner flo
 [RC-016]: ./rc-016-create-project-sh.md
 [US-001]: ../../user-stories.md
 [ef87e73]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/ef87e7395482da9fad854cd5db7f16200bb8c8af
+[794ffa8]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/794ffa89a8368c6588265dae48b528c8ebc6fdb1

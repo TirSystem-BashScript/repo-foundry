@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | Criterion 1 and task 1: origin is the only remote (MIL-008) | [039a28c] |
-| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in criterion 2 and task 2 | pending |
+| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in criterion 2 and task 2 | [794ffa8] |
 
 ---
 
@@ -79,3 +79,4 @@ Complete `create-project.sh` (local directory, credential-free remotes, framewor
 [MIL-002]: ./mil-002-repositories-and-mirror.md
 [MIL-008]: ./mil-008-gitea-only-remote.md
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03
+[794ffa8]: https://git.tirsystem.com/TirSystem-BashScript/repo-foundry/commit/794ffa89a8368c6588265dae48b528c8ebc6fdb1
