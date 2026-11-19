@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-05 | Deprecated | Jens Tirsvad Nielsen | S02 | Optional GitHub; choosing GitHub applies the AGPL license to the Gitea repository<br>Cited US-001.03<br>Traces to objective 7<br>Criterion 2 names the framework URL<br>Target date accepted | [02875ae] |
 | 2026-10-08 | Accepted | Jens Tirsvad Nielsen | S02 | Criterion 1 and task 1: origin is the only remote (MIL-008) | [039a28c] |
+| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in criterion 2 and task 2 | pending |
 
 ---
 
@@ -27,7 +27,7 @@ Complete `create-project.sh` (local directory, credential-free remotes, framewor
 | # | Criterion (objectively checkable) | Go | No-Go |
 | --- | --- | --- | --- |
 | 1 | `git remote -v` shows `origin` (Gitea) only, with or without GitHub, with no credentials in any URL; with GitHub chosen the local history contains the license commit | Verified | Any credential, or a missing license commit |
-| 2 | `framework` is a submodule of `ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git` and the install scripts have run once, in the documented order | Verified | Missing or repeated |
+| 2 | `framework` is a submodule of `ssh://git@git.tirsystem.com:10022/TirSystem/sqa-qc-framework.git` and the install scripts have run once, in the documented order | Verified | Missing or repeated |
 | 3 | An existing directory, `AGENTS.md` or `docs/artifact-registry.md` is never overwritten without a yes | Verified by a second run | Overwritten |
 | 4 | With the plan gate enabled, a commit touching `src/` or `tests/` without a `Task: MIL-NNN#N` trailer is refused | Verified | Accepted |
 | 5 | An existing `core.hooksPath` is reported and not replaced without consent | Verified | Replaced silently |
@@ -65,7 +65,7 @@ Complete `create-project.sh` (local directory, credential-free remotes, framewor
 | # | Task | Summary | Needs its own Use Case/User Story? | Reference |
 | --- | --- | --- | --- | --- |
 | 1 | Create the local project directory and credential-free remotes | After consent, create the directory (refuse to reuse an existing one without a yes), run `git init` on `main`, and add `origin` (Gitea) using a URL derived from the configured base URL and the selected owner, with no token in any URL; there is no `github` remote, because a push to `origin` reaches GitHub through the mirror ([MIL-008]). `origin` uses HTTPS derived from `GITEA_URL`, unless the SSH test from the preflight passed, in which case it uses SSH on port 10022. When the Gitea repository is not empty (GitHub chosen, AGPL license), fetch it and check out its default branch so the local history starts from the license commit. Do not make a commit. | Yes | [UC-001] |
-| 2 | Add the framework submodule | From the project directory run `git submodule add ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git framework`. Check beforehand that SSH on port 10022 works and stop with an actionable message if not. Document that this SSH access must be configured. | Yes | [UC-001] |
+| 2 | Add the framework submodule | From the project directory run `git submodule add ssh://git@git.tirsystem.com:10022/TirSystem/sqa-qc-framework.git framework`. Check beforehand that SSH on port 10022 works and stop with an actionable message if not. Document that this SSH access must be configured. | Yes | [UC-001] |
 | 3 | Install skills and git hooks, with optional plan gate | Run `framework/scripts/install-skills.sh` and `install-git-hooks.sh`. The hook installer only sets `core.hooksPath` to `framework/githooks` and is safe to rerun, but it would replace a different existing value, so read the current value first and ask. Offer `--enable-plan-gate` as an optional choice, which requires a `Task: MIL-NNN#N` trailer on commits changing `src/` or `tests/`. | Yes | [UC-001] |
 | 4 | Copy the framework templates without overwriting | Copy `AGENTS-template.md` to `AGENTS.md` and `artifact-registry-template.md` to `docs/artifact-registry.md` after `mkdir -p docs`, asking before replacing an existing file. | Yes | [UC-001] |
 | 5 | Write README.md | Clear English for GitHub readers: installation, configuration (`config.env`, `.env`), usage examples, security decisions, error handling and partial-failure recovery, the SSH prerequisite for port 10022, token permissions, and the stakeholders: Tirsvad (Product Owner and maintainer, https://www.linkedin.com/in/tirsvad74), Michael Kragh (DevOps, cybersecurity and maintainer, https://www.linkedin.com/in/codemikemike/) and GitHub readers. | No | |
@@ -78,5 +78,4 @@ Complete `create-project.sh` (local directory, credential-free remotes, framewor
 [UC-001]: ../use-cases/uc-001/uc.md
 [MIL-002]: ./mil-002-repositories-and-mirror.md
 [MIL-008]: ./mil-008-gitea-only-remote.md
-[02875ae]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/02875aee5f2953473924074eea0056eb31af6b7a
 [039a28c]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/039a28c01b56f8cf0af73f55d1a604b43d67ba03

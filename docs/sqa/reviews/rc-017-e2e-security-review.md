@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-05 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [613a288] |
 | 2026-10-06 | Proposed | Jens Tirsvad Nielsen | S02 | Run A repeated with a `write:user` token: passes; criterion 7 now Pass; only the README review remains | [ef87e73] |
+| 2026-11-19 | Proposed | Jens Tirsvad Nielsen | S02 | Framework repository name in lowercase (`sqa-qc-framework`) in the Run B evidence and criterion 2 | pending |
 
 ---
 
@@ -35,7 +35,7 @@ After run A2 the following was checked independently of the script's own report:
 
 - **Gitea:** private, owner the organization, default branch `main`, contents `LICENSE` and `README.md`; push mirror to `https://github.com/TirSystem-BashScript/repofoundry-e2e-org.git`, interval `10m0s`, `sync_on_commit` true, `last_error` empty.
 - **GitHub:** private, owner the organization, contents `LICENSE` and `README.md`, one commit `Initial commit` (arrived through the mirror).
-- **Local project:** on `main` with that one commit as its whole history, tracking `origin`; `origin` is `ssh://git@git.tirsystem.com:10022/TirSystem-BashScript/repofoundry-e2e-org.git` and `github` is `https://github.com/TirSystem-BashScript/repofoundry-e2e-org.git`; the submodule `framework` comes from `ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git`; `core.hooksPath` is `framework/githooks` and `planGate.enabled` is true; skills are installed for both harnesses; `AGENTS.md` equals the framework template; no commit was made by the script.
+- **Local project:** on `main` with that one commit as its whole history, tracking `origin`; `origin` is `ssh://git@git.tirsystem.com:10022/TirSystem-BashScript/repofoundry-e2e-org.git` and `github` is `https://github.com/TirSystem-BashScript/repofoundry-e2e-org.git`; the submodule `framework` comes from `ssh://git@git.tirsystem.com:10022/TirSystem/sqa-qc-framework.git`; `core.hooksPath` is `framework/githooks` and `planGate.enabled` is true; skills are installed for both harnesses; `AGENTS.md` equals the framework template; no commit was made by the script.
 - **Hooks and gate, for real:** a commit on `main` was refused ("refusing to commit directly on 'main'"); a `src/` change without a `Task:` trailer on a branch was refused ("plan-first gate"); a documentation-only commit on a branch was accepted.
 - **Mirror direction, for real:** that commit was pushed to Gitea over SSH and the branch `work` appeared on GitHub within seconds, without a manual sync.
 
@@ -44,7 +44,7 @@ After run A2 the following was checked independently of the script's own report:
 | # | Criterion | Status | Evidence/Notes |
 | --- | --- | --- | --- |
 | 1 | `git remote -v` shows `origin` (Gitea) and, when GitHub was chosen, `github`, with no credentials in any URL; with GitHub chosen the local history contains the license commit | Pass | Run B: configured addresses above, credential-free; history is the Gitea license commit. |
-| 2 | `framework` is a submodule of `ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git` and the install scripts have run once, in the documented order | Pass | Run B: `.gitmodules` holds that address; skills, then hooks, then templates; each once. |
+| 2 | `framework` is a submodule of `ssh://git@git.tirsystem.com:10022/TirSystem/sqa-qc-framework.git` and the install scripts have run once, in the documented order | Pass | Run B: `.gitmodules` holds that address; skills, then hooks, then templates; each once. |
 | 3 | An existing directory, `AGENTS.md` or `docs/artifact-registry.md` is never overwritten without a yes | Pass | Verified by the automated tests with real git (existing directory, conflicting `LICENSE`, existing templates); not repeated on the real hosts. |
 | 4 | With the plan gate enabled, a commit touching `src/` or `tests/` without a `Task: MIL-NNN#N` trailer is refused | Pass | Run B, for real. |
 | 5 | An existing `core.hooksPath` is reported and not replaced without consent | Pass | Verified by the automated tests with real git (local and global setting); not repeated on the real hosts. |
@@ -106,5 +106,4 @@ Go-with-conditions — No open security finding, both the organization-owner flo
 [MIL-002]: ../../milestones/mil-002-repositories-and-mirror.md
 [RC-016]: ./rc-016-create-project-sh.md
 [US-001]: ../../user-stories.md
-[613a288]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/613a288dead4c19c00dee6fbb60d46bc3edf8889
 [ef87e73]: https://git.tirsystem.com/TirSystem-BashScript/repo_foundry/commit/ef87e7395482da9fad854cd5db7f16200bb8c8af
