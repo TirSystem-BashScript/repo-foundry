@@ -135,8 +135,8 @@ ensure_shared_remotes() {
   fi
   SHARED_REMOTES="$(mktemp -d "${TMPDIR:-/tmp}/repofoundry-remotes.XXXXXX")"
   mkdir -p "$SHARED_REMOTES/TirSystem"
-  git clone -q --bare "$REPO_ROOT/framework" "$SHARED_REMOTES/TirSystem/SQA-QC-Framework.git"
-  git clone -q --bare "$REPO_ROOT/framework/qc" "$SHARED_REMOTES/TirSystem/SQA-QC-Checklists.git"
+  git clone -q --bare "$REPO_ROOT/framework" "$SHARED_REMOTES/TirSystem/sqa-qc-framework.git"
+  git clone -q --bare "$REPO_ROOT/framework/qc" "$SHARED_REMOTES/TirSystem/sqa-qc-checklists.git"
   git init -q --bare "$SHARED_REMOTES/TirSystem/my-app.git"
   git init -q "$SHARED_REMOTES/seed"
   git -C "$SHARED_REMOTES/seed" symbolic-ref HEAD refs/heads/main

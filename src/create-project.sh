@@ -52,7 +52,7 @@
 #   config.env  GITHUB_API_URL, GITHUB_WEB_URL, GITEA_URL, GITEA_API_URL and
 #               the optional GITEA_SSH_PORT (default 10022), MIRROR_INTERVAL
 #               (default 10m0s) and FRAMEWORK_REPO (default
-#               TirSystem/SQA-QC-Framework, the submodule's OWNER/NAME) and the
+#               TirSystem/sqa-qc-framework, the submodule's OWNER/NAME) and the
 #               optional PROTECTED_BRANCH_PATTERN (default main, the rule that
 #               forbids a direct push), PROTECTED_WORKFLOW_PATTERN (default
 #               none; a pattern such as release/** adds a rule with the status
